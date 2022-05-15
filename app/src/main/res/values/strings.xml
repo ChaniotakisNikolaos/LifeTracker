@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LifeTracker</string>
+    <string name="to_do_string">ToDo</string>
+    <string name="calendar_string">Calendar</string>
+    <string name="budget_string">Budget</string>
+    <string name="me_strring">me</string>
 </resources>
