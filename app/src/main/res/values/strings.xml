@@ -3,5 +3,7 @@
     <string name="to_do_string">ToDo</string>
     <string name="calendar_string">Calendar</string>
     <string name="budget_string">Budget</string>
-    <string name="me_strring">me</string>
+    <string name="me_string">me</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
