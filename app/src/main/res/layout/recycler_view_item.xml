@@ -40,16 +40,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
             <TextView
-                android:id="@+id/reminderTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="20/5 12:40"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/dueDateTextView"
-                app:layout_constraintStart_toEndOf="@+id/textViewLabel"
-                app:layout_constraintTop_toBottomOf="@+id/checkBox" />
-
-            <TextView
                 android:id="@+id/dueDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,15 +50,35 @@
                 app:layout_constraintTop_toBottomOf="@+id/checkBox"
                 tools:text="21/5" />
 
-            <TextView
-                android:id="@+id/textView4"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reminder:"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/reminderTextView"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintEnd_toStartOf="@+id/textView5"
                 app:layout_constraintStart_toEndOf="@+id/textViewLabel"
+                app:layout_constraintTop_toBottomOf="@+id/checkBox">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reminder:" />
+
+                <TextView
+                    android:id="@+id/reminderTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20/5 12:40" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Due date:"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/dueDateTextView"
                 app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
