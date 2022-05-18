@@ -7,4 +7,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="user_photo_description">user photo</string>
+    <string name="tasks_overview">Tasks Overview</string>
+    <string name="pending_tasks">Pending Tasks</string>
+    <string name="finished_tasks">Finished Tasks</string>
 </resources>
