@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/sky"
     tools:context=".MeFragment">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="149dp"
+        android:layout_height="144dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="12dp"
@@ -19,19 +19,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ImageContrastCheck"
-        tools:src="@tools:sample/avatars" />
+        tools:src="@drawable/cat_glasses" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:text="@string/hello_blank_fragment"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        android:background="#B5C9B6CF"
+        android:text="@string/hello_user"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/textView"
@@ -39,6 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:background="#B5C9B6CF"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:text="@string/tasks_overview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/imageView"
@@ -49,6 +55,10 @@
         android:layout_width="175dp"
         android:layout_height="124dp"
         android:layout_marginTop="16dp"
+        android:background="#FDBDA5C5"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:gravity="center"
         android:text="@string/finished_tasks"
         app:layout_constraintEnd_toStartOf="@+id/textView5"
         app:layout_constraintStart_toStartOf="@+id/textView"
@@ -60,6 +70,10 @@
         android:layout_height="124dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:background="#FDBDA5C5"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:gravity="center"
         android:text="@string/pending_tasks"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toEndOf="@+id/textView3"
