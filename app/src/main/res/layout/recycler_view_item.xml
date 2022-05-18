@@ -44,9 +44,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20/5 12:40"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/dueDateTextView"
                 app:layout_constraintStart_toEndOf="@+id/textViewLabel"
-                tools:layout_editor_absoluteY="49dp" />
+                app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
             <TextView
                 android:id="@+id/dueDateTextView"
@@ -64,10 +65,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Remider:"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/reminderTextView"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/textViewLabel"
-                tools:layout_editor_absoluteY="49dp" />
+                app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
