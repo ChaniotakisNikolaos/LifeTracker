@@ -64,7 +64,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remider:"
+                android:text="Reminder:"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/reminderTextView"
                 app:layout_constraintHorizontal_bias="1.0"
