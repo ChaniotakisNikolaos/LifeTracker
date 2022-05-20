@@ -9,11 +9,14 @@ import android.widget.TableLayout;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private FragmentAdapter fragmentAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
