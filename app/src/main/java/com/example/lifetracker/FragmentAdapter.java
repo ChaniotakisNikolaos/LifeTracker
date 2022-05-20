@@ -16,7 +16,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         //Fragment[] fragments = new Fragment[]{new ToDoFragment(),new CalendarFragment(), new BudgetFragment(), new MeFragment()};
         //return fragments[position-1];
-        System.out.println("position="+position);
+        //System.out.println("position="+position);
         switch (position) {
             case 0:
                 return new ToDoFragment();
