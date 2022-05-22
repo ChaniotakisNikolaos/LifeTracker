@@ -35,7 +35,7 @@ public class ToDoRecyclerViewAdapter extends RecyclerView.Adapter<ToDoRecyclerVi
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 3;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
