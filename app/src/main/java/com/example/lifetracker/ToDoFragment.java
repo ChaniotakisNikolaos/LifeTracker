@@ -1,5 +1,6 @@
 package com.example.lifetracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -73,5 +74,14 @@ public class ToDoFragment extends Fragment {
         recyclerView.setAdapter(new ToDoRecyclerViewAdapter(view.getContext(),toDoItemArrayList));
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         return view;
+    }
+
+    /** Called when the user taps the plus button */
+    public void addToDoItem(View view) {
+        Intent intent = new Intent(this.getContext(), AddToDoItemActivity.class);
+        //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
+        //String message = editText.getText().toString();
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 }

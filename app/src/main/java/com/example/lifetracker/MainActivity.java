@@ -1,15 +1,14 @@
 package com.example.lifetracker;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.os.Bundle;
-import android.widget.TableLayout;
-
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,5 +51,14 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
+    }
+
+    /** Called when the user taps the plus button */
+    public void addToDoItem(View view) {
+        Intent intent = new Intent(this, AddToDoItemActivity.class);
+        //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
+        //String message = editText.getText().toString();
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 }
