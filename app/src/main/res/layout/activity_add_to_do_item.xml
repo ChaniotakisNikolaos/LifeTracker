@@ -34,8 +34,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toDoEditText" />
 
-    <EditText
-        android:id="@+id/reminderEditText"
+    <TextView
+        android:id="@+id/reminderSelectTextView"
+        style="@style/Widget.AppCompat.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -43,6 +44,9 @@
         android:hint="Reminder"
         android:importantForAutofill="no"
         android:minHeight="48dp"
+        android:onClick="showDatePickerDialog"
+        android:textIsSelectable="false"
+        android:focusable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reminderEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/reminderSelectTextView" />
 
     <Button
         android:id="@+id/addToDoButton"

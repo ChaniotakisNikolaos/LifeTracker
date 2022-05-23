@@ -16,19 +16,28 @@ import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
+    private static final String ARG_VIEW_ID = "id";
+    private int viewId;
+
     public DatePickerFragment() {
         // Required empty public constructor
     }
 
     //TODO delete this if not necessary
-    public static DatePickerFragment newInstance(int day, int month,int year) {
+    public static DatePickerFragment newInstance(int viewId) {
         DatePickerFragment fragment = new DatePickerFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_VIEW_ID, viewId);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            viewId = getArguments().getInt(ARG_VIEW_ID);
+        }
     }
 
     @Override
@@ -51,7 +60,11 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        TextView textView = getActivity().findViewById(R.id.dueDateSelectTextView);
+        TextView textView = getActivity().findViewById(viewId);
         textView.setText(day+"/"+month+"/"+year);
+        if(viewId == R.id.reminderSelectTextView) {
+            DialogFragment newFragment = new TimePickerFragment();
+            newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+        }
     }
 }
