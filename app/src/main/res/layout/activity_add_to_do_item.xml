@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/labelEditText" />
 
     <TextView
-        android:id="@+id/dueDateEditText"
+        android:id="@+id/dueDateSelectTextView"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

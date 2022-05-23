@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +51,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        TextView textView = getActivity().findViewById(R.id.dueDateEditText);
+        TextView textView = getActivity().findViewById(R.id.dueDateSelectTextView);
         textView.setText(day+"/"+month+"/"+year);
     }
 }
