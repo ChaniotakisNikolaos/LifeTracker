@@ -23,7 +23,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         // Required empty public constructor
     }
 
-    //TODO delete this if not necessary
     public static DatePickerFragment newInstance(int viewId) {
         DatePickerFragment fragment = new DatePickerFragment();
         Bundle args = new Bundle();
