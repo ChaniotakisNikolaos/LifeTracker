@@ -15,6 +15,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract Dao dao();
 
     public static synchronized AppDatabase getInstance(Context context) {
-        return instance==null? Room.databaseBuilder(context,AppDatabase.class,DB_NAME).build():instance;
+        return instance==null? instance=Room.databaseBuilder(context,AppDatabase.class,DB_NAME).build():instance;
     }
 }
