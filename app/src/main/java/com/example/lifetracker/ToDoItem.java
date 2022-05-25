@@ -7,13 +7,6 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class ToDoItem {
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -30,6 +23,10 @@ public class ToDoItem {
         this.reminder = reminder;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -44,6 +41,10 @@ public class ToDoItem {
 
     public String getReminder() {
         return reminder;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setDescription(@NonNull String description) {
