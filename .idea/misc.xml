@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/activity_add_to_do_item.xml" value="0.20052083333333334" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/fragment_budget.xml" value="0.1859375" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/fragment_calendar.xml" value="0.264" />
