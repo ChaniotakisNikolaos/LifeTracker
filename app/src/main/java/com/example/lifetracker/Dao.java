@@ -1,5 +1,6 @@
 package com.example.lifetracker;
 
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -20,4 +21,7 @@ public interface Dao {
 
     @Update
     void updateToDoItem(ToDoItem toDoItem);
+
+    @Delete
+    void deleteToDoItem(ToDoItem toDoItem);
 }

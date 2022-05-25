@@ -23,16 +23,7 @@ public class ToDoItem {
     private String dueDate;
     private String reminder;
 
-    @Ignore
     public ToDoItem(String description, String label, String dueDate, String reminder) {
-        this.description = description;
-        this.label = label;
-        this.dueDate = dueDate;
-        this.reminder = reminder;
-    }
-
-    public ToDoItem(int id, String description, String label, String dueDate, String reminder) {
-        this.id = id;
         this.description = description;
         this.label = label;
         this.dueDate = dueDate;
