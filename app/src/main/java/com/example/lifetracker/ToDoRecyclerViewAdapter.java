@@ -10,15 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ToDoRecyclerViewAdapter extends RecyclerView.Adapter<ToDoRecyclerViewAdapter.MyViewHolder>{
     private Context context;
-    private ArrayList<ToDoItem> toDoItemArrayList;
+    private List<ToDoItem> toDoItemList;
 
-    public ToDoRecyclerViewAdapter(Context context, ArrayList<ToDoItem> toDoItemArrayList) {
+    public ToDoRecyclerViewAdapter(Context context, List<ToDoItem> toDoItemList) {
         this.context = context;
-        this.toDoItemArrayList = toDoItemArrayList;
+        this.toDoItemList = toDoItemList;
     }
 
     @NonNull

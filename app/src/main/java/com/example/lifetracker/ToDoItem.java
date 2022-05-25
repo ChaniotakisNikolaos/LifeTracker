@@ -2,10 +2,19 @@ package com.example.lifetracker;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
 public class ToDoItem {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @PrimaryKey(autoGenerate = true)
     private int id;
     @NonNull
@@ -14,6 +23,7 @@ public class ToDoItem {
     private String dueDate;
     private String reminder;
 
+    @Ignore
     public ToDoItem(String description, String label, String dueDate, String reminder) {
         this.description = description;
         this.label = label;
