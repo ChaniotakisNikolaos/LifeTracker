@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:text="0%"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar3"
                 app:layout_constraintEnd_toEndOf="@+id/progressBar3"
                 app:layout_constraintHorizontal_bias="0.0"

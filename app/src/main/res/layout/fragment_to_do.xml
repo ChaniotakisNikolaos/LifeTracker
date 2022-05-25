@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ToDoFragment"
-    android:background="@drawable/blurred_sky">
+    android:background="@drawable/egypt2">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
