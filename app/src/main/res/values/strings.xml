@@ -11,4 +11,6 @@
     <string name="pending_tasks">Pending Tasks</string>
     <string name="finished_tasks">Finished Tasks</string>
     <string name="hello_user">Hello, User!</string>
+    <string name="budget_name_string">Budget Name</string>
+    <string name="saved_up_to_now">Saved</string>
 </resources>
