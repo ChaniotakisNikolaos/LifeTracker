@@ -6,11 +6,14 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,12 +21,21 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private FragmentAdapter fragmentAdapter;
     private ArrayList<ToDoItem> toDoItemArrayList;
+    private ApplicationViewModel applicationViewModel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
+        applicationViewModel.getToDoItemList().observe(this, new Observer<List<ToDoItem>>() {
+            @Override
+            public void onChanged(List<ToDoItem> toDoItems) {
+
+            }
+        });
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPager2);

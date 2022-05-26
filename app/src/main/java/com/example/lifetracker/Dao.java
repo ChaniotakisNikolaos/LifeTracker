@@ -1,5 +1,6 @@
 package com.example.lifetracker;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -15,6 +16,9 @@ public interface Dao {
 
     @Query("SELECT * FROM ToDoItem WHERE dueDate=:dueDate")
     List<ToDoItem> getToDoItems(String dueDate);
+
+    @Query("SELECT * FROM ToDoItem")
+    LiveData<List<ToDoItem>> getAllToDoItems();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertToDoItem(ToDoItem toDoItem);

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddToDoItemActivity extends AppCompatActivity {
 
@@ -30,6 +31,6 @@ public class AddToDoItemActivity extends AppCompatActivity {
         TextView dueDateTextView = findViewById(R.id.dueDateSelectTextView);
         ToDoItem toDoItem = new ToDoItem(toDoEditText.getText().toString(),label.getText().toString(),reminderTextView.getText().toString(),dueDateTextView.getText().toString());
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class, AppDatabase.DB_NAME).build();
-        //db.dao().insertToDoItem(toDoItem);
+        Toast.makeText(this,"TODO item added",Toast.LENGTH_SHORT).show();
     }
 }
