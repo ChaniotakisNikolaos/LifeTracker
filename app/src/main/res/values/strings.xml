@@ -19,4 +19,8 @@
     <string name="substract_button">Substract Savings</string>
     <string name="edit_button">Edit Savings</string>
     <string name="delete_button">Delete Savings</string>
+    <string name="budget_label">Label</string>
+    <string name="budget_up_to_now">Savings up to now</string>
+    <string name="budget_total">How many you wish to save</string>
+    <string name="budget_end">End goal</string>
 </resources>
