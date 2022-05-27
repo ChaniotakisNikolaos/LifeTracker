@@ -17,8 +17,8 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
     }
 
     public void showDatePickerDialog(View v) {
-       // DialogFragment newFragment = DatePickerFragment.newInstance(v.getId());
-        //newFragment.show(getSupportFragmentManager(), "datePicker");
+        DialogFragment newFragment = DatePickerFragment.newInstance(v.getId());
+        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
     public void addBudgetItem(View v) {
         EditText PersonNameEditText = findViewById(R.id.PersonNameEditText);
