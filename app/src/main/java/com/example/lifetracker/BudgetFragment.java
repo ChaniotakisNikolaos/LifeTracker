@@ -1,12 +1,18 @@
 package com.example.lifetracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +20,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class BudgetFragment extends Fragment {
+
+    List<BudgetItem> budgetItemArrayList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +34,7 @@ public class BudgetFragment extends Fragment {
 
     public BudgetFragment() {
         // Required empty public constructor
+        Log.d("Understanding","BudgetFragment created");
     }
 
     /**
@@ -59,6 +68,10 @@ public class BudgetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_budget, container, false);
+        View view = inflater.inflate(R.layout.fragment_budget, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView1);
+        recyclerView.setAdapter(new BudgetRecyclerViewAdapter(view.getContext(), budgetItemArrayList));
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        return view;
     }
 }
