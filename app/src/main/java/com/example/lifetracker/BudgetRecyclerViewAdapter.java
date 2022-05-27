@@ -45,7 +45,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             super(itemView);
             budgetLabel = itemView.findViewById(R.id.budgetLabel);
             savingsLabel = itemView.findViewById(R.id.savingsLabel);
-            dueDate = itemView.findViewById(R.id.dueDate);
+            dueDate = itemView.findViewById(R.id.dueDate1);
             /*progressBar = itemView.findViewById(R.id.progressBar);
             percentageLabel = itemView.findViewById(R.id.percentageLabel);
             dueDate = itemView.findViewById(R.id.dueDate);

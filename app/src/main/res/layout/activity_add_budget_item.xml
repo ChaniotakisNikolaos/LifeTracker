@@ -96,7 +96,7 @@
         app:layout_constraintTop_toBottomOf="@+id/totalSavingsEditText" />
 
     <TextView
-        android:id="@+id/dueDateSelectTextView"
+        android:id="@+id/dueDateSelectTextView1"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

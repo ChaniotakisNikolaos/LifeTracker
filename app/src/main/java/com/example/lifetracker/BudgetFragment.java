@@ -69,7 +69,7 @@ public class BudgetFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView1);
         recyclerView.setAdapter(new BudgetRecyclerViewAdapter(view.getContext(), budgetItemArrayList));
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         return view;
