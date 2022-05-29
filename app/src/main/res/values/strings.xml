@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LifeTracker</string>
+    <string name="app_name">LifeTracker NiSo</string>
     <string name="to_do_string">ToDo</string>
     <string name="calendar_string">Calendar</string>
     <string name="budget_string">Budget</string>
