@@ -26,8 +26,8 @@
         android:clickable="true"
         android:contentDescription="plus button"
         android:onClick="addToDoItem"
-        app:backgroundTint="#CBC9B6CF"
         android:src="@drawable/ic_baseline_add_24"
+        app:backgroundTint="#CBC9B6CF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

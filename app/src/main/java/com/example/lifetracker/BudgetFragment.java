@@ -74,12 +74,4 @@ public class BudgetFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         return view;
     }
-    /** Called when the user taps the plus button */
-    public void addBudgetItem(View view) {
-        Intent intent = new Intent(this.getContext(), AddBudgetItemActivity.class);
-        //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
-        //String message = editText.getText().toString();
-        //intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    }
 }
