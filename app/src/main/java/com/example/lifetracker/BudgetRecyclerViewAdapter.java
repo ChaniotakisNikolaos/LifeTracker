@@ -62,13 +62,14 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             button.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
                     if(!showButtons) {
+                        button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_baseline_arrow_drop_up_24);
                         addButton.setVisibility(v.VISIBLE);
                         minusButton.setVisibility(v.VISIBLE);
                         editButton.setVisibility(v.VISIBLE);
                         deleteButton.setVisibility(v.VISIBLE);
                         showButtons=true;
                     }else{
-                        //button.setCompoundDrawables(ContextCompat.getDrawable(button.getContext(), R.drawable.ic_baseline_arrow_drop_down_24));
+                        button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_baseline_arrow_drop_down_24);
                         addButton.setVisibility(v.GONE);
                         minusButton.setVisibility(v.GONE);
                         editButton.setVisibility(v.GONE);
@@ -78,9 +79,5 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                 }
             });
         }
-    }
-
-    public void showEditButtons(){
-
     }
 }
