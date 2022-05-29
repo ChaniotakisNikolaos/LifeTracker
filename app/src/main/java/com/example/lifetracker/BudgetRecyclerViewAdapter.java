@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.view.View.OnClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,6 +46,7 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
         ProgressBar progressBar;
         Button button;
         FloatingActionButton addButton, minusButton, editButton, deleteButton;
+        boolean showButtons=false;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             budgetLabel = itemView.findViewById(R.id.budgetLabel);
@@ -52,11 +54,33 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             dueDate = itemView.findViewById(R.id.dueDate1);
             progressBar = itemView.findViewById(R.id.progressBar);
             percentageLabel = itemView.findViewById(R.id.percentageLabel);
-            button = itemView.findViewById(R.id.buttonClick);
             addButton = itemView.findViewById(R.id.addButton);
             minusButton = itemView.findViewById(R.id.minusButton);
             editButton = itemView.findViewById(R.id.editButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+            button = itemView.findViewById(R.id.buttonClick);
+            button.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    if(!showButtons) {
+                        addButton.setVisibility(v.VISIBLE);
+                        minusButton.setVisibility(v.VISIBLE);
+                        editButton.setVisibility(v.VISIBLE);
+                        deleteButton.setVisibility(v.VISIBLE);
+                        showButtons=true;
+                    }else{
+                        //button.setCompoundDrawables(ContextCompat.getDrawable(button.getContext(), R.drawable.ic_baseline_arrow_drop_down_24));
+                        addButton.setVisibility(v.GONE);
+                        minusButton.setVisibility(v.GONE);
+                        editButton.setVisibility(v.GONE);
+                        deleteButton.setVisibility(v.GONE);
+                        showButtons=false;
+                    }
+                }
+            });
         }
+    }
+
+    public void showEditButtons(){
+
     }
 }
