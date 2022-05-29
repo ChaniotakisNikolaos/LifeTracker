@@ -1,10 +1,12 @@
 package com.example.lifetracker;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
@@ -55,11 +57,16 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             progressBar = itemView.findViewById(R.id.progressBar);
             percentageLabel = itemView.findViewById(R.id.percentageLabel);
             addButton = itemView.findViewById(R.id.addButton);
+            addButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    addMoneyDialog(v.getContext());
+                }
+            });
             minusButton = itemView.findViewById(R.id.minusButton);
             editButton = itemView.findViewById(R.id.editButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
             button = itemView.findViewById(R.id.buttonClick);
-            button.setOnClickListener(new OnClickListener() {
+            button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if(!showButtons) {
                         button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_baseline_arrow_drop_up_24);
@@ -79,5 +86,36 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                 }
             });
         }
+    }
+    public static void addMoneyDialog(Context context){
+        AlertDialog.Builder dialogBuilder;
+        AlertDialog dialog;
+        EditText addMoneyEditText;
+        TextView addMoneyTextView;
+        Button addMoneyCancelButton, addMoneySaveButton;
+        dialogBuilder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View addMoneyView = inflater.inflate(R.layout.popup_add_money, null);
+        addMoneyEditText = (EditText) addMoneyView.findViewById(R.id.editTextaddAmountToBudget);
+        addMoneyTextView = (TextView) addMoneyView.findViewById(R.id.textViewAddMoney);
+        addMoneyCancelButton = (Button) addMoneyView.findViewById(R.id.buttonCancelAddMoney);
+        addMoneySaveButton = (Button) addMoneyView.findViewById(R.id.buttonSaveAddMoney);
+
+        dialogBuilder.setView(addMoneyView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        addMoneyCancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //close dialog
+                dialog.dismiss();
+            }
+        });
+
+        addMoneySaveButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
     }
 }

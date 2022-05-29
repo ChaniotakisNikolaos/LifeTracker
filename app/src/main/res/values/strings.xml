@@ -23,4 +23,5 @@
     <string name="budget_up_to_now">Savings up to now</string>
     <string name="budget_total">How many you wish to save</string>
     <string name="budget_end">End goal</string>
+    <string name="enter_add_number">Enter the amount you wish to add</string>
 </resources>
