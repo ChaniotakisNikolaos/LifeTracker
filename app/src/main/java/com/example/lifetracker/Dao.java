@@ -24,4 +24,19 @@ public interface Dao {
 
     @Delete
     void deleteToDoItem(ToDoItem toDoItem);
+
+    @Query("SELECT * FROM BudgetItem")
+    List<BudgetItem> getBudgetItems();
+
+    @Query("SELECT * FROM BudgetItem WHERE dueDate=:dueDate")
+    List<BudgetItem> getBudgetItems(String dueDate);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertBudgetItem(BudgetItem budgetItem);
+
+    @Update
+    void updateBudgetItem(BudgetItem budgetItem);
+
+    @Delete
+    void deleteBudgetItem(BudgetItem budgetItem);
 }
