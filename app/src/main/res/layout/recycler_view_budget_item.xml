@@ -41,15 +41,20 @@
 
             <ProgressBar
                 android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:indeterminate="true"
-                android:visibility="invisible"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="60"
+                android:progressTint="#D4A9DD"
+                android:secondaryProgressTint="#000000"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/savingsLabel" />
 
@@ -57,12 +62,13 @@
                 android:id="@+id/percentageLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:text="0%"
+                android:background="#FFFFFF"
+                android:text="60%"
+                android:textColor="#000000"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="@+id/progressBar"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.6"
                 app:layout_constraintStart_toStartOf="@+id/progressBar"
                 app:layout_constraintTop_toTopOf="@+id/progressBar" />
 
@@ -93,19 +99,18 @@
                 app:iconTint="#000000"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="@+id/progressBar"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/progressBar"
                 app:layout_constraintTop_toTopOf="@+id/budgetLabel" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/addButton"
-                android:layout_width="101dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="29dp"
+                android:layout_marginEnd="32dp"
                 android:clickable="true"
                 android:contentDescription="@string/add_savings"
-                app:backgroundTint="@color/purple_200"
+                app:backgroundTint="#C9B6CF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/minusButton"
                 app:layout_constraintHorizontal_chainStyle="packed"
@@ -115,12 +120,12 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/minusButton"
-                android:layout_width="101dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="29dp"
+                android:layout_marginEnd="32dp"
                 android:clickable="true"
                 android:contentDescription="@string/spinner_name"
-                app:backgroundTint="@color/purple_200"
+                app:backgroundTint="#C9B6CF"
                 app:layout_constraintBottom_toBottomOf="@+id/addButton"
                 app:layout_constraintEnd_toStartOf="@+id/editButton"
                 app:layout_constraintStart_toEndOf="@+id/addButton"
@@ -129,31 +134,30 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/editButton"
-                android:layout_width="101dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="29dp"
+                android:layout_marginEnd="32dp"
                 android:clickable="true"
                 android:contentDescription="@string/edit_button"
-                app:backgroundTint="@color/purple_200"
+                app:backgroundTint="#C9B6CF"
                 app:layout_constraintBottom_toBottomOf="@+id/minusButton"
                 app:layout_constraintEnd_toStartOf="@+id/deleteButton"
                 app:layout_constraintStart_toEndOf="@+id/minusButton"
                 app:layout_constraintTop_toTopOf="@+id/minusButton"
-                app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/deleteButton"
-                android:layout_width="101dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:clickable="true"
                 android:contentDescription="@string/delete_button"
-                app:backgroundTint="@color/purple_200"
+                app:backgroundTint="#C9B6CF"
                 app:layout_constraintBottom_toBottomOf="@+id/editButton"
                 app:layout_constraintEnd_toEndOf="@+id/buttonClick"
                 app:layout_constraintStart_toEndOf="@+id/editButton"
                 app:layout_constraintTop_toTopOf="@+id/editButton"
-                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/ic_baseline_delete_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
