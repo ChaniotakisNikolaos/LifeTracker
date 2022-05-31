@@ -1,14 +1,20 @@
 package com.example.lifetracker;
 
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.view.View.OnClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -39,12 +45,12 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
     public void onBindViewHolder(@NonNull BudgetRecyclerViewAdapter.MyViewHolder holder, int position) {
         //holder.reminderTextView.setText(BudgetItemList.get(position).getReminder());
     }
-
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView budgetLabel, savingsLabel, percentageLabel, dueDate;
         ProgressBar progressBar;
         Button button;
         FloatingActionButton addButton, minusButton, editButton, deleteButton;
+        boolean showButtons=false;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             budgetLabel = itemView.findViewById(R.id.budgetLabel);
@@ -52,11 +58,37 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
             dueDate = itemView.findViewById(R.id.dueDate1);
             progressBar = itemView.findViewById(R.id.progressBar);
             percentageLabel = itemView.findViewById(R.id.percentageLabel);
-            button = itemView.findViewById(R.id.buttonClick);
             addButton = itemView.findViewById(R.id.addButton);
             minusButton = itemView.findViewById(R.id.minusButton);
             editButton = itemView.findViewById(R.id.editButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+            button = itemView.findViewById(R.id.buttonClick);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if(!showButtons) {
+                        button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_baseline_arrow_drop_up_24);
+                        addButton.setVisibility(v.VISIBLE);
+                        minusButton.setVisibility(v.VISIBLE);
+                        editButton.setVisibility(v.VISIBLE);
+                        editButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), EditBudgetItemActivity.class);
+                                 v.getContext().startActivity(intent);
+                            }
+                        });
+                        deleteButton.setVisibility(v.VISIBLE);
+                        showButtons=true;
+                    }else{
+                        button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_baseline_arrow_drop_down_24);
+                        addButton.setVisibility(v.GONE);
+                        minusButton.setVisibility(v.GONE);
+                        editButton.setVisibility(v.GONE);
+                        deleteButton.setVisibility(v.GONE);
+                        showButtons=false;
+                    }
+                }
+            });
         }
     }
 }

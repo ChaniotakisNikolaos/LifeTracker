@@ -23,7 +23,7 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
     public void addBudgetItem(View v) {
         EditText PersonNameEditText = findViewById(R.id.PersonNameEditText);
         EditText savingsNowEditText = findViewById(R.id.savingsNowEditText);
-        TextView totalSavingsEditText = findViewById(R.id.totalSavingsEditText);
+        EditText totalSavingsEditText = findViewById(R.id.totalSavingsEditText);
         TextView dueDateTextView1 = findViewById(R.id.dueDateSelectTextView1);
         //BudgetItem budgetItem = new BudgetItem(PersonNameEditText.getText().toString(),savingsNowEditText.getText().toString(),totalSavingsEditText.getText().toString(),dueDateTextView1.getText().toString());
         //AppDatabase db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class, AppDatabase.DB_NAME).build();

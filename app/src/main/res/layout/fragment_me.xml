@@ -7,23 +7,20 @@
     android:background="@drawable/egypt5"
     tools:context=".MeFragment">
 
-    <ImageView
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/imageView"
-        android:layout_width="151dp"
-        android:layout_height="151dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="16dp"
         android:contentDescription="@string/user_photo_description"
+        android:src="@drawable/cat_glasses"
+        app:civ_border_width="4dp"
+        app:civ_shadow_radius="4dp"
         app:layout_constraintEnd_toStartOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/cat_glasses"
-        tools:ignore="ImageContrastCheck"
-        android:scaleType="fitXY"
-        android:scaleX="1"
-        android:scaleY="1"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"

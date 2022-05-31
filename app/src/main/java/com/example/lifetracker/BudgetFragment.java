@@ -74,4 +74,5 @@ public class BudgetFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         return view;
     }
+
 }

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".BudgetFragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="2dp"
+        app:cardBackgroundColor="#F0E7F3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,13 +20,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="185dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/budgetLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/budget_string"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -35,21 +38,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="20000€/9000000€"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/budgetLabel" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:indeterminate="true"
-                android:visibility="invisible"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="60"
+                android:progressTint="#C1A6CA"
+                android:secondaryProgressTint="#000000"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/savingsLabel" />
 
@@ -57,12 +66,13 @@
                 android:id="@+id/percentageLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:text="0%"
+                android:background="#F0E7F3"
+                android:text="60%"
+                android:textColor="#000000"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="@+id/progressBar"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.6"
                 app:layout_constraintStart_toStartOf="@+id/progressBar"
                 app:layout_constraintTop_toTopOf="@+id/progressBar" />
 
@@ -73,6 +83,7 @@
                 android:layout_marginStart="8dp"
                 android:drawableStart="@drawable/ic_baseline_calendar_today_20"
                 android:text="24/5/21"
+                android:textColor="#000000"
                 app:layout_constraintBottom_toBottomOf="@+id/savingsLabel"
                 app:layout_constraintEnd_toEndOf="@+id/progressBar"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -82,25 +93,37 @@
             <Button
                 android:id="@+id/buttonClick"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginBottom="-16dp"
+                android:background="#00FFFFFF"
+                android:clickable="true"
                 android:contentDescription="@string/button_appear"
-                app:icon="@drawable/ic_baseline_arrow_drop_down_24"
-                app:iconGravity="textStart"
+                android:drawableBottom="@drawable/ic_baseline_arrow_drop_down_24"
+                android:includeFontPadding="false"
+                android:paddingTop="64dp"
+                android:paddingBottom="0dp"
+                app:iconGravity="textEnd"
+                app:iconTint="#000000"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="@+id/progressBar"
                 app:layout_constraintStart_toStartOf="@+id/progressBar"
-                app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+                app:layout_constraintTop_toTopOf="@+id/budgetLabel" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/addButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp"
                 android:clickable="true"
+                android:onClick="addMoneyDialog"
                 android:contentDescription="@string/add_savings"
-                app:backgroundTint="@color/purple_200"
+                android:visibility="gone"
+                app:backgroundTint="#C9B6CF"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/buttonClick"
+                app:layout_constraintEnd_toStartOf="@+id/minusButton"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@+id/progressBar"
                 app:layout_constraintTop_toBottomOf="@+id/buttonClick"
                 app:srcCompat="@drawable/ic_baseline_add_24" />
 
@@ -108,9 +131,12 @@
                 android:id="@+id/minusButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:clickable="true"
+                android:onClick="subtractMoneyDialog"
                 android:contentDescription="@string/spinner_name"
-                app:backgroundTint="@color/purple_200"
+                android:visibility="gone"
+                app:backgroundTint="#C9B6CF"
                 app:layout_constraintBottom_toBottomOf="@+id/addButton"
                 app:layout_constraintEnd_toStartOf="@+id/editButton"
                 app:layout_constraintStart_toEndOf="@+id/addButton"
@@ -121,14 +147,15 @@
                 android:id="@+id/editButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:clickable="true"
                 android:contentDescription="@string/edit_button"
-                app:backgroundTint="@color/purple_200"
+                android:visibility="gone"
+                app:backgroundTint="#C9B6CF"
                 app:layout_constraintBottom_toBottomOf="@+id/minusButton"
                 app:layout_constraintEnd_toStartOf="@+id/deleteButton"
                 app:layout_constraintStart_toEndOf="@+id/minusButton"
                 app:layout_constraintTop_toTopOf="@+id/minusButton"
-                app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -136,12 +163,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
+                android:onClick="deleteBudgetItemDialog"
                 android:contentDescription="@string/delete_button"
-                app:backgroundTint="@color/purple_200"
+                android:visibility="gone"
+                app:backgroundTint="#C9B6CF"
                 app:layout_constraintBottom_toBottomOf="@+id/editButton"
                 app:layout_constraintEnd_toEndOf="@+id/buttonClick"
+                app:layout_constraintStart_toEndOf="@+id/editButton"
                 app:layout_constraintTop_toTopOf="@+id/editButton"
-                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/ic_baseline_delete_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
