@@ -7,13 +7,13 @@
     android:background="#CCC3CF">
 
     <TextView
-        android:id="@+id/textViewAddMoney"
+        android:id="@+id/textViewSubtractMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="You are adding:"
+        android:text="You are subtracting:"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,8 +21,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/editTextSubtractAmountToBudget"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#4b4475"
+        android:drawableEnd="@drawable/euro_icon"
+        android:ems="10"
+        android:hapticFeedbackEnabled="false"
+        android:hint="@string/enter_sub_number"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:textColor="#000000"
+        android:textColorHighlight="#786574"
+        android:textColorHint="#000000"
+        android:textColorLink="#786574"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubtractMoney" />
+
     <Button
-        android:id="@+id/buttonCancelAddMoney"
+        android:id="@+id/buttonCancelSubtractMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -33,40 +56,19 @@
         android:textColor="#DDCBE3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAddAmountToBudget"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSubtractAmountToBudget"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/buttonSaveAddMoney"
+        android:id="@+id/buttonSaveSubtractMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#000000"
         android:text="Save"
         android:textColor="#DDCBE3"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonCancelAddMoney"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonCancelSubtractMoney"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonCancelAddMoney" />
+        app:layout_constraintTop_toTopOf="@+id/buttonCancelSubtractMoney" />
 
-    <EditText
-        android:id="@+id/editTextAddAmountToBudget"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#4b4475"
-        android:drawableEnd="@drawable/euro_icon"
-        android:ems="10"
-        android:hapticFeedbackEnabled="false"
-        android:hint="@string/enter_add_number"
-        android:inputType="number"
-        android:minHeight="48dp"
-        android:textColor="#000000"
-        android:textColorHighlight="#786574"
-        android:textColorHint="#000000"
-        android:textColorLink="#786574"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAddMoney" />
 </androidx.constraintlayout.widget.ConstraintLayout>

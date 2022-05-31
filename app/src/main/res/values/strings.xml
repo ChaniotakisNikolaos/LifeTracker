@@ -24,4 +24,8 @@
     <string name="budget_total">How many you wish to save</string>
     <string name="budget_end">End goal</string>
     <string name="enter_add_number">Enter the amount you wish to add</string>
+    <string name="enter_sub_number">Enter the amount you wish to subtract</string>
+    <string name="delete_budget_item">Are you sure you want to delete this?</string>
+    <string name="delete_simple_button">Delete</string>
+    <string name="delete_all_caps_button">DELETE</string>
 </resources>

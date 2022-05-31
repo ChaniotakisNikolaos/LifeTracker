@@ -1,10 +1,8 @@
 package com.example.lifetracker;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder = new AlertDialog.Builder(this);
         //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View addMoneyView = getLayoutInflater().inflate(R.layout.popup_add_money, null);
-        addMoneyEditText = (EditText) addMoneyView.findViewById(R.id.editTextaddAmountToBudget);
+        addMoneyEditText = (EditText) addMoneyView.findViewById(R.id.editTextAddAmountToBudget);
         addMoneyTextView = (TextView) addMoneyView.findViewById(R.id.textViewAddMoney);
         addMoneyCancelButton = (Button) addMoneyView.findViewById(R.id.buttonCancelAddMoney);
         addMoneySaveButton = (Button) addMoneyView.findViewById(R.id.buttonSaveAddMoney);
@@ -111,5 +109,64 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    public void subtractMoneyDialog(View view){
+        AlertDialog.Builder dialogBuilder;
+        AlertDialog dialog;
+        EditText subtractMoneyEditText;
+        TextView subtractMoneyTextView;
+        Button subtractMoneyCancelButton, subtractMoneySaveButton;
+        dialogBuilder = new AlertDialog.Builder(this);
+        //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View subtractMoneyView = getLayoutInflater().inflate(R.layout.popup_subtract_money, null);
+        subtractMoneyEditText = (EditText) subtractMoneyView.findViewById(R.id.editTextSubtractAmountToBudget);
+        subtractMoneyTextView = (TextView) subtractMoneyView.findViewById(R.id.textViewSubtractMoney);
+        subtractMoneyCancelButton = (Button) subtractMoneyView.findViewById(R.id.buttonCancelSubtractMoney);
+        subtractMoneySaveButton = (Button) subtractMoneyView.findViewById(R.id.buttonSaveSubtractMoney);
 
+        dialogBuilder.setView(subtractMoneyView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        subtractMoneyCancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //close dialog
+                dialog.dismiss();
+            }
+        });
+
+        subtractMoneySaveButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+    }
+    public void deleteBudgetItemDialog(View view){
+        AlertDialog.Builder dialogBuilder;
+        AlertDialog dialog;
+        TextView deleteBudgetItemTextView;
+        Button deleteBudgetItemCancelButton, deleteBudgetItemButton;
+        dialogBuilder = new AlertDialog.Builder(this);
+        //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View deleteBudgetItemView = getLayoutInflater().inflate(R.layout.popup_delete_budget_item, null);
+        deleteBudgetItemTextView = (TextView) deleteBudgetItemView.findViewById(R.id.textViewDeleteBudgetItem);
+        deleteBudgetItemCancelButton = (Button) deleteBudgetItemView.findViewById(R.id.buttonCancelDeleteBudgetItem);
+        deleteBudgetItemButton = (Button) deleteBudgetItemView.findViewById(R.id.buttonDeleteBudgetItem);
+
+        dialogBuilder.setView(deleteBudgetItemView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        deleteBudgetItemCancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //close dialog
+                dialog.dismiss();
+            }
+        });
+
+        deleteBudgetItemButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+    }
 }
