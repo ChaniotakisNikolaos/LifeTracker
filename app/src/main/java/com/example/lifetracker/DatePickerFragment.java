@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +60,19 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
+        if(viewId==R.id.textViewEditDueDateSelect){
+            Log.d("hi", "hiii");
+        }else{
+            Log.d("no", "OH NO NO NO");
+        }
         TextView textView = getActivity().findViewById(viewId);
-        textView.setText(day+"/"+month+"/"+year);
+        Log.d("kkkk", String.valueOf(textView));
+        if(textView==null){
+            //textView=this.getView().findViewById(viewId);
+            Log.d("kkkk", String.valueOf(getActivity()));
+            Log.d("vvvvvvvv", String.valueOf(this));
+        }
+        //textView.setText(day+"/"+month+"/"+year);
         if(viewId == R.id.reminderSelectTextView) {
             DialogFragment newFragment = new TimePickerFragment();
             newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");

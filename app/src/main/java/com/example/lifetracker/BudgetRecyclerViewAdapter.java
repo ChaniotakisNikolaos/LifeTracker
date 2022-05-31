@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -42,7 +43,6 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
     public void onBindViewHolder(@NonNull BudgetRecyclerViewAdapter.MyViewHolder holder, int position) {
         //holder.reminderTextView.setText(BudgetItemList.get(position).getReminder());
     }
-
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView budgetLabel, savingsLabel, percentageLabel, dueDate;
         ProgressBar progressBar;

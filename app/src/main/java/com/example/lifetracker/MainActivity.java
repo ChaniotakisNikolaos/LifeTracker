@@ -3,12 +3,14 @@ package com.example.lifetracker;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -69,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = DatePickerFragment.newInstance(v.getId());
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
     /** Called when the user taps the plus button */
     public void addBudgetItem(View view) {
         Intent intent = new Intent(this, AddBudgetItemActivity.class);
@@ -86,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         Button addMoneyCancelButton, addMoneySaveButton;
         dialogBuilder = new AlertDialog.Builder(this);
         //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View addMoneyView = getLayoutInflater().inflate(R.layout.popup_add_money, null);
+        final View addMoneyView = getLayoutInflater().inflate(R.layout.dialog_add_money, null);
         addMoneyEditText = (EditText) addMoneyView.findViewById(R.id.editTextAddAmountToBudget);
         addMoneyTextView = (TextView) addMoneyView.findViewById(R.id.textViewAddMoney);
         addMoneyCancelButton = (Button) addMoneyView.findViewById(R.id.buttonCancelAddMoney);
@@ -117,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         Button subtractMoneyCancelButton, subtractMoneySaveButton;
         dialogBuilder = new AlertDialog.Builder(this);
         //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View subtractMoneyView = getLayoutInflater().inflate(R.layout.popup_subtract_money, null);
+        final View subtractMoneyView = getLayoutInflater().inflate(R.layout.dialog_subtract_money, null);
         subtractMoneyEditText = (EditText) subtractMoneyView.findViewById(R.id.editTextSubtractAmountToBudget);
         subtractMoneyTextView = (TextView) subtractMoneyView.findViewById(R.id.textViewSubtractMoney);
         subtractMoneyCancelButton = (Button) subtractMoneyView.findViewById(R.id.buttonCancelSubtractMoney);
@@ -140,6 +146,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    public void editBudgetItemDialog(View view){
+        AlertDialog.Builder dialogBuilder;
+        AlertDialog dialog;
+        EditText editBudgetLabelEditText, editSavingsUpToNowEditText, editEndGoalEditText;
+        TextView editBudgetLabelTextView, editSavingsUpToNowTextLabel, editEndGoalTextView, editDateTextView, editDueDateSelectTextView;
+        Button cancelEditBudgetButton, saveEditBudgetButton;
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View editMoneyView = getLayoutInflater().inflate(R.layout.dialog_edit_budget_item, null);
+        editBudgetLabelTextView = (TextView) editMoneyView.findViewById(R.id.textViewEditBudgetLabel);
+        editBudgetLabelEditText = (EditText) editMoneyView.findViewById(R.id.editTextEditBudgetLabel);
+        editSavingsUpToNowTextLabel = (TextView) editMoneyView.findViewById(R.id.textViewEditSavingsUpToNow);
+        editSavingsUpToNowEditText = (EditText) editMoneyView.findViewById(R.id.editTextNumberEditSavingsUpToNow);
+        editEndGoalTextView = (TextView) editMoneyView.findViewById(R.id.textViewEditEndGoal);
+        editEndGoalEditText = (EditText) editMoneyView.findViewById(R.id.editTextNumberEditEndGoal);
+        editDateTextView = (TextView) editMoneyView.findViewById(R.id.textViewEditDueDate);
+        editDueDateSelectTextView = (TextView) editMoneyView.findViewById(R.id.textViewEditDueDateSelect);
+        cancelEditBudgetButton = (Button) editMoneyView.findViewById(R.id.buttonCancelEditBudget);
+        saveEditBudgetButton = (Button) editMoneyView.findViewById(R.id.buttonSaveEditBudget);
+
+        dialogBuilder.setView(editMoneyView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        cancelEditBudgetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //close dialog
+                dialog.dismiss();
+            }
+        });
+
+        saveEditBudgetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+    }
     public void deleteBudgetItemDialog(View view){
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
@@ -147,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         Button deleteBudgetItemCancelButton, deleteBudgetItemButton;
         dialogBuilder = new AlertDialog.Builder(this);
         //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View deleteBudgetItemView = getLayoutInflater().inflate(R.layout.popup_delete_budget_item, null);
+        final View deleteBudgetItemView = getLayoutInflater().inflate(R.layout.dialog_delete_budget_item, null);
         deleteBudgetItemTextView = (TextView) deleteBudgetItemView.findViewById(R.id.textViewDeleteBudgetItem);
         deleteBudgetItemCancelButton = (Button) deleteBudgetItemView.findViewById(R.id.buttonCancelDeleteBudgetItem);
         deleteBudgetItemButton = (Button) deleteBudgetItemView.findViewById(R.id.buttonDeleteBudgetItem);

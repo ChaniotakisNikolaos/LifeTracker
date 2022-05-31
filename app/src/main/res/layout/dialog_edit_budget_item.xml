@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#CCC3CF">
+
+    <TextView
+        android:id="@+id/textViewEditBudgetLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/edit_budget_label"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextEditBudgetLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#4b4475"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="Name"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewEditBudgetLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEditBudgetLabel" />
+
+    <TextView
+        android:id="@+id/textViewEditSavingsUpToNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Edit your savings up to now"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextEditBudgetLabel"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditBudgetLabel" />
+
+    <EditText
+        android:id="@+id/editTextNumberEditSavingsUpToNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#4b4475"
+        android:ems="10"
+        android:hint="@string/budget_up_to_now"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewEditSavingsUpToNow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEditSavingsUpToNow" />
+
+    <TextView
+        android:id="@+id/textViewEditEndGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Edit your end goal"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextNumberEditSavingsUpToNow"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberEditSavingsUpToNow" />
+
+    <EditText
+        android:id="@+id/editTextNumberEditEndGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#4b4475"
+        android:ems="10"
+        android:hint="@string/budget_end"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewEditEndGoal"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEditEndGoal" />
+
+    <TextView
+        android:id="@+id/textViewEditDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Edit the due date"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewEditEndGoal"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberEditEndGoal" />
+
+    <TextView
+        android:id="@+id/textViewEditDueDateSelect"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#4b4475"
+        android:drawableLeft="@drawable/calendar"
+        android:focusable="false"
+        android:hint="Due Date"
+        android:importantForAutofill="no"
+        android:minHeight="48dp"
+        android:onClick="showDatePickerDialog"
+        android:textColor="#000000"
+        android:textIsSelectable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewEditDueDate"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEditDueDate" />
+
+    <Button
+        android:id="@+id/buttonCancelEditBudget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#000000"
+        android:text="Cancel"
+        android:textColor="#DDCBE3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEditDueDateSelect" />
+
+    <Button
+        android:id="@+id/buttonSaveEditBudget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#000000"
+        android:text="Save"
+        android:textColor="#DDCBE3"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonCancelEditBudget"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buttonCancelEditBudget" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

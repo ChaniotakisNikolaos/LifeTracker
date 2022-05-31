@@ -28,4 +28,5 @@
     <string name="delete_budget_item">Are you sure you want to delete this?</string>
     <string name="delete_simple_button">Delete</string>
     <string name="delete_all_caps_button">DELETE</string>
+    <string name="edit_budget_label">Edit your budget Label</string>
 </resources>
