@@ -1,8 +1,14 @@
 package com.example.lifetracker;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -72,6 +78,38 @@ public class MainActivity extends AppCompatActivity {
         //String message = editText.getText().toString();
         //intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
+    }
+
+    public void addMoneyDialog(View view){
+        AlertDialog.Builder dialogBuilder;
+        AlertDialog dialog;
+        EditText addMoneyEditText;
+        TextView addMoneyTextView;
+        Button addMoneyCancelButton, addMoneySaveButton;
+        dialogBuilder = new AlertDialog.Builder(this);
+        //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View addMoneyView = getLayoutInflater().inflate(R.layout.popup_add_money, null);
+        addMoneyEditText = (EditText) addMoneyView.findViewById(R.id.editTextaddAmountToBudget);
+        addMoneyTextView = (TextView) addMoneyView.findViewById(R.id.textViewAddMoney);
+        addMoneyCancelButton = (Button) addMoneyView.findViewById(R.id.buttonCancelAddMoney);
+        addMoneySaveButton = (Button) addMoneyView.findViewById(R.id.buttonSaveAddMoney);
+
+        dialogBuilder.setView(addMoneyView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        addMoneyCancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //close dialog
+                dialog.dismiss();
+            }
+        });
+
+        addMoneySaveButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 }
