@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#CCC3CF">
-
+    android:background="#CCC3CF"
+    tools:context=".EditBudgetItemActivity">
     <TextView
         android:id="@+id/textViewEditBudgetLabel"
         android:layout_width="wrap_content"
@@ -113,10 +113,10 @@
         android:backgroundTint="#4b4475"
         android:drawableLeft="@drawable/calendar"
         android:focusable="false"
+        android:onClick="showDatePickerDialog"
         android:hint="Due Date"
         android:importantForAutofill="no"
         android:minHeight="48dp"
-        android:onClick="showDatePickerDialog"
         android:textColor="#000000"
         android:textIsSelectable="false"
         app:layout_constraintEnd_toEndOf="parent"

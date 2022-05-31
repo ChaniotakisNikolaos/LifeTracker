@@ -149,7 +149,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
                 android:clickable="true"
-                android:onClick="editBudgetItemDialog"
                 android:contentDescription="@string/edit_button"
                 android:visibility="gone"
                 app:backgroundTint="#C9B6CF"

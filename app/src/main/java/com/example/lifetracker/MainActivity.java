@@ -71,10 +71,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = DatePickerFragment.newInstance(v.getId());
-        newFragment.show(getSupportFragmentManager(), "datePicker");
-    }
+
     /** Called when the user taps the plus button */
     public void addBudgetItem(View view) {
         Intent intent = new Intent(this, AddBudgetItemActivity.class);
@@ -141,42 +138,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         subtractMoneySaveButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-            }
-        });
-    }
-    public void editBudgetItemDialog(View view){
-        AlertDialog.Builder dialogBuilder;
-        AlertDialog dialog;
-        EditText editBudgetLabelEditText, editSavingsUpToNowEditText, editEndGoalEditText;
-        TextView editBudgetLabelTextView, editSavingsUpToNowTextLabel, editEndGoalTextView, editDateTextView, editDueDateSelectTextView;
-        Button cancelEditBudgetButton, saveEditBudgetButton;
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View editMoneyView = getLayoutInflater().inflate(R.layout.dialog_edit_budget_item, null);
-        editBudgetLabelTextView = (TextView) editMoneyView.findViewById(R.id.textViewEditBudgetLabel);
-        editBudgetLabelEditText = (EditText) editMoneyView.findViewById(R.id.editTextEditBudgetLabel);
-        editSavingsUpToNowTextLabel = (TextView) editMoneyView.findViewById(R.id.textViewEditSavingsUpToNow);
-        editSavingsUpToNowEditText = (EditText) editMoneyView.findViewById(R.id.editTextNumberEditSavingsUpToNow);
-        editEndGoalTextView = (TextView) editMoneyView.findViewById(R.id.textViewEditEndGoal);
-        editEndGoalEditText = (EditText) editMoneyView.findViewById(R.id.editTextNumberEditEndGoal);
-        editDateTextView = (TextView) editMoneyView.findViewById(R.id.textViewEditDueDate);
-        editDueDateSelectTextView = (TextView) editMoneyView.findViewById(R.id.textViewEditDueDateSelect);
-        cancelEditBudgetButton = (Button) editMoneyView.findViewById(R.id.buttonCancelEditBudget);
-        saveEditBudgetButton = (Button) editMoneyView.findViewById(R.id.buttonSaveEditBudget);
-
-        dialogBuilder.setView(editMoneyView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-
-        cancelEditBudgetButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //close dialog
-                dialog.dismiss();
-            }
-        });
-
-        saveEditBudgetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
             }

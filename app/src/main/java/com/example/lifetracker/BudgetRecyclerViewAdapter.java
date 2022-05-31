@@ -1,7 +1,9 @@
 package com.example.lifetracker;
 
+
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +70,13 @@ public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecycl
                         addButton.setVisibility(v.VISIBLE);
                         minusButton.setVisibility(v.VISIBLE);
                         editButton.setVisibility(v.VISIBLE);
+                        editButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), EditBudgetItemActivity.class);
+                                 v.getContext().startActivity(intent);
+                            }
+                        });
                         deleteButton.setVisibility(v.VISIBLE);
                         showButtons=true;
                     }else{
