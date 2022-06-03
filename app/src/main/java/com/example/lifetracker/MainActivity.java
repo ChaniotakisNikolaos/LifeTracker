@@ -2,13 +2,27 @@ package com.example.lifetracker;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,7 +31,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPager2);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentAdapter = new FragmentAdapter(fragmentManager,getLifecycle());
+        fragmentAdapter = new FragmentAdapter(fragmentManager, getLifecycle());
         viewPager2.setAdapter(fragmentAdapter);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -72,9 +90,12 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
+
     }
 
-    /** Called when the user taps the plus button */
+    /**
+     * Called when the user taps the plus button
+     */
     public void addToDoItem(View view) {
         Intent intent = new Intent(this, AddToDoItemActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
@@ -84,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /** Called when the user taps the plus button */
+    /**
+     * Called when the user taps the plus button
+     */
     public void addBudgetItem(View view) {
         Intent intent = new Intent(this, AddBudgetItemActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
@@ -93,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void addMoneyDialog(View view){
+    public void addMoneyDialog(View view) {
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
         EditText addMoneyEditText;
@@ -124,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void subtractMoneyDialog(View view){
+
+    public void subtractMoneyDialog(View view) {
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
         EditText subtractMoneyEditText;
@@ -155,7 +179,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void deleteBudgetItemDialog(View view){
+
+    public void deleteBudgetItemDialog(View view) {
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
         TextView deleteBudgetItemTextView;
@@ -183,5 +208,109 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public static int getCameraPhotoOrientation(String imagePath) {
+        int rotate = 0;
+        try {
+            ExifInterface exif  = null;
+            try {
+                exif = new ExifInterface(imagePath);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            assert exif != null;
+            int orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION, 0);
+            switch (orientation) {
+
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 90;
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rotate;
+    }
+    ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == RESULT_OK){
+                        Intent data = result.getData();
+                        ImageView imageViewProfPic = findViewById(R.id.imageView);
+                        Uri selectedImageUri;
+                        if (data != null && data.getData() != null) {
+                            selectedImageUri = data.getData();
+                            InputStream imageStream = null;
+                            try {
+                                imageStream = getContentResolver().openInputStream(selectedImageUri);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                            imageViewProfPic.setRotation(getCameraPhotoOrientation(selectedImageUri.getPath()));
+
+                            /*Bitmap selectedImageBitmap = null;
+                            try {
+                                selectedImageBitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImageUri);
+                                imageViewProfPic.setRotation(getCameraPhotoOrientation(selectedImageUri.getPath()));
+                                Log.d("kkk",selectedImageUri.getPath());
+                            }
+                            catch (IOException e) {
+                                e.printStackTrace();
+                            }*/
+                            imageViewProfPic.setImageBitmap(selectedImage);
+                        }
+                    }
+                }
+            });
+
+    public void choosePicture(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        TextView profPicTextView, galleryPicTextView;
+        Button photoButton, galleryButton;
+        final View dialogView = inflater.inflate(R.layout.dialog_picture, null);
+        profPicTextView = dialogView.findViewById(R.id.textViewTakePhoto);
+        galleryPicTextView = dialogView.findViewById(R.id.textViewGalleryPhoto);
+        photoButton = dialogView.findViewById(R.id.buttonTakePhoto);
+        galleryButton = dialogView.findViewById(R.id.buttonGalleryPhoto);
+
+        builder.setView(dialogView);
+
+        AlertDialog alertDialogProfPic = builder.create();
+        alertDialogProfPic.show();
+
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+
+        galleryButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alertDialogProfPic.dismiss();
+                takePictureFromGallery();
+            }
+        });
+
+    }
+    private void takePictureFromGallery(){
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        this.startActivityIntent.launch(pickPhoto);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }
