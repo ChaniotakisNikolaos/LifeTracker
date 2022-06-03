@@ -32,11 +32,20 @@ public class ToDoRecyclerViewAdapter extends RecyclerView.Adapter<ToDoRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ToDoRecyclerViewAdapter.MyViewHolder holder, int position) {
         //holder.reminderTextView.setText(toDoItemList.get(position).getReminder());
+        ToDoItem toDoItem = toDoItemList.get(position);
+        holder.labelTextView.setText(toDoItem.getLabel());
+        holder.reminderTextView.setText(toDoItem.getReminder());
+        holder.dueDateTextView.setText(toDoItem.getDueDate());
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return toDoItemList.size();
+    }
+
+    public void setToDoItemList(List<ToDoItem> toDoItemList) {
+        this.toDoItemList = toDoItemList;
+        //notifyDataSetChanged();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{

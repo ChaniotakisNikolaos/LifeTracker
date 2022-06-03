@@ -2,6 +2,7 @@ package com.example.lifetracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 
 import android.os.Bundle;
@@ -30,7 +31,8 @@ public class AddToDoItemActivity extends AppCompatActivity {
         TextView reminderTextView = findViewById(R.id.reminderSelectTextView);
         TextView dueDateTextView = findViewById(R.id.dueDateSelectTextView);
         ToDoItem toDoItem = new ToDoItem(toDoEditText.getText().toString(),label.getText().toString(),reminderTextView.getText().toString(),dueDateTextView.getText().toString());
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class, AppDatabase.DB_NAME).build();
+        //AppDatabase db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class, AppDatabase.DB_NAME).build();
         Toast.makeText(this,"TODO item added",Toast.LENGTH_SHORT).show();
+        //ApplicationViewModel applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
     }
 }

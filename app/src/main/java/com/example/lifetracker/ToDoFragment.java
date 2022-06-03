@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -23,7 +25,8 @@ import java.util.List;
  */
 public class ToDoFragment extends Fragment {
 
-    List<ToDoItem> toDoItemArrayList;
+    List<ToDoItem> toDoItemArrayList = new ArrayList<>();
+    private ApplicationViewModel applicationViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,8 +77,16 @@ public class ToDoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_to_do, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setAdapter(new ToDoRecyclerViewAdapter(view.getContext(),toDoItemArrayList));
+        ToDoRecyclerViewAdapter toDoRecyclerViewAdapter = new ToDoRecyclerViewAdapter(view.getContext(),toDoItemArrayList);
+        recyclerView.setAdapter(toDoRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        applicationViewModel = new ViewModelProvider(this.requireActivity()).get(ApplicationViewModel.class);
+        applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(), new Observer<List<ToDoItem>>() {
+            @Override
+            public void onChanged(List<ToDoItem> toDoItems) {
+                toDoRecyclerViewAdapter.setToDoItemList(toDoItems);
+            }
+        });
         return view;
     }
 }
