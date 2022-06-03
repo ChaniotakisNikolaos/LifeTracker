@@ -1,12 +1,15 @@
 package com.example.lifetracker;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -22,8 +25,10 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
@@ -32,6 +37,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -209,64 +215,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public static int getCameraPhotoOrientation(String imagePath) {
-        int rotate = 0;
-        try {
-            ExifInterface exif  = null;
-            try {
-                exif = new ExifInterface(imagePath);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            assert exif != null;
-            int orientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION, 0);
-            switch (orientation) {
-
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotate = 180;
-                    break;
-
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 90;
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return rotate;
-    }
-    ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(
+    ActivityResultLauncher<Intent> startActivityIntentCamera = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if(result.getResultCode() == RESULT_OK){
                         Intent data = result.getData();
-                        ImageView imageViewProfPic = findViewById(R.id.imageView);
+                        CircularImageView imageViewProfPic = findViewById(R.id.imageView);
+                        if (data != null) {
+                            Bundle bundle = data.getExtras();
+                            Bitmap bitmapImage = (Bitmap) bundle.get("data");
+                            imageViewProfPic.setImageBitmap(bitmapImage);
+                        }
+                    }
+                }
+            });
+    ActivityResultLauncher<Intent> startActivityIntentGallery = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == RESULT_OK){
+                        Intent data = result.getData();
+                        CircularImageView imageViewProfPic = findViewById(R.id.imageView);
                         Uri selectedImageUri;
                         if (data != null && data.getData() != null) {
                             selectedImageUri = data.getData();
-                            InputStream imageStream = null;
-                            try {
-                                imageStream = getContentResolver().openInputStream(selectedImageUri);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                            imageViewProfPic.setRotation(getCameraPhotoOrientation(selectedImageUri.getPath()));
-
-                            /*Bitmap selectedImageBitmap = null;
-                            try {
-                                selectedImageBitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImageUri);
-                                imageViewProfPic.setRotation(getCameraPhotoOrientation(selectedImageUri.getPath()));
-                                Log.d("kkk",selectedImageUri.getPath());
-                            }
-                            catch (IOException e) {
-                                e.printStackTrace();
-                            }*/
-                            imageViewProfPic.setImageBitmap(selectedImage);
+                            Picasso.with(getApplicationContext()).load(selectedImageUri).resize(168,164).centerInside().placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).into(imageViewProfPic);
                         }
                     }
                 }
@@ -290,21 +266,53 @@ public class MainActivity extends AppCompatActivity {
 
         photoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                if(checkAndRequestPermission()) {
+                    takePictureFromCamera();
+                    alertDialogProfPic.dismiss();
+                }
             }
         });
 
         galleryButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                alertDialogProfPic.dismiss();
                 takePictureFromGallery();
+                alertDialogProfPic.dismiss();
             }
         });
 
     }
+
+    private void takePictureFromCamera() {
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(takePicture.resolveActivity(getPackageManager()) != null){
+            this.startActivityIntentCamera.launch(takePicture);
+        }
+    }
+
+    private boolean checkAndRequestPermission(){
+        if(Build.VERSION.SDK_INT>=23){
+            int cameraPermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
+            if(cameraPermission == PackageManager.PERMISSION_DENIED){
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 20);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 20 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+            takePictureFromCamera();
+        }else{
+            Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void takePictureFromGallery(){
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        this.startActivityIntent.launch(pickPhoto);
+        this.startActivityIntentGallery.launch(pickPhoto);
 
     }
 
