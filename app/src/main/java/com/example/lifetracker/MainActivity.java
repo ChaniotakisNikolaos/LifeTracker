@@ -242,7 +242,15 @@ public class MainActivity extends AppCompatActivity {
                         Uri selectedImageUri;
                         if (data != null && data.getData() != null) {
                             selectedImageUri = data.getData();
-                            Picasso.with(getApplicationContext()).load(selectedImageUri).resize(168,164).centerInside().placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).into(imageViewProfPic);
+                            /*Bitmap bitmapImage = null;
+                            try {
+                                bitmapImage = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImageUri);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            imageViewProfPic.setImageBitmap(bitmapImage);*/
+                            Picasso.with(getApplicationContext()).load(selectedImageUri).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageViewProfPic);
+                            //Picasso.with(getApplicationContext()).load(selectedImageUri).fit().placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).into(imageViewProfPic);
                         }
                     }
                 }
