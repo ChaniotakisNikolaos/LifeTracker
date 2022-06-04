@@ -1,5 +1,6 @@
 package com.example.lifetracker;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -28,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private FragmentAdapter fragmentAdapter;
     //private ArrayList<ToDoItem> toDoItemArrayList;
     //private ApplicationViewModel applicationViewModel;
+    public static final int ADD_TOOO_ITEM_ACTIVITY_REQUEST_CODE = 1;
+    private ActivityResultLauncher<Intent> addToDoItemActivityResultLauncher;
+    private ApplicationViewModel applicationViewModel;
 
 
     @Override
@@ -35,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
-        applicationViewModel.getToDoItemList().observe(this, new Observer<List<ToDoItem>>() {
+        applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
+        /*applicationViewModel.getToDoItemList().observe(this, new Observer<List<ToDoItem>>() {
             @Override
             public void onChanged(List<ToDoItem> toDoItems) {
 
@@ -72,6 +80,20 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
+
+        addToDoItemActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                            applicationViewModel.insert(new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER)));
+                            Log.d("test","ToDo inserted");
+                        }
+                    }
+                });
     }
 
     /** Called when the user taps the plus button */
@@ -80,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
         //String message = editText.getText().toString();
         //intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
+        addToDoItemActivityResultLauncher.launch(intent);
     }
 
 

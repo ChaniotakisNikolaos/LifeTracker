@@ -47,7 +47,7 @@ public class Repository {
         });
     }
 
-    public LiveData<List<ToDoItem>> getAlltoDoItems(){
+    public LiveData<List<ToDoItem>> getAllToDoItems(){
         return toDoList;
     }
 
