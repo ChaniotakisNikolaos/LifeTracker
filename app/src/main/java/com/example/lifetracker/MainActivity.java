@@ -1,20 +1,34 @@
 package com.example.lifetracker;
 
 import android.app.Activity;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
@@ -22,7 +36,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPager2);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentAdapter = new FragmentAdapter(fragmentManager,getLifecycle());
+        fragmentAdapter = new FragmentAdapter(fragmentManager, getLifecycle());
         viewPager2.setAdapter(fragmentAdapter);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -96,7 +115,9 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    /** Called when the user taps the plus button */
+    /**
+     * Called when the user taps the plus button
+     */
     public void addToDoItem(View view) {
         Intent intent = new Intent(this, AddToDoItemActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
@@ -106,7 +127,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /** Called when the user taps the plus button */
+    /**
+     * Called when the user taps the plus button
+     */
     public void addBudgetItem(View view) {
         Intent intent = new Intent(this, AddBudgetItemActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
@@ -115,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void addMoneyDialog(View view){
+    public void addMoneyDialog(View view) {
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
         EditText addMoneyEditText;
@@ -146,7 +169,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void subtractMoneyDialog(View view){
+
+    public void subtractMoneyDialog(View view) {
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
         EditText subtractMoneyEditText;
@@ -177,7 +201,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void deleteBudgetItemDialog(View view){
+
+    public void deleteBudgetItemDialog(View view) {
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
         TextView deleteBudgetItemTextView;
@@ -205,5 +230,119 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    ActivityResultLauncher<Intent> startActivityIntentCamera = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == RESULT_OK){
+                        Intent data = result.getData();
+                        CircularImageView imageViewProfPic = findViewById(R.id.imageView);
+                        if (data != null) {
+                            Bundle bundle = data.getExtras();
+                            Bitmap bitmapImage = (Bitmap) bundle.get("data");
+                            imageViewProfPic.setImageBitmap(bitmapImage);
+                        }
+                    }
+                }
+            });
+    ActivityResultLauncher<Intent> startActivityIntentGallery = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == RESULT_OK){
+                        Intent data = result.getData();
+                        CircularImageView imageViewProfPic = findViewById(R.id.imageView);
+                        Uri selectedImageUri;
+                        if (data != null && data.getData() != null) {
+                            selectedImageUri = data.getData();
+                            /*Bitmap bitmapImage = null;
+                            try {
+                                bitmapImage = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImageUri);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            imageViewProfPic.setImageBitmap(bitmapImage);*/
+                            Picasso.with(getApplicationContext()).load(selectedImageUri).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageViewProfPic);
+                            //Picasso.with(getApplicationContext()).load(selectedImageUri).fit().placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).into(imageViewProfPic);
+                        }
+                    }
+                }
+            });
+
+    public void choosePicture(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        TextView profPicTextView, galleryPicTextView;
+        Button photoButton, galleryButton;
+        final View dialogView = inflater.inflate(R.layout.dialog_picture, null);
+        profPicTextView = dialogView.findViewById(R.id.textViewTakePhoto);
+        galleryPicTextView = dialogView.findViewById(R.id.textViewGalleryPhoto);
+        photoButton = dialogView.findViewById(R.id.buttonTakePhoto);
+        galleryButton = dialogView.findViewById(R.id.buttonGalleryPhoto);
+
+        builder.setView(dialogView);
+
+        AlertDialog alertDialogProfPic = builder.create();
+        alertDialogProfPic.show();
+
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(checkAndRequestPermission()) {
+                    takePictureFromCamera();
+                    alertDialogProfPic.dismiss();
+                }
+            }
+        });
+
+        galleryButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                takePictureFromGallery();
+                alertDialogProfPic.dismiss();
+            }
+        });
+
+    }
+
+    private void takePictureFromCamera() {
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(takePicture.resolveActivity(getPackageManager()) != null){
+            this.startActivityIntentCamera.launch(takePicture);
+        }
+    }
+
+    private boolean checkAndRequestPermission(){
+        if(Build.VERSION.SDK_INT>=23){
+            int cameraPermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
+            if(cameraPermission == PackageManager.PERMISSION_DENIED){
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 20);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 20 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+            takePictureFromCamera();
+        }else{
+            Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void takePictureFromGallery(){
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        this.startActivityIntentGallery.launch(pickPhoto);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }
