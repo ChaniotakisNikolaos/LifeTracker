@@ -96,7 +96,7 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(v.getContext(), EditBudgetItemActivity.class);
-                                 v.getContext().startActivity(intent);
+                                v.getContext().startActivity(intent);
                             }
                         });
                         deleteButton.setVisibility(v.VISIBLE);

@@ -141,6 +141,40 @@ public class MainActivity extends AppCompatActivity {
         addBudgetItemActivityResultLauncher.launch(intent);
     }
 
+    /**
+     * Called when the user taps the hello user text view in me fragment
+     */
+    public void changeUserName(View view) {
+        AlertDialog.Builder dialogBuilder;
+        AlertDialog dialog;
+        EditText userNameEditText;
+        TextView addNameTextView;
+        Button cancelChangeNameBtn, saveChangeNameBtn;
+        dialogBuilder = new AlertDialog.Builder(this);
+        //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View addMoneyView = getLayoutInflater().inflate(R.layout.dialog_edit_user_name, null);
+        userNameEditText = (EditText) addMoneyView.findViewById(R.id.userNameEditText);
+        addNameTextView = (TextView) addMoneyView.findViewById(R.id.addNameTextView);
+        cancelChangeNameBtn = (Button) addMoneyView.findViewById(R.id.cancelChangeNameBtn);
+        saveChangeNameBtn = (Button) addMoneyView.findViewById(R.id.saveChangeNameBtn);
+
+        dialogBuilder.setView(addMoneyView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        cancelChangeNameBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //close dialog
+                dialog.dismiss();
+            }
+        });
+
+        saveChangeNameBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+    }
     public void addMoneyDialog(View view) {
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
