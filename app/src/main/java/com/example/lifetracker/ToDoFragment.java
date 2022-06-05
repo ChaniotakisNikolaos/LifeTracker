@@ -21,8 +21,6 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ToDoFragment extends Fragment {
-
-    List<ToDoItem> toDoItemList = new ArrayList<>();
     private ApplicationViewModel applicationViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
