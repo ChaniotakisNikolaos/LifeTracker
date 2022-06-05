@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +20,7 @@ import java.util.List;
  */
 public class BudgetFragment extends Fragment {
 
+    private ApplicationViewModel applicationViewModel;
     List<BudgetItem> budgetItemArrayList;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -68,8 +70,13 @@ public class BudgetFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView1);
-        recyclerView.setAdapter(new BudgetRecyclerViewAdapter(view.getContext(), budgetItemArrayList));
+        BudgetRecyclerViewAdapter budgetRecyclerViewAdapter = new BudgetRecyclerViewAdapter(new BudgetRecyclerViewAdapter.BudgetDiff());
+        recyclerView.setAdapter(budgetRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        applicationViewModel = new ViewModelProvider(this.requireActivity()).get(ApplicationViewModel.class);
+        applicationViewModel.getBudgetItemList().observe(getViewLifecycleOwner(), budgetItems -> {
+            budgetRecyclerViewAdapter.submitList(budgetItems);
+        });
         return view;
     }
 

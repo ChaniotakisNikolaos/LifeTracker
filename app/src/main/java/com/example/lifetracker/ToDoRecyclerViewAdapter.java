@@ -27,7 +27,6 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull ToDoRecyclerViewAdapter.MyViewHolder holder, int position) {
-        //holder.reminderTextView.setText(toDoItemList.get(position).getReminder());
         ToDoItem toDoItem = getItem(position);
         holder.checkBox.setText(toDoItem.getDescription());
         holder.labelTextView.setText(toDoItem.getLabel());
