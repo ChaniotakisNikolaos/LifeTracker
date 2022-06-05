@@ -11,14 +11,17 @@ import java.util.concurrent.Executors;
 public class Repository {
     private Dao dao;
     private LiveData<List<ToDoItem>> toDoList;
+    private LiveData<List<BudgetItem>> budgetList;
     private final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     public Repository(Application application){
         AppDatabase db = AppDatabase.getInstance(application);
         dao = db.dao();
         toDoList = dao.getAllToDoItems();
+        budgetList = dao.getAllBudgetItems();
     }
 
+    //TO DO
     public void insert(ToDoItem toDoItem){
         executorService.execute(new Runnable() {
             @Override
@@ -51,4 +54,36 @@ public class Repository {
         return toDoList;
     }
 
+    //BUDGET
+    public void insert(BudgetItem budgetItem){
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.insertBudgetItem(budgetItem);
+            }
+        });
+
+    }
+
+    public void update(BudgetItem budgetItem){
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.updateBudgetItem(budgetItem);
+            }
+        });
+    }
+
+    public void delete(BudgetItem budgetItem){
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.deleteBudgetItem(budgetItem);
+            }
+        });
+    }
+
+    public LiveData<List<BudgetItem>> getAllBudgetItems(){
+        return budgetList;
+    }
 }

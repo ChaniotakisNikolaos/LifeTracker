@@ -35,6 +35,9 @@ public interface Dao {
     @Query("SELECT * FROM BudgetItem WHERE dueDate=:dueDate")
     List<BudgetItem> getBudgetItems(String dueDate);
 
+    @Query("SELECT * FROM BudgetItem")
+    LiveData<List<BudgetItem>> getAllBudgetItems();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertBudgetItem(BudgetItem budgetItem);
 
