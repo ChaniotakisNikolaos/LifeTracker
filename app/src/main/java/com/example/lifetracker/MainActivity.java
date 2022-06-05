@@ -34,6 +34,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
@@ -152,13 +154,13 @@ public class MainActivity extends AppCompatActivity {
         Button cancelChangeNameBtn, saveChangeNameBtn;
         dialogBuilder = new AlertDialog.Builder(this);
         //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View addMoneyView = getLayoutInflater().inflate(R.layout.dialog_edit_user_name, null);
-        userNameEditText = (EditText) addMoneyView.findViewById(R.id.userNameEditText);
-        addNameTextView = (TextView) addMoneyView.findViewById(R.id.addNameTextView);
-        cancelChangeNameBtn = (Button) addMoneyView.findViewById(R.id.cancelChangeNameBtn);
-        saveChangeNameBtn = (Button) addMoneyView.findViewById(R.id.saveChangeNameBtn);
+        final View editUserNameView = getLayoutInflater().inflate(R.layout.dialog_edit_user_name, null);
+        userNameEditText = (EditText) editUserNameView.findViewById(R.id.userNameEditText);
+        addNameTextView = (TextView) editUserNameView.findViewById(R.id.addNameTextView);
+        cancelChangeNameBtn = (Button) editUserNameView.findViewById(R.id.cancelChangeNameBtn);
+        saveChangeNameBtn = (Button) editUserNameView.findViewById(R.id.saveChangeNameBtn);
 
-        dialogBuilder.setView(addMoneyView);
+        dialogBuilder.setView(editUserNameView);
         dialog = dialogBuilder.create();
         dialog.show();
 
@@ -171,9 +173,20 @@ public class MainActivity extends AppCompatActivity {
 
         saveChangeNameBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                String newName = userNameEditText.getText().toString();
+                //final View meFragmentView = getLayoutInflater().inflate(R.layout.fragment_me, null);
+                //TextView nameTextView = meFragmentView.findViewById(R.id.userNameTextView);
+                //nameTextView.setText(newName);
+                Log.d("nnn",newName);
+                changeStatus(newName);
+                dialog.dismiss();
             }
         });
+    }
+    public void changeStatus(String s){
+        //final View meFragmentView = getLayoutInflater().inflate(R.layout.fragment_me, null);
+        TextView nameTextView = findViewById(R.id.userNameTextView);
+        nameTextView.setText(s);
     }
     public void addMoneyDialog(View view) {
         AlertDialog.Builder dialogBuilder;
