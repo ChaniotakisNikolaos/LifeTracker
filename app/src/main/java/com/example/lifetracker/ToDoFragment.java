@@ -1,14 +1,11 @@
 package com.example.lifetracker;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,8 +21,6 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ToDoFragment extends Fragment {
-
-    List<ToDoItem> toDoItemArrayList = new ArrayList<>();
     private ApplicationViewModel applicationViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -77,15 +72,13 @@ public class ToDoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_to_do, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        ToDoRecyclerViewAdapter toDoRecyclerViewAdapter = new ToDoRecyclerViewAdapter(view.getContext(),toDoItemArrayList);
+        ToDoRecyclerViewAdapter toDoRecyclerViewAdapter = new ToDoRecyclerViewAdapter(new ToDoRecyclerViewAdapter.ToDoDiff());
         recyclerView.setAdapter(toDoRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         applicationViewModel = new ViewModelProvider(this.requireActivity()).get(ApplicationViewModel.class);
-        applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(), new Observer<List<ToDoItem>>() {
-            @Override
-            public void onChanged(List<ToDoItem> toDoItems) {
-                toDoRecyclerViewAdapter.setToDoItemList(toDoItems);
-            }
+        applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(), toDoItems -> {
+            toDoRecyclerViewAdapter.submitList(toDoItems);
+            Log.d("test","change observed");
         });
         return view;
     }

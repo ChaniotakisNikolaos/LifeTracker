@@ -10,12 +10,12 @@ import java.util.List;
 
 public class ApplicationViewModel extends AndroidViewModel {
     private Repository repository;
-    private LiveData<List<ToDoItem>> toDoItemList;
+    private final LiveData<List<ToDoItem>> toDoItemList;
 
     public ApplicationViewModel(@NonNull Application application) {
         super(application);
         repository = new Repository(application);
-        toDoItemList = repository.getAlltoDoItems();;
+        toDoItemList = repository.getAllToDoItems();;
     }
 
     public void insert(ToDoItem toDoItem){
