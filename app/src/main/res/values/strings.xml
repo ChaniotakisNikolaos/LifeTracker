@@ -31,4 +31,5 @@
     <string name="edit_budget_label">Edit your budget Label</string>
     <string name="take_new_photo">Take a new photo</string>
     <string name="choose_gallery_photo">Choose photo from gallery</string>
+    <string name="hello_name">"Hello, "</string>
 </resources>

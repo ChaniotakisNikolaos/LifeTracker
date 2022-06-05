@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     //private ApplicationViewModel applicationViewModel;
     public static final int ADD_TOOO_ITEM_ACTIVITY_REQUEST_CODE = 1;
     private ActivityResultLauncher<Intent> addToDoItemActivityResultLauncher;
+    private ActivityResultLauncher<Intent> addBudgetItemActivityResultLauncher;
     private ApplicationViewModel applicationViewModel;
 
 
@@ -102,6 +103,19 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+        addBudgetItemActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                            applicationViewModel.insert(new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL),data.getStringExtra(AddBudgetItemActivity.EXTRA_SAVED),data.getStringExtra(AddBudgetItemActivity.EXTRA_TOTAL),data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE)));
+                            Log.d("test","Budget inserted");
+                        }
+                    }
+                });
     }
 
     /**
@@ -124,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
         //String message = editText.getText().toString();
         //intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
+        addBudgetItemActivityResultLauncher.launch(intent);
     }
 
     public void addMoneyDialog(View view) {
@@ -316,8 +330,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == 20 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+        if(requestCode == 20 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             takePictureFromCamera();
+            Toast.makeText(MainActivity.this, "Permission granted", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
         }
