@@ -15,7 +15,7 @@ public class ApplicationViewModel extends AndroidViewModel {
     public ApplicationViewModel(@NonNull Application application) {
         super(application);
         repository = new Repository(application);
-        toDoItemList = repository.getAllToDoItems();;
+        toDoItemList = repository.getAllToDoItems();
     }
 
     public void insert(ToDoItem toDoItem){

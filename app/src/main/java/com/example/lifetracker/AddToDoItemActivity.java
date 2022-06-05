@@ -1,18 +1,14 @@
 package com.example.lifetracker;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.room.Room;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 public class AddToDoItemActivity extends AppCompatActivity {
     public static final String EXTRA_DESCRIPTION = "com.example.lifetracker.DESCRIPTION";

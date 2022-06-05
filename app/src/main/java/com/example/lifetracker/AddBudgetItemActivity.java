@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import androidx.room.Room;
 
 public class AddBudgetItemActivity  extends AppCompatActivity {
     @Override
