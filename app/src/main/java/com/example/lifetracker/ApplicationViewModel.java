@@ -11,13 +11,16 @@ import java.util.List;
 public class ApplicationViewModel extends AndroidViewModel {
     private Repository repository;
     private final LiveData<List<ToDoItem>> toDoItemList;
+    private final LiveData<List<BudgetItem>> budgetItemList;
 
     public ApplicationViewModel(@NonNull Application application) {
         super(application);
         repository = new Repository(application);
         toDoItemList = repository.getAllToDoItems();
+        budgetItemList = repository.getAllBudgetItems();
     }
 
+    //TO DO
     public void insert(ToDoItem toDoItem){
         repository.insert(toDoItem);
     }
@@ -32,5 +35,22 @@ public class ApplicationViewModel extends AndroidViewModel {
 
     public LiveData<List<ToDoItem>> getToDoItemList() {
         return toDoItemList;
+    }
+
+    //BUDGET
+    public void insert(BudgetItem budgetItem){
+        repository.insert(budgetItem);
+    }
+
+    public void update(BudgetItem budgetItem){
+        repository.update(budgetItem);
+    }
+
+    public void delete(BudgetItem budgetItem){
+        repository.delete(budgetItem);
+    }
+
+    public LiveData<List<BudgetItem>> getBudgetItemList() {
+        return budgetItemList;
     }
 }
