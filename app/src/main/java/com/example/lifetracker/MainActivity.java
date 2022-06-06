@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -141,6 +145,47 @@ public class MainActivity extends AppCompatActivity {
         addBudgetItemActivityResultLauncher.launch(intent);
     }
 
+    /**
+     * Called when the user taps the hello user text view in me fragment
+     */
+    public void changeUserName(View view) {
+        AlertDialog.Builder dialogBuilder;
+        AlertDialog dialog;
+        EditText userNameEditText;
+        TextView addNameTextView;
+        Button cancelChangeNameBtn, saveChangeNameBtn;
+        dialogBuilder = new AlertDialog.Builder(this);
+        //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View editUserNameView = getLayoutInflater().inflate(R.layout.dialog_edit_user_name, null);
+        userNameEditText = (EditText) editUserNameView.findViewById(R.id.userNameEditText);
+        addNameTextView = (TextView) editUserNameView.findViewById(R.id.addNameTextView);
+        cancelChangeNameBtn = (Button) editUserNameView.findViewById(R.id.cancelChangeNameBtn);
+        saveChangeNameBtn = (Button) editUserNameView.findViewById(R.id.saveChangeNameBtn);
+
+        dialogBuilder.setView(editUserNameView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        cancelChangeNameBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //close dialog
+                dialog.dismiss();
+            }
+        });
+
+        saveChangeNameBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String newName = userNameEditText.getText().toString();
+                Log.d("nnn",newName);
+                changeStatus(newName);
+                dialog.dismiss();
+            }
+        });
+    }
+    public void changeStatus(String s){
+        TextView nameTextView = findViewById(R.id.userNameTextView);
+        nameTextView.setText(s);
+    }
     public void addMoneyDialog(View view) {
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
@@ -348,5 +393,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.popup_to_do_item, popup.getMenu());
+        popup.show();
     }
 }
