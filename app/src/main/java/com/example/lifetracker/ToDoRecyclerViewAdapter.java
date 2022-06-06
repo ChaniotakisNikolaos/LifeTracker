@@ -1,7 +1,5 @@
 package com.example.lifetracker;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +7,11 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerViewAdapter.MyViewHolder> {
-    private Context context;
 
     protected ToDoRecyclerViewAdapter(@NonNull DiffUtil.ItemCallback<ToDoItem> diffCallback) {
         super(diffCallback);
@@ -32,6 +26,12 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ToDoRecyclerViewAdapter.MyViewHolder holder, int position) {
         ToDoItem toDoItem = getItem(position);
+        if(toDoItem.getReminder().isEmpty()){
+            holder.reminderTextView.setVisibility(View.INVISIBLE);
+        }
+        if(toDoItem.getDueDate().isEmpty()){
+            holder.dueDateTextView.setVisibility(View.INVISIBLE);
+        }
         holder.checkBox.setText(toDoItem.getDescription());
         holder.labelTextView.setText(toDoItem.getLabel());
         holder.reminderTextView.setText(toDoItem.getReminder());
