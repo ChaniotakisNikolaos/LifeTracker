@@ -174,9 +174,6 @@ public class MainActivity extends AppCompatActivity {
         saveChangeNameBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String newName = userNameEditText.getText().toString();
-                //final View meFragmentView = getLayoutInflater().inflate(R.layout.fragment_me, null);
-                //TextView nameTextView = meFragmentView.findViewById(R.id.userNameTextView);
-                //nameTextView.setText(newName);
                 Log.d("nnn",newName);
                 changeStatus(newName);
                 dialog.dismiss();
@@ -184,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void changeStatus(String s){
-        //final View meFragmentView = getLayoutInflater().inflate(R.layout.fragment_me, null);
         TextView nameTextView = findViewById(R.id.userNameTextView);
         nameTextView.setText(s);
     }

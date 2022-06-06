@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerViewAdapter.MyViewHolder> {
     private Context context;
 
@@ -62,14 +64,25 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
         }
 
         static MyViewHolder create(ViewGroup parent) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recycler_view_item, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
             Log.d("fff", "helloww");
             CardView cardView = (CardView) view.findViewById(R.id.cardView2);
             cardView.setOnLongClickListener(new View.OnLongClickListener() {
+                boolean showButtons=false;
                 @Override
                 public boolean onLongClick(View v) {
                     Log.d("fff", "hello");
+                    FloatingActionButton editToDoFloatBtn = view.findViewById(R.id.editToDoFloatBtn);
+                    FloatingActionButton deleteToDoFloatBtn = view.findViewById(R.id.deleteToDoFloatBtn);
+                    if(!showButtons){
+                        editToDoFloatBtn.setVisibility(view.VISIBLE);
+                        deleteToDoFloatBtn.setVisibility(view.VISIBLE);
+                        showButtons=true;
+                    }else{
+                        editToDoFloatBtn.setVisibility(view.GONE);
+                        deleteToDoFloatBtn.setVisibility(view.GONE);
+                        showButtons=false;
+                    }
                     return true;
                 }
             });
