@@ -36,7 +36,6 @@ public class AddToDoItemActivity extends AppCompatActivity {
         TextView reminderTextView = findViewById(R.id.reminderSelectTextView);
         TextView dueDateTextView = findViewById(R.id.dueDateSelectTextView);
 
-        Log.d("ooo", String.valueOf(toDoEditText.getText()));
         if(toDoEditText.getText().toString().trim().length() == 0){
             Toast.makeText(this,"You must put a Description",Toast.LENGTH_SHORT).show();
             isEmpty = false;

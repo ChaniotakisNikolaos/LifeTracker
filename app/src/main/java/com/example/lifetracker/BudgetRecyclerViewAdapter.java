@@ -35,12 +35,14 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
     @Override
     public void onBindViewHolder(@NonNull BudgetRecyclerViewAdapter.MyViewHolder holder, int position) {
         BudgetItem budgetItem = getItem(position);
+        if(budgetItem.getDueDate().isEmpty()){
+            holder.dueDateBudgetTV.setVisibility(View.INVISIBLE);
+        }
         holder.budgetLabel.setText(budgetItem.getLabel());
         holder.savingsLabel.setText(MessageFormat.format("{0}€/{1}€", budgetItem.getSaved(), budgetItem.getTotal()));
         holder.dueDateBudgetTV.setText(budgetItem.getDueDate());
         float percentage = (Float.parseFloat(budgetItem.getSaved())/Float.parseFloat(budgetItem.getTotal()))*100;
         holder.progressBar.setProgress((int) percentage);
-        Log.d("ppp", String.valueOf(Integer.parseInt(budgetItem.getSaved())));
         holder.percentageLabel.setText(MessageFormat.format("{0}%", String.valueOf((int) Math.floor(percentage))));
 
         ConstraintLayout cl = holder.constraintActivity;
