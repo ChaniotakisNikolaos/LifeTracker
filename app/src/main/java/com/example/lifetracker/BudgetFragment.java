@@ -11,18 +11,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link BudgetFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class BudgetFragment extends Fragment {
-
-    private ApplicationViewModel applicationViewModel;
-    List<BudgetItem> budgetItemArrayList;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -73,10 +67,11 @@ public class BudgetFragment extends Fragment {
         BudgetRecyclerViewAdapter budgetRecyclerViewAdapter = new BudgetRecyclerViewAdapter(new BudgetRecyclerViewAdapter.BudgetDiff());
         recyclerView.setAdapter(budgetRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        applicationViewModel = new ViewModelProvider(this.requireActivity()).get(ApplicationViewModel.class);
+        ApplicationViewModel applicationViewModel = new ViewModelProvider(this.requireActivity()).get(ApplicationViewModel.class);
         applicationViewModel.getBudgetItemList().observe(getViewLifecycleOwner(), budgetItems -> {
             budgetRecyclerViewAdapter.submitList(budgetItems);
         });
+        //applicationViewModel.getBudgetItemList().observe(getViewLifecycleOwner(), budgetRecyclerViewAdapter::submitList);
         return view;
     }
 

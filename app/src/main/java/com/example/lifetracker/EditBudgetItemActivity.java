@@ -1,13 +1,10 @@
 package com.example.lifetracker;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -35,7 +32,7 @@ public class EditBudgetItemActivity extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    public void editBudgetItem(View v) {
+    /*public void editBudgetItem(View v) {
         EditText editBudgetLabelEditText, editSavingsUpToNowEditText, editEndGoalEditText;
         TextView editBudgetLabelTextView, editSavingsUpToNowTextLabel, editEndGoalTextView, editDateTextView, editDueDateSelectTextView;
         Button cancelEditBudgetButton, saveEditBudgetButton;
@@ -50,6 +47,5 @@ public class EditBudgetItemActivity extends AppCompatActivity {
         editDueDateSelectTextView = findViewById(R.id.textViewEditDueDateSelect);
         cancelEditBudgetButton = findViewById(R.id.buttonCancelEditBudget);
         saveEditBudgetButton = findViewById(R.id.buttonSaveEditBudget);
-    }
-
+    }*/
 }

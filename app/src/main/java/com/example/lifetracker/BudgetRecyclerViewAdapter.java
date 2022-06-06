@@ -1,7 +1,6 @@
 package com.example.lifetracker;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,11 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.MessageFormat;
-import java.util.List;
 
 public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecyclerViewAdapter.MyViewHolder> {
-    private Context context;
-
     public BudgetRecyclerViewAdapter(@NonNull DiffUtil.ItemCallback<BudgetItem> diffCallback) {
         super(diffCallback);
     }
@@ -47,7 +43,7 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         Log.d("ppp", String.valueOf(Integer.parseInt(budgetItem.getSaved())));
         holder.percentageLabel.setText(MessageFormat.format("{0}%", String.valueOf((int) Math.floor(percentage))));
 
-        ConstraintLayout cl = (ConstraintLayout) holder.constraintActivity;
+        ConstraintLayout cl = holder.constraintActivity;
         ConstraintSet cs = new ConstraintSet();
         cs.clone(cl);
         cs.setHorizontalBias(R.id.percentageLabel, percentage/100);
@@ -89,9 +85,9 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
                 public void onClick(View v) {
                     if(!showButtons) {
                         button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_baseline_arrow_drop_up_24);
-                        addButton.setVisibility(v.VISIBLE);
-                        minusButton.setVisibility(v.VISIBLE);
-                        editButton.setVisibility(v.VISIBLE);
+                        addButton.setVisibility(View.VISIBLE);
+                        minusButton.setVisibility(View.VISIBLE);
+                        editButton.setVisibility(View.VISIBLE);
                         editButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -99,14 +95,14 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
                                 v.getContext().startActivity(intent);
                             }
                         });
-                        deleteButton.setVisibility(v.VISIBLE);
+                        deleteButton.setVisibility(View.VISIBLE);
                         showButtons=true;
                     }else{
                         button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_baseline_arrow_drop_down_24);
-                        addButton.setVisibility(v.GONE);
-                        minusButton.setVisibility(v.GONE);
-                        editButton.setVisibility(v.GONE);
-                        deleteButton.setVisibility(v.GONE);
+                        addButton.setVisibility(View.GONE);
+                        minusButton.setVisibility(View.GONE);
+                        editButton.setVisibility(View.GONE);
+                        deleteButton.setVisibility(View.GONE);
                         showButtons=false;
                     }
                 }

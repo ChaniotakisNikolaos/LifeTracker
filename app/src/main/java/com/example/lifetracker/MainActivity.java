@@ -36,8 +36,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
