@@ -56,14 +56,18 @@ public class AddToDoItemActivity extends AppCompatActivity {
 
             if(reminderTextView.getText().toString().trim().length()!= 0){
                 Toast.makeText(this,"You set a Reminder",Toast.LENGTH_SHORT).show();
+
                 Intent alarmIntent = new Intent(this, ReminderReceiver.class);
                 alarmIntent.putExtra("name",toDoEditText.getText().toString());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 long hour = Long.parseLong(reminderTextView.getText().toString().trim().split("\\s")[1].split(":")[0]) * 36 * 100000;
                 long minutes = Long.parseLong(reminderTextView.getText().toString().trim().split("\\s")[1].split(":")[1]) * 60 * 1000;
-                Log.d("tttt", toDoEditText.getText().toString());
+                Log.d("tttt", String.valueOf(hour));
+                Log.d("tttt", String.valueOf(minutes));
+                Log.d("tttt", String.valueOf(hour+minutes));
+                Log.d("tttt", String.valueOf(System.currentTimeMillis()));
                 alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+ (10 * 1000), pendingIntent);//RTC_WAKEUP will wake up the device to fire the pending intent at the specified time
             }
 
