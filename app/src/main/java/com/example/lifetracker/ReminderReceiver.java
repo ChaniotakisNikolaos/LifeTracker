@@ -26,7 +26,7 @@ public class ReminderReceiver extends BroadcastReceiver {
                 ;
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
-        notificationManagerCompat.notify(( int ) System. currentTimeMillis () , builder.build());
+        notificationManagerCompat.notify(( int ) System.currentTimeMillis() , builder.build());
         Log.d("tttt",intent.getExtras().getString("name") );
     }
 }

@@ -59,7 +59,7 @@ public class AddToDoItemActivity extends AppCompatActivity {
 
                 Intent alarmIntent = new Intent(this, ReminderReceiver.class);
                 alarmIntent.putExtra("name",toDoEditText.getText().toString());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, ( int ) System.currentTimeMillis(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 long hour = Long.parseLong(reminderTextView.getText().toString().trim().split("\\s")[1].split(":")[0]) * 36 * 100000;
