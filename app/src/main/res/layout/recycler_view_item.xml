@@ -71,7 +71,7 @@
                 android:background="#00FFFFFF"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
-                android:onClick="showPopup"
+
                 app:layout_constraintBottom_toBottomOf="@+id/checkBox"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"

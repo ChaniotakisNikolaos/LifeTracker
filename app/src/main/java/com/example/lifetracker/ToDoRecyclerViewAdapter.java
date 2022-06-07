@@ -1,9 +1,14 @@
 package com.example.lifetracker;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +17,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerViewAdapter.MyViewHolder> {
+    ApplicationViewModel applicationViewModel;
 
     protected ToDoRecyclerViewAdapter(@NonNull DiffUtil.ItemCallback<ToDoItem> diffCallback) {
         super(diffCallback);
@@ -36,13 +42,34 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
         holder.labelTextView.setText(toDoItem.getLabel());
         holder.reminderTextView.setText(toDoItem.getReminder());
         holder.dueDateTextView.setText(toDoItem.getDueDate());
+        holder.imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(view.getContext(), view);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.popup_to_do_item, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        if(menuItem.getTitle().toString().equals("Edit")){
+
+                        }else{
+                            applicationViewModel.delete(getItem(holder.getAdapterPosition()));
+                        }
+                        Log.d("test",menuItem.getTitle().toString());
+                        return false;
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 
     static class ToDoDiff extends DiffUtil.ItemCallback<ToDoItem> {
 
         @Override
         public boolean areItemsTheSame(@NonNull ToDoItem oldItem, @NonNull ToDoItem newItem) {
-            return oldItem == newItem;
+            return oldItem.getId() == newItem.getId();
         }
 
         @Override
@@ -54,6 +81,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView labelTextView, reminderTextView, dueDateTextView;
         CheckBox checkBox;
+        ImageButton imageButton;
 
         private MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,6 +89,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
             reminderTextView = itemView.findViewById(R.id.reminderTextView);
             dueDateTextView = itemView.findViewById(R.id.dueDateTextView);
             checkBox = itemView.findViewById(R.id.checkBox);
+            imageButton = itemView.findViewById(R.id.imageButton);
         }
 
         static MyViewHolder create(ViewGroup parent) {
@@ -69,4 +98,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
         }
     }
 
+    public void setApplicationViewModel(ApplicationViewModel applicationViewModel) {
+        this.applicationViewModel = applicationViewModel;
+    }
 }

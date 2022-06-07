@@ -76,6 +76,7 @@ public class ToDoFragment extends Fragment {
             toDoRecyclerViewAdapter.submitList(toDoItems);
             Log.d("test","change observed");
         });
+        toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
         return view;
     }
 }
