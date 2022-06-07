@@ -1,6 +1,11 @@
 package com.example.lifetracker;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +25,8 @@ public class AddToDoItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        createNotificationChannel();
+
         setContentView(R.layout.activity_add_to_do_item);
     }
 
@@ -44,7 +51,24 @@ public class AddToDoItemActivity extends AppCompatActivity {
             ToDoItem toDoItem = new ToDoItem(toDoEditText.getText().toString(), label.getText().toString(), dueDateTextView.getText().toString(), reminderTextView.getText().toString());
             //AppDatabase db = Room.databaseBuilder(getApplicationContext(),AppDatabase.class, AppDatabase.DB_NAME).build();
             Toast.makeText(this, "TODO item added", Toast.LENGTH_SHORT).show();
+
             Intent replyIntent = new Intent();
+
+            if(reminderTextView.getText().toString().trim().length()!= 0){
+                Toast.makeText(this,"You set a Reminder",Toast.LENGTH_SHORT).show();
+                Intent alarmIntent = new Intent(this, ReminderReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                long hour = Long.parseLong(reminderTextView.getText().toString().trim().split("\\s")[1].split(":")[0]) * 36 * 100000;
+                long minutes = Long.parseLong(reminderTextView.getText().toString().trim().split("\\s")[1].split(":")[1]) * 60 * 1000;
+                Log.d("tttt", String.valueOf(hour));
+                Log.d("tttt", String.valueOf(minutes));
+                Log.d("tttt", String.valueOf(hour+minutes));
+                Log.d("tttt", String.valueOf(System.currentTimeMillis()));
+                alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+ (10 * 1000), pendingIntent);//RTC_WAKEUP will wake up the device to fire the pending intent at the specified time
+            }
+
             boolean checks = false;
             if (checks) {
                 setResult(RESULT_CANCELED, replyIntent);
@@ -58,5 +82,18 @@ public class AddToDoItemActivity extends AppCompatActivity {
             finish();
         }
         //ApplicationViewModel applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
+    }
+
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = "NiSoReminderChannel";
+            String desc = "Channel for NiSo Reminder";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notifyNiso", name, importance);
+            channel.setDescription(desc);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

@@ -34,9 +34,13 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
         ToDoItem toDoItem = getItem(position);
         if(toDoItem.getReminder().isEmpty()){
             holder.reminderTextView.setVisibility(View.INVISIBLE);
+        }else{
+            holder.reminderTextView.setVisibility(View.VISIBLE);
         }
         if(toDoItem.getDueDate().isEmpty()){
             holder.dueDateTextView.setVisibility(View.INVISIBLE);
+        }else{
+            holder.dueDateTextView.setVisibility(View.VISIBLE);
         }
         holder.checkBox.setText(toDoItem.getDescription());
         holder.labelTextView.setText(toDoItem.getLabel());
