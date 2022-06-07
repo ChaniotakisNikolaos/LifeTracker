@@ -54,9 +54,15 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
                         if(menuItem.getTitle().toString().equals("Edit")){
 
                         }else{
-                            applicationViewModel.delete(getItem(holder.getAdapterPosition()));
+                            int adapterPosition=holder.getAdapterPosition();
+                            Log.d("adapterPosition",String.valueOf(adapterPosition));
+                            if(adapterPosition>RecyclerView.NO_POSITION) {
+                                applicationViewModel.delete(getItem(adapterPosition));
+
+                            }else {
+                                Log.d("test","NO_POSITION");
+                            }
                         }
-                        Log.d("test",menuItem.getTitle().toString());
                         return false;
                     }
                 });
