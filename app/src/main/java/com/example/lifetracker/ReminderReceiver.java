@@ -15,7 +15,7 @@ public class ReminderReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyNiso")
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentTitle("Reminder To-Do NiSo")
-                .setContentText("Don't forget to finish your To-Do:")
+                .setContentText("Don't forget to finish your To-Do:"+intent.getExtras().getString("name"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
