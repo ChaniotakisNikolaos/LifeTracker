@@ -33,4 +33,6 @@
     <string name="choose_gallery_photo">Choose photo from gallery</string>
     <string name="hello_name">"Hello, "</string>
     <string name="add_user_name">Please add your name:</string>
+    <string name="saved_username_text_key">com.example.lifetracker.PREFERENCE_FILE_KEY</string>
+    <string name="default_username_text">Hello, User!\nClick here to change your name.</string>
 </resources>

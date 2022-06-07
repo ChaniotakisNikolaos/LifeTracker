@@ -3,7 +3,9 @@ package com.example.lifetracker;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -151,13 +153,11 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
         EditText userNameEditText;
-        TextView addNameTextView;
         Button cancelChangeNameBtn, saveChangeNameBtn;
         dialogBuilder = new AlertDialog.Builder(this);
         //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View editUserNameView = getLayoutInflater().inflate(R.layout.dialog_edit_user_name, null);
         userNameEditText = (EditText) editUserNameView.findViewById(R.id.userNameEditText);
-        addNameTextView = (TextView) editUserNameView.findViewById(R.id.addNameTextView);
         cancelChangeNameBtn = (Button) editUserNameView.findViewById(R.id.cancelChangeNameBtn);
         saveChangeNameBtn = (Button) editUserNameView.findViewById(R.id.saveChangeNameBtn);
 
@@ -184,6 +184,10 @@ public class MainActivity extends AppCompatActivity {
     public void changeStatus(String s){
         TextView nameTextView = findViewById(R.id.userNameTextView);
         nameTextView.setText(s);
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.saved_username_text_key), s);
+        editor.apply();
     }
     public void addMoneyDialog(View view) {
         AlertDialog.Builder dialogBuilder;
