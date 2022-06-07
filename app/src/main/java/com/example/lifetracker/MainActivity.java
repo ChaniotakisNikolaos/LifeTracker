@@ -338,16 +338,16 @@ public class MainActivity extends AppCompatActivity {
         photoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(checkAndRequestPermission()) {
-                    takePictureFromCamera();
                     alertDialogProfPic.dismiss();
+                    takePictureFromCamera();
                 }
             }
         });
 
         galleryButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                takePictureFromGallery();
                 alertDialogProfPic.dismiss();
+                takePictureFromGallery();
             }
         });
 
