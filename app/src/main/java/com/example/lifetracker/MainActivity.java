@@ -29,7 +29,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -342,16 +341,16 @@ public class MainActivity extends AppCompatActivity {
         photoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(checkAndRequestPermission()) {
-                    alertDialogProfPic.dismiss();
                     takePictureFromCamera();
+                    alertDialogProfPic.dismiss();
                 }
             }
         });
 
         galleryButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                alertDialogProfPic.dismiss();
                 takePictureFromGallery();
+                alertDialogProfPic.dismiss();
             }
         });
 
