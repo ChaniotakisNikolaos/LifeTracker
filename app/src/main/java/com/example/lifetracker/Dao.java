@@ -21,7 +21,7 @@ public interface Dao {
     LiveData<List<ToDoItem>> getAllToDoItems();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertToDoItem(ToDoItem toDoItem);
+    long insertToDoItem(ToDoItem toDoItem);
 
     @Update
     void updateToDoItem(ToDoItem toDoItem);

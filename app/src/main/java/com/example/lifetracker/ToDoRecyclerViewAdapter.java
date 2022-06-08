@@ -1,5 +1,10 @@
 package com.example.lifetracker;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -61,8 +66,16 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
                             int adapterPosition=holder.getAdapterPosition();
                             Log.d("adapterPosition",String.valueOf(adapterPosition));
                             if(adapterPosition>RecyclerView.NO_POSITION) {
-                                applicationViewModel.delete(getItem(adapterPosition));
+                                ToDoItem toDoItem = getItem(adapterPosition);
 
+                                Intent alarmIntent = new Intent(view.getContext(), ReminderReceiver.class);
+                                alarmIntent.putExtra("name", toDoItem.getDescription());
+                                alarmIntent.putExtra("id", toDoItem.getId());
+                                AlarmManager alarmManager = (AlarmManager) view.getContext().getSystemService(Context.ALARM_SERVICE);
+                                PendingIntent pendingIntent = PendingIntent.getBroadcast(view.getContext(), toDoItem.getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                                alarmManager.cancel(pendingIntent);
+
+                                applicationViewModel.delete(toDoItem);
                             }else {
                                 Log.d("test","NO_POSITION");
                             }
