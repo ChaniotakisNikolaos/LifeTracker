@@ -66,7 +66,7 @@ public class MeFragment extends Fragment {
         String defaultText = getResources().getString(R.string.default_username_text);
         String username = sharedPref.getString(getString(R.string.saved_username_text_key), defaultText);
         TextView textView = inflatedView.findViewById(R.id.userNameTextView);
-        textView.setText(username);
+        textView.setText("Hello, "+username);
         // Inflate the layout for this fragment
         return inflatedView;
     }

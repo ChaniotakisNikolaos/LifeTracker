@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void changeStatus(String s){
         TextView nameTextView = findViewById(R.id.userNameTextView);
-        nameTextView.setText(s);
+        nameTextView.setText("Hello, "+s);
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.saved_username_text_key), s);
