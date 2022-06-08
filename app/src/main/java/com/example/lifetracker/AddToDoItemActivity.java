@@ -16,6 +16,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Objects;
+
 public class AddToDoItemActivity extends AppCompatActivity {
     public static final String EXTRA_DESCRIPTION = "com.example.lifetracker.DESCRIPTION";
     public static final String EXTRA_LABEL = "com.example.lifetracker.LABEL";
@@ -62,13 +71,16 @@ public class AddToDoItemActivity extends AppCompatActivity {
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(this, ( int ) System.currentTimeMillis(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                long hour = Long.parseLong(reminderTextView.getText().toString().trim().split("\\s")[1].split(":")[0]) * 36 * 100000;
-                long minutes = Long.parseLong(reminderTextView.getText().toString().trim().split("\\s")[1].split(":")[1]) * 60 * 1000;
-                Log.d("tttt", String.valueOf(hour));
-                Log.d("tttt", String.valueOf(minutes));
-                Log.d("tttt", String.valueOf(hour+minutes));
-                Log.d("tttt", String.valueOf(System.currentTimeMillis()));
-                alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+ (10 * 1000), pendingIntent);//RTC_WAKEUP will wake up the device to fire the pending intent at the specified time
+                String myDate = reminderTextView.getText().toString();
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
+                try {
+                    cal.setTime(Objects.requireNonNull(sdf.parse(myDate)));// all done
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                long timeInMillis =cal.getTimeInMillis();
+                alarmManager.set(AlarmManager.RTC_WAKEUP,timeInMillis, pendingIntent);//RTC_WAKEUP will wake up the device to fire the pending intent at the specified time
             }
 
             boolean checks = false;
