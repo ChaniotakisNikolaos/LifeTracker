@@ -1,6 +1,7 @@
 package com.example.lifetracker;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -21,8 +22,8 @@ public class ApplicationViewModel extends AndroidViewModel {
     }
 
     //TO DO
-    public void insert(ToDoItem toDoItem){
-        repository.insert(toDoItem);
+    public void insert(ToDoItem toDoItem, Context context){
+        repository.insert(toDoItem, context);
     }
 
     public void update(ToDoItem toDoItem){

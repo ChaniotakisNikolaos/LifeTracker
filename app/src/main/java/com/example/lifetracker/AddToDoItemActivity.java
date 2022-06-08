@@ -62,27 +62,6 @@ public class AddToDoItemActivity extends AppCompatActivity {
             Toast.makeText(this, "TODO item added", Toast.LENGTH_SHORT).show();
 
             Intent replyIntent = new Intent();
-
-            if(reminderTextView.getText().toString().trim().length()!= 0){
-                Toast.makeText(this,"You set a Reminder",Toast.LENGTH_SHORT).show();
-
-                Intent alarmIntent = new Intent(this, ReminderReceiver.class);
-                alarmIntent.putExtra("name",toDoEditText.getText().toString());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, ( int ) System.currentTimeMillis(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                String myDate = reminderTextView.getText().toString();
-                Calendar cal = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
-                try {
-                    cal.setTime(Objects.requireNonNull(sdf.parse(myDate)));// all done
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                long timeInMillis =cal.getTimeInMillis();
-                alarmManager.set(AlarmManager.RTC_WAKEUP,timeInMillis, pendingIntent);//RTC_WAKEUP will wake up the device to fire the pending intent at the specified time
-            }
-
             boolean checks = false;
             if (checks) {
                 setResult(RESULT_CANCELED, replyIntent);
