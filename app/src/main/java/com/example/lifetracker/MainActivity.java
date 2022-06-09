@@ -2,9 +2,7 @@ package com.example.lifetracker;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +15,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,8 +29,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
@@ -40,13 +42,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyDrawerControllerInterface {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
@@ -57,12 +55,27 @@ public class MainActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> addToDoItemActivityResultLauncher;
     private ActivityResultLauncher<Intent> addBudgetItemActivityResultLauncher;
     private ApplicationViewModel applicationViewModel;
-
+    public DrawerLayout drawerLayout;
+    public ActionBarDrawerToggle actionBarDrawerToggle;
+    public Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // drawer layout instance to toggle the menu icon to open
+        // drawer and back button to close drawert
+        drawerLayout = findViewById(R.id.my_drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
+        //toolbar = findViewById(R.id.toolbar);
+        // pass the Open and Close toggle for the drawer layout listener
+        // to toggle the button
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        drawerLayout.bringToFront();
+        drawerLayout.requestLayout();
+        // to make the Navigation drawer icon always appear on the action bar
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
         /*applicationViewModel.getToDoItemList().observe(this, new Observer<List<ToDoItem>>() {
@@ -128,7 +141,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+    // override the onOptionsItemSelected()
+    // function to implement
+    // the item click listener callback
+    // to open and close the navigation
+    // drawer when the icon is clicked
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     /**
      * Called when the user taps the plus button
      */
@@ -409,5 +434,21 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.popup_to_do_item, popup.getMenu());
         popup.show();
+    }
+
+    @Override
+    public void setDrawerLocked() {
+        //code to lock drawer
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //toolbar.setNavigationIcon(null);
+    }
+
+    @Override
+    public void setDrawerUnlocked() {
+        //code to unlock drawer
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 }

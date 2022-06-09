@@ -59,14 +59,13 @@ public class MeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View inflatedView = inflater.inflate(R.layout.fragment_me, container, false);
         SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
         String defaultText = getResources().getString(R.string.default_username_text);
         String username = sharedPref.getString(getString(R.string.saved_username_text_key), defaultText);
         TextView textView = inflatedView.findViewById(R.id.userNameTextView);
-        textView.setText("Hello, "+username);
+        textView.setText("Hello, " + username);
         // Inflate the layout for this fragment
         return inflatedView;
     }
