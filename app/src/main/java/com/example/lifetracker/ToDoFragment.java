@@ -35,7 +35,8 @@ public class ToDoFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private int labelID = 1;
-
+    NavigationView navView;
+    Menu m;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -70,8 +71,8 @@ public class ToDoFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        NavigationView navView = (requireActivity()).findViewById(R.id.menu_navigation);
-        Menu m = navView.getMenu();
+        navView = (requireActivity()).findViewById(R.id.menu_navigation);
+        m = navView.getMenu();
         m.add(0, 0,0,"All To Do").setIcon(R.drawable.ic_baseline_label_24);
         //AppDatabase db = Room.databaseBuilder(this.getActivity().getApplicationContext(),AppDatabase.class, "life-tracker-db").build();
         //toDoItemArrayList = db.dao().getToDoItems();
@@ -90,11 +91,7 @@ public class ToDoFragment extends Fragment {
         applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(), toDoItems -> {
             toDoRecyclerViewAdapter.submitList(toDoItems);
             Log.d("cccccctest","change observed");
-            NavigationView navView = (requireActivity()).findViewById(R.id.menu_navigation);
-            Menu m = navView.getMenu();
             checkIfExistsInMenu(toDoItems, m);
-            //MenuItem foo_menu_item=m.add("foo");
-            //Log.d("ccccc", String.valueOf(navView.getMenu()));
         });
         toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
         return view;
