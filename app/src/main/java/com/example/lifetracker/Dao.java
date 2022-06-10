@@ -20,6 +20,11 @@ public interface Dao {
     @Query("SELECT * FROM ToDoItem")
     LiveData<List<ToDoItem>> getAllToDoItems();
 
+
+    @Query("SELECT * FROM ToDoItem WHERE label=:label")
+    LiveData<List<ToDoItem>> getAllToDoItemsLabel(String label);
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertToDoItem(ToDoItem toDoItem);
 

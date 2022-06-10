@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
@@ -57,23 +59,26 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     private ApplicationViewModel applicationViewModel;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
-    public Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // drawer layout instance to toggle the menu icon to open
-        // drawer and back button to close drawert
+        // drawer and back button to close drawer
         drawerLayout = findViewById(R.id.my_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
-        //toolbar = findViewById(R.id.toolbar);
+
         // pass the Open and Close toggle for the drawer layout listener
         // to toggle the button
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        drawerLayout.bringToFront();
-        drawerLayout.requestLayout();
+        /*drawerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("ccccccc","OKKKKKK");
+            }
+        });*/
         // to make the Navigation drawer icon always appear on the action bar
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -127,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                         }
                     }
                 });
+
         addBudgetItemActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -165,6 +171,12 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         addToDoItemActivityResultLauncher.launch(intent);
     }
 
+    public void checkLabels(View view) {
+        NavigationView navView = (NavigationView) MainActivity.this.findViewById(R.id.menu_navigation);
+        Menu m = navView.getMenu();
+        MenuItem foo_menu_item=m.add("foo");
+        Log.d("ccccc", String.valueOf(navView.getMenu()));
+    }
 
     /**
      * Called when the user taps the plus button

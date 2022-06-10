@@ -5,14 +5,21 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -79,6 +86,29 @@ public class ToDoFragment extends Fragment {
         applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(), toDoItems -> {
             toDoRecyclerViewAdapter.submitList(toDoItems);
             Log.d("test","change observed");
+            String toDoLabel;
+            NavigationView navView = (requireActivity()).findViewById(R.id.menu_navigation);
+            Menu m = navView.getMenu();
+            boolean menuFlag = false;
+            for(ToDoItem todo: toDoItems){
+                toDoLabel = todo.getLabel();
+                if(!toDoLabel.isEmpty()){
+                    for(int i=0;i<m.size();i++){
+                        if(m.getItem(i).getTitle().equals(toDoLabel)){
+                            menuFlag = false;
+                            break;
+                        }else{
+                            menuFlag = true;
+                        }
+                    }
+                    if(menuFlag){
+                        MenuItem foo_menu_item=m.add(toDoLabel);
+                        menuFlag = false;
+                    }
+                }
+            }
+            //MenuItem foo_menu_item=m.add("foo");
+            //Log.d("ccccc", String.valueOf(navView.getMenu()));
         });
         toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
         return view;

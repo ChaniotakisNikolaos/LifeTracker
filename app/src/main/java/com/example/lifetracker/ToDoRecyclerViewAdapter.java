@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +18,14 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerViewAdapter.MyViewHolder> {
     ApplicationViewModel applicationViewModel;
@@ -119,6 +125,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
             return new MyViewHolder(view);
         }
+
     }
 
     public void setApplicationViewModel(ApplicationViewModel applicationViewModel) {

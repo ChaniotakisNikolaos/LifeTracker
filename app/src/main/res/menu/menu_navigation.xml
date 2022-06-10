@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/all_to_do_items"
-        android:title="All To Do" />
+        android:title="All To Do"
+        />
 
 
 </menu>
