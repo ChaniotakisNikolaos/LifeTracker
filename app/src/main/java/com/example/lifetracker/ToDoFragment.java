@@ -34,6 +34,7 @@ public class ToDoFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private int labelID = 1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -69,6 +70,9 @@ public class ToDoFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        NavigationView navView = (requireActivity()).findViewById(R.id.menu_navigation);
+        Menu m = navView.getMenu();
+        m.add(0, 0,0,"All To Do").setIcon(R.drawable.ic_baseline_label_24);
         //AppDatabase db = Room.databaseBuilder(this.getActivity().getApplicationContext(),AppDatabase.class, "life-tracker-db").build();
         //toDoItemArrayList = db.dao().getToDoItems();
     }
@@ -85,28 +89,10 @@ public class ToDoFragment extends Fragment {
         applicationViewModel = new ViewModelProvider(this.requireActivity()).get(ApplicationViewModel.class);
         applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(), toDoItems -> {
             toDoRecyclerViewAdapter.submitList(toDoItems);
-            Log.d("test","change observed");
-            String toDoLabel;
+            Log.d("cccccctest","change observed");
             NavigationView navView = (requireActivity()).findViewById(R.id.menu_navigation);
             Menu m = navView.getMenu();
-            boolean menuFlag = false;
-            for(ToDoItem todo: toDoItems){
-                toDoLabel = todo.getLabel();
-                if(!toDoLabel.isEmpty()){
-                    for(int i=0;i<m.size();i++){
-                        if(m.getItem(i).getTitle().equals(toDoLabel)){
-                            menuFlag = false;
-                            break;
-                        }else{
-                            menuFlag = true;
-                        }
-                    }
-                    if(menuFlag){
-                        MenuItem foo_menu_item=m.add(toDoLabel);
-                        menuFlag = false;
-                    }
-                }
-            }
+            checkIfExistsInMenu(toDoItems, m);
             //MenuItem foo_menu_item=m.add("foo");
             //Log.d("ccccc", String.valueOf(navView.getMenu()));
         });
@@ -119,6 +105,46 @@ public class ToDoFragment extends Fragment {
         ((MainActivity)requireActivity()).setDrawerUnlocked();
     }
 
+    public void checkIfExistsInMenu(List<ToDoItem> toDoItems, Menu m){
+        boolean menuFlag = false;
+        String toDoLabel;
+        for(ToDoItem todo: toDoItems){
+            toDoLabel = todo.getLabel();
+            if(!toDoLabel.isEmpty()){
+                for(int i=0;i<m.size();i++){
+                    if(m.getItem(i).getTitle().equals(toDoLabel)){
+                        menuFlag = false;
+                        break;
+                    }else{
+                        menuFlag = true;
+                    }
+                }
+                if(menuFlag){
+                    m.add(0, labelID,0,toDoLabel).setIcon(R.drawable.ic_baseline_label_24);
+                    labelID++;
+                }
+            }
+        }
+        checkIfExistsInLabel(toDoItems, m);
+    }
+    public void checkIfExistsInLabel(List<ToDoItem> toDoItems, Menu m){
+        boolean menuFlag = false;
+        String toDoLabel;
+        for(int i=1;i<m.size();i++) {
+            for(ToDoItem todo: toDoItems) {
+                toDoLabel = todo.getLabel();
+                if(m.getItem(i).getTitle().equals(toDoLabel)){
+                    menuFlag = false;
+                    break;
+                }else{
+                    menuFlag = true;
+                }
+            }
+            if(menuFlag) {
+                m.removeItem(m.getItem(i).getItemId());
+            }
+        }
+    }
     @Override
     public void onPause(){
         super.onPause();
