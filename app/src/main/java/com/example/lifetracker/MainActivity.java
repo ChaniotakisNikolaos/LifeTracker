@@ -36,6 +36,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     private ApplicationViewModel applicationViewModel;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
+    Boolean toShowAll = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,22 +75,27 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         // to toggle the button
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        /*drawerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("ccccccc","OKKKKKK");
-            }
-        });*/
-        // to make the Navigation drawer icon always appear on the action bar
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
-        /*applicationViewModel.getToDoItemList().observe(this, new Observer<List<ToDoItem>>() {
-            @Override
-            public void onChanged(List<ToDoItem> toDoItems) {
 
+        /*NavigationView navigationView = findViewById(R.id.menu_navigation);
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            int id = menuItem.getItemId();
+            if(id != 0){
+                Log.d("ccccc", String.valueOf(id));
+                toShowAll = false;
+                /*ToDoRecyclerViewAdapter toDoRecyclerViewAdapter = new ToDoRecyclerViewAdapter(new ToDoRecyclerViewAdapter.ToDoDiff());
+                applicationViewModel.getAllToDoItemsWithLabel(menuItem.getTitle().toString()).observe(this, toDoItems -> {
+                    applicationViewModel.getAllToDoItemsWithLabel(menuItem.getTitle().toString());
+                    Log.d("cccccctest","changeeeeeee observed");
+
+                });
+                toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
             }
+            return true;
         });*/
+
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPager2);
@@ -154,12 +161,12 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     // drawer when the icon is clicked
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
     /**
      * Called when the user taps the plus button
      */

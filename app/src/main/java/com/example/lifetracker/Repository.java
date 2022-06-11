@@ -22,6 +22,7 @@ import java.util.concurrent.Executors;
 public class Repository {
     private Dao dao;
     private LiveData<List<ToDoItem>> toDoList;
+    private LiveData<List<ToDoItem>> toDoLabelList;
     private LiveData<List<BudgetItem>> budgetList;
     private final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
@@ -83,6 +84,11 @@ public class Repository {
     }
 
     public LiveData<List<ToDoItem>> getAllToDoItems(){
+        return toDoList;
+    }
+
+    public LiveData<List<ToDoItem>> getAllToDoItemsWithLabel(String label){
+        toDoList = dao.getAllToDoItemsWithLabel(label);
         return toDoList;
     }
 

@@ -1,18 +1,17 @@
 package com.example.lifetracker;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +32,9 @@ public class ToDoFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    boolean toShowAll = true;
     private int labelID = 1;
+    private String labelName = null;
     NavigationView navView;
     Menu m;
     // TODO: Rename and change types of parameters
@@ -81,20 +81,54 @@ public class ToDoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((MainActivity)requireActivity()).setDrawerUnlocked();
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_to_do, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+
         ToDoRecyclerViewAdapter toDoRecyclerViewAdapter = new ToDoRecyclerViewAdapter(new ToDoRecyclerViewAdapter.ToDoDiff());
         recyclerView.setAdapter(toDoRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
         applicationViewModel = new ViewModelProvider(this.requireActivity()).get(ApplicationViewModel.class);
+
+        Log.d("cccccctest", "nexttttttttttttttttttt");
+        showAllToDos(toDoRecyclerViewAdapter);
+        toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
+        //NavigationView navigationView = requireActivity().findViewById(R.id.menu_navigation);
+        navView.setNavigationItemSelectedListener(menuItem -> {
+            int id = menuItem.getItemId();
+            for(int j=0;j<m.size();j++) {
+                if(j != id) {
+                    Log.d("ffffff", "1111111111111   "+j);
+                    m.getItem(j).setIcon(R.drawable.ic_baseline_label_24);
+                }
+                else {
+                    Log.d("ffffff", "0000000000000     "+id);
+                    menuItem.setIcon(R.drawable.ic_baseline_current_label_24);
+                }
+            }
+            if (id != 0) {
+                labelName = menuItem.getTitle().toString();
+                applicationViewModel.getAllToDoItemsWithLabel(labelName).observe(getViewLifecycleOwner(), toDoItems -> {
+                    toDoRecyclerViewAdapter.submitList(toDoItems);
+                    Log.d("cccccctest", "change");
+                });
+            } else {
+                Log.d("cccccctest", menuItem.getTitle().toString());
+                showAllToDos(toDoRecyclerViewAdapter);
+                //toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
+            }
+            return true;
+        });
+        return view;
+    }
+    public void showAllToDos(ToDoRecyclerViewAdapter toDoRecyclerViewAdapter){
         applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(), toDoItems -> {
             toDoRecyclerViewAdapter.submitList(toDoItems);
-            Log.d("cccccctest","change observed");
-            checkIfExistsInMenu(toDoItems, m);
+            Log.d("cccccctest", "change observed");
+            checkIfExistsInMenu(toDoItems);
         });
-        toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
-        return view;
     }
     @Override
     public void onResume(){
@@ -102,7 +136,7 @@ public class ToDoFragment extends Fragment {
         ((MainActivity)requireActivity()).setDrawerUnlocked();
     }
 
-    public void checkIfExistsInMenu(List<ToDoItem> toDoItems, Menu m){
+    public void checkIfExistsInMenu(List<ToDoItem> toDoItems){
         boolean menuFlag = false;
         String toDoLabel;
         for(ToDoItem todo: toDoItems){
@@ -122,9 +156,9 @@ public class ToDoFragment extends Fragment {
                 }
             }
         }
-        checkIfExistsInLabel(toDoItems, m);
+        checkIfExistsInLabel(toDoItems);
     }
-    public void checkIfExistsInLabel(List<ToDoItem> toDoItems, Menu m){
+    public void checkIfExistsInLabel(List<ToDoItem> toDoItems){
         boolean menuFlag = false;
         String toDoLabel;
         for(int i=1;i<m.size();i++) {

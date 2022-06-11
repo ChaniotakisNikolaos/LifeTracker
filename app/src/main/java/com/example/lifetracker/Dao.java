@@ -22,7 +22,7 @@ public interface Dao {
 
 
     @Query("SELECT * FROM ToDoItem WHERE label=:label")
-    LiveData<List<ToDoItem>> getAllToDoItemsLabel(String label);
+    LiveData<List<ToDoItem>> getAllToDoItemsWithLabel(String label);
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
