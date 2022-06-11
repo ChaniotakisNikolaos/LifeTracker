@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -75,6 +76,35 @@ public class AddToDoItemActivity extends AppCompatActivity {
         if(isEmpty) {
             ToDoItem toDoItem = new ToDoItem(toDoEditText.getText().toString().trim(), label.getText().toString().trim(), dueDateTextView.getText().toString(), reminderTextView.getText().toString());
 
+            Intent intent = getIntent();
+            if(!toDoEditText.getText().toString().equals(intent.getStringExtra(EXTRA_DESCRIPTION)) || !reminderTextView.getText().toString().equals(intent.getStringExtra(EXTRA_REMINDER))){
+                //delete notification either because the values changed or because it was deleted
+                Log.d("aaaaaaaaaaDELETE","delete");
+                Intent alarmIntent = new Intent(this, ReminderReceiver.class);
+                AlarmManager alarmManager = (AlarmManager)this.getSystemService(MainActivity.ALARM_SERVICE);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, toDoItem.getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                alarmManager.cancel(pendingIntent);
+
+                if(!reminderTextView.getText().toString().isEmpty()){
+                    Log.d("aaaaaaaaaaNEWWWW","new");
+                    //create new notification
+                    alarmIntent.putExtra("name", toDoItem.getDescription());
+                    alarmIntent.putExtra("id", toDoItem.getId());
+                    PendingIntent pendingIntentNew = PendingIntent.getBroadcast(this, toDoItem.getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+                    String myDate = toDoItem.getReminder();
+                    Log.d("aaaaaaaaaaNEWWWW",myDate);
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
+                    try {
+                        cal.setTime(Objects.requireNonNull(sdf.parse(myDate)));// all done
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    long timeInMillis =cal.getTimeInMillis();
+                    alarmManager.set(AlarmManager.RTC_WAKEUP,timeInMillis, pendingIntentNew);//RTC_WAKEUP will wake up the device to fire the pending intent at the specified time
+                }
+            }
             Toast.makeText(this, "TODO item added", Toast.LENGTH_SHORT).show();
 
             Intent replyIntent = new Intent();
