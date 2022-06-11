@@ -75,8 +75,8 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
                             ToDoItem toDoItem = getItem(adapterPosition);
                             //cancel notification
                             Intent alarmIntent = new Intent(view.getContext(), ReminderReceiver.class);
-                            alarmIntent.putExtra("name", toDoItem.getDescription());
-                            alarmIntent.putExtra("id", toDoItem.getId());
+                            //alarmIntent.putExtra("name", toDoItem.getDescription());
+                            //alarmIntent.putExtra("id", toDoItem.getId());
                             AlarmManager alarmManager = (AlarmManager) view.getContext().getSystemService(Context.ALARM_SERVICE);
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(view.getContext(), toDoItem.getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                             alarmManager.cancel(pendingIntent);

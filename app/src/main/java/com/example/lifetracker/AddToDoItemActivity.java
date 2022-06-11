@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -68,6 +69,23 @@ public class AddToDoItemActivity extends AppCompatActivity {
     public void addToDoItem(View v) {
         boolean isEmpty = true;
 
+        //check if reminder is before the current time
+        String myDate = reminderTextView.getText().toString();
+        long timeInMillis = 0;
+        if(myDate.trim().length() != 0) {
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
+            try {
+                cal.setTime(Objects.requireNonNull(sdf.parse(myDate)));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            timeInMillis = cal.getTimeInMillis();
+            if (timeInMillis <= System.currentTimeMillis()) {
+                Toast.makeText(this, "You cannot put a reminder for a past time", Toast.LENGTH_SHORT).show();
+                isEmpty = false;
+            }
+        }
         if(toDoEditText.getText().toString().trim().length() == 0){
             Toast.makeText(this,"You must put a Description",Toast.LENGTH_SHORT).show();
             isEmpty = false;
@@ -75,6 +93,28 @@ public class AddToDoItemActivity extends AppCompatActivity {
         if(isEmpty) {
             ToDoItem toDoItem = new ToDoItem(toDoEditText.getText().toString().trim(), label.getText().toString().trim(), dueDateTextView.getText().toString(), reminderTextView.getText().toString());
 
+            Intent intent = getIntent();
+            if(intent.getBooleanExtra("EDIT_MODE",false) && (!toDoEditText.getText().toString().equals(intent.getStringExtra(EXTRA_DESCRIPTION)) || !reminderTextView.getText().toString().equals(intent.getStringExtra(EXTRA_REMINDER)))){
+                //delete notification either because the values changed or because it was deleted
+                Log.d("aaaaaaaaaaDELETE","delete");
+                Intent alarmIntent = new Intent(this, ReminderReceiver.class);
+                AlarmManager alarmManager = (AlarmManager)this.getSystemService(MainActivity.ALARM_SERVICE);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, toDoItem.getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                alarmManager.cancel(pendingIntent);
+
+                if(!reminderTextView.getText().toString().isEmpty()){
+                    Log.d("aaaaaaaaaaNEWWWW","new");
+                    Log.d("aaaaaaaaaaNEWWWW",myDate);
+                    Log.d("aaaaaaaaaaNEWWWW", String.valueOf(toDoId));
+
+                    //create new notification
+                    alarmIntent.putExtra("name", toDoEditText.getText().toString().trim());
+                    alarmIntent.putExtra("id", toDoId);
+                    PendingIntent pendingIntentNew = PendingIntent.getBroadcast(this, toDoId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+                    alarmManager.set(AlarmManager.RTC_WAKEUP,timeInMillis, pendingIntentNew);//RTC_WAKEUP will wake up the device to fire the pending intent at the specified time
+                }
+            }
             Toast.makeText(this, "TODO item added", Toast.LENGTH_SHORT).show();
 
             Intent replyIntent = new Intent();
