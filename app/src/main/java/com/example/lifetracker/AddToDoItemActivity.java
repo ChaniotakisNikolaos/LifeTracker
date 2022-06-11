@@ -54,8 +54,8 @@ public class AddToDoItemActivity extends AppCompatActivity {
             addToDoButton.setText("Edit");
             toDoEditText.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
             label.setText(intent.getStringExtra(EXTRA_LABEL));
-            reminderTextView.setText(intent.getStringExtra(EXTRA_DUE_DATE));
-            dueDateTextView.setText(intent.getStringExtra(EXTRA_REMINDER));
+            reminderTextView.setText(intent.getStringExtra(EXTRA_REMINDER));
+            dueDateTextView.setText(intent.getStringExtra(EXTRA_DUE_DATE));
             toDoId = intent.getIntExtra(EXTRA_ID,-1);
         }
     }
