@@ -38,11 +38,12 @@ public class ToDoFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    boolean toShowAll = true;
     private int labelID = 1;
+    private int currentId = 0;
     private String labelName = null;
-    NavigationView navView;
-    Menu m;
+    private NavigationView navView;
+    private Menu m;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -79,7 +80,7 @@ public class ToDoFragment extends Fragment {
         }
         navView = (requireActivity()).findViewById(R.id.menu_navigation);
         m = navView.getMenu();
-        m.add(0, 0,0,"All To Do").setIcon(R.drawable.ic_baseline_label_24);
+        m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
         //AppDatabase db = Room.databaseBuilder(this.getActivity().getApplicationContext(),AppDatabase.class, "life-tracker-db").build();
         //toDoItemArrayList = db.dao().getToDoItems();
     }
@@ -98,37 +99,38 @@ public class ToDoFragment extends Fragment {
 
         applicationViewModel = new ViewModelProvider(this.requireActivity()).get(ApplicationViewModel.class);
 
-        Log.d("cccccctest", "nexttttttttttttttttttt");
         showAllToDos(toDoRecyclerViewAdapter);
         toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
-        //NavigationView navigationView = requireActivity().findViewById(R.id.menu_navigation);
         navView.setNavigationItemSelectedListener(menuItem -> {
-            int id = menuItem.getItemId();
-            for(int j=0;j<m.size();j++) {
-                if(j != id) {
-                    Log.d("ffffff", "1111111111111   "+j);
-                    m.getItem(j).setIcon(R.drawable.ic_baseline_label_24);
+            currentId = menuItem.getItemId();
+            if(!menuItem.isChecked()) {
+                for(int mId=0;mId<m.size();mId++){
+                    if(m.getItem(mId).isChecked()){
+                        Log.d("nnnnnISCHECKED", "checked fOUND");
+                        m.getItem(mId).setChecked(false);
+                        m.getItem(mId).setIcon(R.drawable.ic_baseline_label_24);
+                        break;
+                    }
                 }
-                else {
-                    Log.d("ffffff", "0000000000000     "+id);
-                    menuItem.setIcon(R.drawable.ic_baseline_current_label_24);
-                }
+                menuItem.setChecked(true);
+                menuItem.setIcon(R.drawable.ic_baseline_current_label_24);
             }
-            if (id != 0) {
+            if (currentId != 0) {
                 labelName = menuItem.getTitle().toString();
                 applicationViewModel.getAllToDoItemsWithLabel(labelName).observe(getViewLifecycleOwner(), toDoItems -> {
-                    toDoRecyclerViewAdapter.submitList(toDoItems);
-                    Log.d("cccccctest", "change");
+                    if(!m.getItem(0).isChecked()) {
+                        Log.d("nnnnnn", String.valueOf(menuItem.getItemId()));
+                        toDoRecyclerViewAdapter.submitList(toDoItems);
+                        Log.d("nnnnnn", "SUBMIIIIIIIIIIT");
+                    }
                 });
             } else {
-                Log.d("cccccctest", menuItem.getTitle().toString());
                 showAllToDos(toDoRecyclerViewAdapter);
-                //toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
             }
-            return true;
+            return false;
         });
-        toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
-          ActivityResultLauncher<Intent> editToDoItemActivityResultLauncher = registerForActivityResult(
+
+        ActivityResultLauncher<Intent> editToDoItemActivityResultLauncher = registerForActivityResult(
                   new ActivityResultContracts.StartActivityForResult(),
                   new ActivityResultCallback<ActivityResult>() {
                       @Override
@@ -159,8 +161,10 @@ public class ToDoFragment extends Fragment {
     }
     public void showAllToDos(ToDoRecyclerViewAdapter toDoRecyclerViewAdapter){
         applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(), toDoItems -> {
-            toDoRecyclerViewAdapter.submitList(toDoItems);
-            Log.d("cccccctest", "change observed");
+            if(m.getItem(0).isChecked()) {
+                Log.d("nnnnnntest", "change observed");
+                toDoRecyclerViewAdapter.submitList(toDoItems);
+            }
             checkIfExistsInMenu(toDoItems);
         });
     }
@@ -185,7 +189,7 @@ public class ToDoFragment extends Fragment {
                     }
                 }
                 if(menuFlag){
-                    m.add(0, labelID,0,toDoLabel).setIcon(R.drawable.ic_baseline_label_24);
+                    m.add(Menu.NONE, labelID,Menu.NONE,toDoLabel).setIcon(R.drawable.ic_baseline_label_24);
                     labelID++;
                 }
             }
@@ -194,6 +198,7 @@ public class ToDoFragment extends Fragment {
     }
     public void checkIfExistsInLabel(List<ToDoItem> toDoItems){
         boolean menuFlag = false;
+        boolean isUserCurrentlyOn;
         String toDoLabel;
         for(int i=1;i<m.size();i++) {
             for(ToDoItem todo: toDoItems) {
@@ -206,7 +211,11 @@ public class ToDoFragment extends Fragment {
                 }
             }
             if(menuFlag) {
+                isUserCurrentlyOn = m.getItem(i).isChecked();
                 m.removeItem(m.getItem(i).getItemId());
+                if(isUserCurrentlyOn){
+                    m.getItem(0).setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
+                }
             }
         }
     }
