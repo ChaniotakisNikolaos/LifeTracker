@@ -55,7 +55,7 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
     static class BudgetDiff extends DiffUtil.ItemCallback<BudgetItem> {
         @Override
         public boolean areItemsTheSame(@NonNull BudgetItem oldItem, @NonNull BudgetItem newItem) {
-            return oldItem == newItem;
+            return oldItem.getId() == newItem.getId();
         }
 
         @Override
