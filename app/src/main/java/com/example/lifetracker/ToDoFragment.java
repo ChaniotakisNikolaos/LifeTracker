@@ -1,5 +1,7 @@
 package com.example.lifetracker;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -11,6 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -121,6 +127,34 @@ public class ToDoFragment extends Fragment {
             }
             return true;
         });
+        toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
+          ActivityResultLauncher<Intent> editToDoItemActivityResultLauncher = registerForActivityResult(
+                  new ActivityResultContracts.StartActivityForResult(),
+                  new ActivityResultCallback<ActivityResult>() {
+                      @Override
+                      public void onActivityResult(ActivityResult result) {
+                          if (result.getResultCode() == Activity.RESULT_OK) {
+                              // There are no request codes
+                              Intent data = result.getData();
+                              ToDoItem toDoItem = new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER));
+                              toDoItem.setId(data.getIntExtra(AddToDoItemActivity.EXTRA_ID,-1));
+                              applicationViewModel.update(toDoItem);
+                          }
+                      }
+                  });
+          toDoRecyclerViewAdapter.setMenuItemClickListener(new ToDoRecyclerViewAdapter.MenuItemClickListener() {
+              @Override
+              public void onEditClick(ToDoItem toDoItem) {
+                  Intent intent = new Intent(ToDoFragment.this.getActivity(), AddToDoItemActivity.class);
+                  intent.putExtra("EDIT_MODE",true);
+                  intent.putExtra(AddToDoItemActivity.EXTRA_DESCRIPTION,toDoItem.getDescription());
+                  intent.putExtra(AddToDoItemActivity.EXTRA_LABEL,toDoItem.getLabel());
+                  intent.putExtra(AddToDoItemActivity.EXTRA_REMINDER,toDoItem.getReminder());
+                  intent.putExtra(AddToDoItemActivity.EXTRA_DUE_DATE,toDoItem.getDueDate());
+                  intent.putExtra(AddToDoItemActivity.EXTRA_ID,toDoItem.getId());
+                  editToDoItemActivityResultLauncher.launch(intent);
+              }
+          });
         return view;
     }
     public void showAllToDos(ToDoRecyclerViewAdapter toDoRecyclerViewAdapter){

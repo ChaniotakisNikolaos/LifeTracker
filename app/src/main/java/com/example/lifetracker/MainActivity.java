@@ -454,7 +454,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         inflater.inflate(R.menu.popup_to_do_item, popup.getMenu());
         popup.show();
     }
-
     @Override
     public void setDrawerLocked() {
         //code to lock drawer
