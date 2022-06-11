@@ -1,7 +1,6 @@
 package com.example.lifetracker;
 
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerViewAdapter.MyViewHolder> {
     ApplicationViewModel applicationViewModel;
+    MenuItemClickListener listener;
 
     protected ToDoRecyclerViewAdapter(@NonNull DiffUtil.ItemCallback<ToDoItem> diffCallback) {
         super(diffCallback);
@@ -31,7 +31,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
     @NonNull
     @Override
     public ToDoRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return MyViewHolder.create(parent);
+        return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false));
     }
 
     @Override
@@ -60,25 +60,22 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        if(menuItem.getTitle().toString().equals("Edit")){
-
+                        int adapterPosition=holder.getAdapterPosition();//get the current position of the to do item
+                        if (adapterPosition==RecyclerView.NO_POSITION) //check if the position is valid
+                            return false; //Position is not valid, ignore click
+                        if(menuItem.getTitle().charAt(0)=='E'){ //Find out which menuItem was pressed (true for Edit, false for Delete)
+                            listener.onEditClick(getItem(adapterPosition));
                         }else{
-                            int adapterPosition=holder.getAdapterPosition();
-                            Log.d("adapterPosition",String.valueOf(adapterPosition));
-                            if(adapterPosition>RecyclerView.NO_POSITION) {
-                                ToDoItem toDoItem = getItem(adapterPosition);
+                            ToDoItem toDoItem = getItem(adapterPosition);
+                            //cancel notification
+                            Intent alarmIntent = new Intent(view.getContext(), ReminderReceiver.class);
+                            alarmIntent.putExtra("name", toDoItem.getDescription());
+                            alarmIntent.putExtra("id", toDoItem.getId());
+                            AlarmManager alarmManager = (AlarmManager) view.getContext().getSystemService(Context.ALARM_SERVICE);
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(view.getContext(), toDoItem.getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                            alarmManager.cancel(pendingIntent);
 
-                                Intent alarmIntent = new Intent(view.getContext(), ReminderReceiver.class);
-                                alarmIntent.putExtra("name", toDoItem.getDescription());
-                                alarmIntent.putExtra("id", toDoItem.getId());
-                                AlarmManager alarmManager = (AlarmManager) view.getContext().getSystemService(Context.ALARM_SERVICE);
-                                PendingIntent pendingIntent = PendingIntent.getBroadcast(view.getContext(), toDoItem.getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-                                alarmManager.cancel(pendingIntent);
-
-                                applicationViewModel.delete(toDoItem);
-                            }else {
-                                Log.d("test","NO_POSITION");
-                            }
+                            applicationViewModel.delete(toDoItem);
                         }
                         return false;
                     }
@@ -101,12 +98,12 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
         }
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView labelTextView, reminderTextView, dueDateTextView;
         CheckBox checkBox;
         ImageButton imageButton;
 
-        private MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             labelTextView = itemView.findViewById(R.id.textViewLabel);
             reminderTextView = itemView.findViewById(R.id.reminderTextView);
@@ -115,7 +112,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
             imageButton = itemView.findViewById(R.id.imageButton);
         }
 
-        static MyViewHolder create(ViewGroup parent) {
+         MyViewHolder create(ViewGroup parent) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
             return new MyViewHolder(view);
         }
@@ -123,5 +120,13 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
 
     public void setApplicationViewModel(ApplicationViewModel applicationViewModel) {
         this.applicationViewModel = applicationViewModel;
+    }
+
+    public interface MenuItemClickListener{
+        void onEditClick(ToDoItem toDoItem);
+    }
+
+    public void setMenuItemClickListener(MenuItemClickListener listener){
+        this.listener=listener;
     }
 }
