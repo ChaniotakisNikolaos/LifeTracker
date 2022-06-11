@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+
         addBudgetItemActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -410,4 +411,6 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.popup_to_do_item, popup.getMenu());
         popup.show();
     }
+
+
 }
