@@ -73,7 +73,8 @@ public class AddToDoItemActivity extends AppCompatActivity {
             isEmpty = false;
         }
         if(isEmpty) {
-            ToDoItem toDoItem = new ToDoItem(toDoEditText.getText().toString(), label.getText().toString(), dueDateTextView.getText().toString(), reminderTextView.getText().toString());
+            ToDoItem toDoItem = new ToDoItem(toDoEditText.getText().toString().trim(), label.getText().toString().trim(), dueDateTextView.getText().toString(), reminderTextView.getText().toString());
+
             Toast.makeText(this, "TODO item added", Toast.LENGTH_SHORT).show();
 
             Intent replyIntent = new Intent();
