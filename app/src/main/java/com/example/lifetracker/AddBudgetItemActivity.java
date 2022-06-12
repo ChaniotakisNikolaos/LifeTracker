@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,12 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
         EditText savingsNowEditText = findViewById(R.id.savingsNowEditText);
         EditText totalSavingsEditText = findViewById(R.id.totalSavingsEditText);
         TextView dueDateTextView1 = findViewById(R.id.dueDateSelectTextView1);
+        Button clearDueDateBudgetButton = findViewById(R.id.clearDueDateBudgetBtn);
+        clearDueDateBudgetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dueDateTextView1.setText("");
+            }
+        });
 
         if(budgetNameEditText.getText().toString().trim().length() == 0){
             Toast.makeText(this,"You must put a Name",Toast.LENGTH_SHORT).show();

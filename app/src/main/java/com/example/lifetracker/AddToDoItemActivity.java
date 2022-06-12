@@ -51,13 +51,13 @@ public class AddToDoItemActivity extends AppCompatActivity {
         clearReminderButton = findViewById(R.id.clearReminderBtn);
         clearReminderButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                reminderTextView.setText(null);
+                reminderTextView.setText("");
             }
         });
         clearDueDateToDoButton = findViewById(R.id.clearDueDateToDoBtn);
         clearDueDateToDoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dueDateTextView.setText(null);
+                dueDateTextView.setText("");
             }
         });
         Intent intent = getIntent();
