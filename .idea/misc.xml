@@ -4,7 +4,6 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/drawable/ic_baseline_arrow_drop_down_24.xml" value="0.1" />
-        <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/drawable/ic_baseline_current_label_24.xml" value="0.1865" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/drawable/to_do.xml" value="0.1" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/activity_add_budget_item.xml" value="0.4" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/activity_add_to_do_item.xml" value="0.1" />
@@ -25,6 +24,7 @@
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/recycler_view_item.xml" value="0.264" />
         <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/activity_add_budget_item.xml" value="0.33541666666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/activity_add_to_do_item.xml" value="0.33541666666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/activity_edit_budget_item.xml" value="0.37395833333333334" />
         <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/activity_main.xml" value="0.29393115942028986" />
         <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/dialog_add_money.xml" value="0.3234375" />
         <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/dialog_delete_budget_item.xml" value="0.3234375" />
