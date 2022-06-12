@@ -91,7 +91,7 @@ public class AddToDoItemActivity extends AppCompatActivity {
             isEmpty = false;
         }
         if(isEmpty) {
-            ToDoItem toDoItem = new ToDoItem(toDoEditText.getText().toString().trim(), label.getText().toString().trim(), dueDateTextView.getText().toString(), reminderTextView.getText().toString());
+            ToDoItem toDoItem = new ToDoItem(toDoEditText.getText().toString().trim(), label.getText().toString().trim(), dueDateTextView.getText().toString(), reminderTextView.getText().toString(), false);
 
             Intent intent = getIntent();
             if(intent.getBooleanExtra("EDIT_MODE",false) && (!toDoEditText.getText().toString().equals(intent.getStringExtra(EXTRA_DESCRIPTION)) || !reminderTextView.getText().toString().equals(intent.getStringExtra(EXTRA_REMINDER)))){

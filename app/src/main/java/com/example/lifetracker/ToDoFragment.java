@@ -138,7 +138,7 @@ public class ToDoFragment extends Fragment {
                           if (result.getResultCode() == Activity.RESULT_OK) {
                               // There are no request codes
                               Intent data = result.getData();
-                              ToDoItem toDoItem = new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER));
+                              ToDoItem toDoItem = new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER), false);
                               toDoItem.setId(data.getIntExtra(AddToDoItemActivity.EXTRA_ID,-1));
                               applicationViewModel.update(toDoItem);
                           }
