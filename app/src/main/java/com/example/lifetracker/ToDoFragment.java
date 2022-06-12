@@ -78,15 +78,18 @@ public class ToDoFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        navView = (requireActivity()).findViewById(R.id.menu_navigation);
-        m = navView.getMenu();
-        m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
+        navView = ((MainActivity)requireActivity()).navView;
+        m = ((MainActivity)requireActivity()).m;
+        //m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
+
         //AppDatabase db = Room.databaseBuilder(this.getActivity().getApplicationContext(),AppDatabase.class, "life-tracker-db").build();
         //toDoItemArrayList = db.dao().getToDoItems();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //navView = (requireActivity()).findViewById(R.id.menu_navigation);
+        //m = navView.getMenu();
         ((MainActivity)requireActivity()).setDrawerUnlocked();
 
         // Inflate the layout for this fragment
