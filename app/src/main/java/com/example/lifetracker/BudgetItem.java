@@ -2,6 +2,7 @@ package com.example.lifetracker;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -11,17 +12,28 @@ public class BudgetItem {
     @NonNull
     private String label;
     @NonNull
-    private String saved;
-    private String total;
+    private int saved;
+    private int total;
     private String dueDate;
 
-    public BudgetItem(@NonNull String label, @NonNull String saved, String total, String dueDate) {
+    public BudgetItem(@NonNull String label, @NonNull int saved, int total, String dueDate) {
         this.label = label;
         this.saved = saved;
         this.total = total;
         this.dueDate = dueDate;
     }
 
+    public void addSaved(int amount){
+        saved+=amount;
+    }
+    @Ignore
+    public BudgetItem(BudgetItem budgetItem){
+        this.id = budgetItem.id;
+        this.label = budgetItem.label;
+        this.saved = budgetItem.saved;
+        this.total = budgetItem.total;
+        this.dueDate = budgetItem.dueDate;
+    }
     //getters
     public int getId() {
         return id;
@@ -33,11 +45,11 @@ public class BudgetItem {
     }
 
     @NonNull
-    public String getSaved() {
+    public int getSaved() {
         return saved;
     }
 
-    public String getTotal() {
+    public int getTotal() {
         return total;
     }
 
@@ -54,11 +66,11 @@ public class BudgetItem {
         this.label = label;
     }
 
-    public void setSaved(@NonNull String saved) {
+    public void setSaved(@NonNull int saved) {
         this.saved = saved;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 

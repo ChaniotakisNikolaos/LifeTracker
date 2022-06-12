@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             // There are no request codes
                             Intent data = result.getData();
-                            applicationViewModel.insert(new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL),data.getStringExtra(AddBudgetItemActivity.EXTRA_SAVED),data.getStringExtra(AddBudgetItemActivity.EXTRA_TOTAL),data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE)));
+                            applicationViewModel.insert(new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL),data.getIntExtra(AddBudgetItemActivity.EXTRA_SAVED,0),data.getIntExtra(AddBudgetItemActivity.EXTRA_TOTAL,0),data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE)));
                             Log.d("test","Budget inserted");
                         }
                     }
@@ -179,9 +179,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
      */
     public void addToDoItem(View view) {
         Intent intent = new Intent(this, AddToDoItemActivity.class);
-        //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
-        //String message = editText.getText().toString();
-        //intent.putExtra(EXTRA_MESSAGE, message);
         addToDoItemActivityResultLauncher.launch(intent);
     }
 
@@ -197,9 +194,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
      */
     public void addBudgetItem(View view) {
         Intent intent = new Intent(this, AddBudgetItemActivity.class);
-        //EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
-        //String message = editText.getText().toString();
-        //intent.putExtra(EXTRA_MESSAGE, message);
         addBudgetItemActivityResultLauncher.launch(intent);
     }
 
@@ -253,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         TextView addMoneyTextView;
         Button addMoneyCancelButton, addMoneySaveButton;
         dialogBuilder = new AlertDialog.Builder(this);
-        //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View addMoneyView = getLayoutInflater().inflate(R.layout.dialog_add_money, null);
         addMoneyEditText = (EditText) addMoneyView.findViewById(R.id.editTextAddAmountToBudget);
         addMoneyTextView = (TextView) addMoneyView.findViewById(R.id.textViewAddMoney);
@@ -310,35 +303,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         });
     }
 
-    public void deleteBudgetItemDialog(View view) {
-        AlertDialog.Builder dialogBuilder;
-        AlertDialog dialog;
-        TextView deleteBudgetItemTextView;
-        Button deleteBudgetItemCancelButton, deleteBudgetItemButton;
-        dialogBuilder = new AlertDialog.Builder(this);
-        //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View deleteBudgetItemView = getLayoutInflater().inflate(R.layout.dialog_delete_budget_item, null);
-        deleteBudgetItemTextView = (TextView) deleteBudgetItemView.findViewById(R.id.textViewDeleteBudgetItem);
-        deleteBudgetItemCancelButton = (Button) deleteBudgetItemView.findViewById(R.id.buttonCancelDeleteBudgetItem);
-        deleteBudgetItemButton = (Button) deleteBudgetItemView.findViewById(R.id.buttonDeleteBudgetItem);
-
-        dialogBuilder.setView(deleteBudgetItemView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-
-        deleteBudgetItemCancelButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //close dialog
-                dialog.dismiss();
-            }
-        });
-
-        deleteBudgetItemButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-            }
-        });
-    }
     ActivityResultLauncher<Intent> startActivityIntentCamera = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
