@@ -79,8 +79,10 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
 
         applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
 
-        /*NavigationView navigationView = findViewById(R.id.menu_navigation);
-        navigationView.setNavigationItemSelectedListener(menuItem -> {
+        NavigationView navigationView = findViewById(R.id.menu_navigation);
+        Menu m = navigationView.getMenu();
+        m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
+         /*navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if(id != 0){
                 Log.d("ccccc", String.valueOf(id));
@@ -391,17 +393,17 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
 
         photoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                alertDialogProfPic.dismiss();
                 if(checkAndRequestPermission()) {
                     takePictureFromCamera();
-                    alertDialogProfPic.dismiss();
                 }
             }
         });
 
         galleryButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                takePictureFromGallery();
                 alertDialogProfPic.dismiss();
+                takePictureFromGallery();
             }
         });
 
