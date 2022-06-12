@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     private ApplicationViewModel applicationViewModel;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
+    public NavigationView navView;
+    public Menu m;
     Boolean toShowAll = true;
 
     @Override
@@ -75,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         // to toggle the button
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+        navView = findViewById(R.id.menu_navigation);
+        m = navView.getMenu();
+        m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
 
 
         applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
