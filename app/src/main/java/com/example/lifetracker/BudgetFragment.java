@@ -80,10 +80,7 @@ public class BudgetFragment extends Fragment {
 
             @Override
             public void onAddClick(BudgetItem budgetItem) {
-                BudgetItem i2 = new BudgetItem(budgetItem.getLabel(),budgetItem.getSaved(),budgetItem.getTotal(),budgetItem.getDueDate());
-                i2.setId(budgetItem.getId());
-                applicationViewModel.update(i2);
-                //applicationViewModel.update(budgetItem);
+                applicationViewModel.update(budgetItem);
             }
         });
         return view;

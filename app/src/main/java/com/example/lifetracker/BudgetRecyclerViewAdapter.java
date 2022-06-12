@@ -81,10 +81,11 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
             });
 
             addMoneySaveButton.setOnClickListener(v -> {
-                BudgetItem budgetItem1 = getItem(adapterPosition);
+                BudgetItem oldBudgetItem1 = getItem(adapterPosition);
+                BudgetItem newBudgetItem = new BudgetItem(oldBudgetItem1);
                 Log.d("add",addMoneyEditText.getText().toString());
-                budgetItem1.addSaved(Integer.parseInt(addMoneyEditText.getText().toString()));
-                listener.onAddClick(budgetItem1);
+                newBudgetItem.addSaved(Integer.parseInt(addMoneyEditText.getText().toString()));
+                listener.onAddClick(newBudgetItem);
                 dialog.dismiss();
             });
         });

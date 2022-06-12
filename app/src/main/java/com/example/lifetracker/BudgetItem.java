@@ -2,6 +2,7 @@ package com.example.lifetracker;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -25,7 +26,14 @@ public class BudgetItem {
     public void addSaved(int amount){
         saved+=amount;
     }
-
+    @Ignore
+    public BudgetItem(BudgetItem budgetItem){
+        this.id = budgetItem.id;
+        this.label = budgetItem.label;
+        this.saved = budgetItem.saved;
+        this.total = budgetItem.total;
+        this.dueDate = budgetItem.dueDate;
+    }
     //getters
     public int getId() {
         return id;
