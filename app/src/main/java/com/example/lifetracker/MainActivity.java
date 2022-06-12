@@ -84,9 +84,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
 
         applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
 
-        NavigationView navigationView = findViewById(R.id.menu_navigation);
-        Menu m = navigationView.getMenu();
-        m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
          /*navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if(id != 0){
