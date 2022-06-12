@@ -22,6 +22,10 @@ public class BudgetItem {
         this.dueDate = dueDate;
     }
 
+    public void addSaved(int amount){
+        saved+=amount;
+    }
+
     //getters
     public int getId() {
         return id;

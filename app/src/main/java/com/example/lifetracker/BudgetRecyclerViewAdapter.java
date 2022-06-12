@@ -1,6 +1,8 @@
 package com.example.lifetracker;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +24,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.MessageFormat;
 
 public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecyclerViewAdapter.MyViewHolder> {
+    OnClickListener listener;
+
     public BudgetRecyclerViewAdapter(@NonNull DiffUtil.ItemCallback<BudgetItem> diffCallback) {
         super(diffCallback);
     }
@@ -50,6 +54,39 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         cs.clone(cl);
         cs.setHorizontalBias(R.id.percentageLabel, percentage/100);
         cs.applyTo(cl);
+
+        holder.deleteButton.setOnClickListener(view -> {
+            int adapterPosition=holder.getAdapterPosition();//get the current position of the budget item
+            if(adapterPosition == RecyclerView.NO_POSITION) return;
+            AlertDialog.Builder dialogBuilder;
+            AlertDialog dialog;
+            TextView deleteBudgetItemTextView;
+            Button deleteBudgetItemCancelButton, deleteBudgetItemButton;
+            dialogBuilder = new AlertDialog.Builder(view.getContext());
+            LayoutInflater inflater = (LayoutInflater)view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View deleteBudgetItemView = inflater.inflate(R.layout.dialog_delete_budget_item, null);
+            deleteBudgetItemTextView = (TextView) deleteBudgetItemView.findViewById(R.id.textViewDeleteBudgetItem);
+            deleteBudgetItemCancelButton = (Button) deleteBudgetItemView.findViewById(R.id.buttonCancelDeleteBudgetItem);
+            deleteBudgetItemButton = (Button) deleteBudgetItemView.findViewById(R.id.buttonDeleteBudgetItem);
+
+            dialogBuilder.setView(deleteBudgetItemView);
+            dialog = dialogBuilder.create();
+            dialog.show();
+
+            deleteBudgetItemCancelButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    //close dialog
+                    dialog.dismiss();
+                }
+            });
+
+            deleteBudgetItemButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    listener.onDeleteClick(getItem(adapterPosition));
+                    dialog.dismiss();
+                }
+            });
+        });
     }
 
     static class BudgetDiff extends DiffUtil.ItemCallback<BudgetItem> {
@@ -115,5 +152,14 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_budget_item, parent, false);
             return new BudgetRecyclerViewAdapter.MyViewHolder(view);
         }
+    }
+
+    public interface OnClickListener{
+        void onDeleteClick(BudgetItem budgetItem);
+        void onAddClick(BudgetItem budgetItem);
+    }
+
+    public void setOnClickListener(OnClickListener listener){
+        this.listener=listener;
     }
 }
