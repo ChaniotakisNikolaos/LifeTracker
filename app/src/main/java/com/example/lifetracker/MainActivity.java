@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     private ApplicationViewModel applicationViewModel;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
+    public NavigationView navView;
+    public Menu m;
     Boolean toShowAll = true;
 
     @Override
@@ -75,12 +77,17 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         // to toggle the button
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+        navView = findViewById(R.id.menu_navigation);
+        m = navView.getMenu();
+        m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
 
 
         applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
 
-        /*NavigationView navigationView = findViewById(R.id.menu_navigation);
-        navigationView.setNavigationItemSelectedListener(menuItem -> {
+        NavigationView navigationView = findViewById(R.id.menu_navigation);
+        Menu m = navigationView.getMenu();
+        m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
+         /*navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if(id != 0){
                 Log.d("ccccc", String.valueOf(id));
@@ -135,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             // There are no request codes
                             Intent data = result.getData();
-                            applicationViewModel.insert(new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER)), MainActivity.this);
+                            applicationViewModel.insert(new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER), false), MainActivity.this);
                         }
                     }
                 });
@@ -391,17 +398,17 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
 
         photoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                alertDialogProfPic.dismiss();
                 if(checkAndRequestPermission()) {
                     takePictureFromCamera();
-                    alertDialogProfPic.dismiss();
                 }
             }
         });
 
         galleryButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                takePictureFromGallery();
                 alertDialogProfPic.dismiss();
+                takePictureFromGallery();
             }
         });
 

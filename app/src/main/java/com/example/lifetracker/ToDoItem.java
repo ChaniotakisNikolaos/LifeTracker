@@ -14,16 +14,22 @@ public class ToDoItem {
     private String label;
     private String dueDate;
     private String reminder;
+    private boolean isSelected;
 
-    public ToDoItem(String description, String label, String dueDate, String reminder) {
+    public ToDoItem(String description, String label, String dueDate, String reminder, boolean isSelected) {
         this.description = description;
         this.label = label;
         this.dueDate = dueDate;
         this.reminder = reminder;
+        this.isSelected = isSelected;
     }
 
     public int getId() {
         return id;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
     }
 
     public String getDescription() {
@@ -60,5 +66,10 @@ public class ToDoItem {
 
     public void setReminder(String reminder) {
         this.reminder = reminder;
+    }
+
+    public boolean setSelected(boolean selected) {
+        this.isSelected = selected;
+        return selected;
     }
 }

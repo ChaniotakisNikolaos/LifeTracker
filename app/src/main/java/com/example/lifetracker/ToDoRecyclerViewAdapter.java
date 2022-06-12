@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,11 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -54,6 +57,38 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
             holder.dueDateTextView.setVisibility(View.VISIBLE);
         }
         holder.checkBox.setText(toDoItem.getDescription());
+        holder.checkBox.setChecked(toDoItem.isSelected());
+        if(getItem(holder.getAdapterPosition()).isSelected()) {
+            holder.checkBox.setPaintFlags(holder.checkBox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.cardView.setCardBackgroundColor(0xADF0E7F3);
+        }else{
+            holder.checkBox.setPaintFlags(holder.checkBox.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.cardView.setCardBackgroundColor(0xFFF0E7F3);
+        }
+
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = ((CheckBox) v).isChecked();
+                int adapterPosition=holder.getAdapterPosition();//get the current position of the to do item
+                // Check which checkbox was clicked
+                if (checked){
+                    Log.d("cccccccccc","checkd");
+                    holder.checkBox.setChecked(getItem(adapterPosition).setSelected(true));
+                    if(getItem(adapterPosition).isSelected()) {
+                        holder.checkBox.setPaintFlags(holder.checkBox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        holder.cardView.setCardBackgroundColor(0xADF0E7F3);
+                    }
+                }else{
+                    Log.d("cccccccccc","NO");
+                    holder.checkBox.setChecked(getItem(adapterPosition).setSelected(false));
+                    if(!getItem(adapterPosition).isSelected()) {
+                        holder.checkBox.setPaintFlags(holder.checkBox.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                        holder.cardView.setCardBackgroundColor(0xFFF0E7F3);
+                    }
+                }
+            }
+        });
         holder.labelTextView.setText(toDoItem.getLabel());
         holder.reminderTextView.setText(toDoItem.getReminder());
         holder.dueDateTextView.setText(toDoItem.getDueDate());
@@ -75,8 +110,6 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
                             ToDoItem toDoItem = getItem(adapterPosition);
                             //cancel notification
                             Intent alarmIntent = new Intent(view.getContext(), ReminderReceiver.class);
-                            //alarmIntent.putExtra("name", toDoItem.getDescription());
-                            //alarmIntent.putExtra("id", toDoItem.getId());
                             AlarmManager alarmManager = (AlarmManager) view.getContext().getSystemService(Context.ALARM_SERVICE);
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(view.getContext(), toDoItem.getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                             alarmManager.cancel(pendingIntent);
@@ -107,14 +140,17 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView labelTextView, reminderTextView, dueDateTextView;
         CheckBox checkBox;
+        CardView cardView;
         ImageButton imageButton;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            cardView = itemView.findViewById(R.id.cardView2);
             labelTextView = itemView.findViewById(R.id.textViewLabel);
             reminderTextView = itemView.findViewById(R.id.reminderTextView);
             dueDateTextView = itemView.findViewById(R.id.dueDateTextView);
             checkBox = itemView.findViewById(R.id.checkBox);
+
             imageButton = itemView.findViewById(R.id.imageButton);
         }
 
