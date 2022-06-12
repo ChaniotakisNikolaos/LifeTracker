@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             // There are no request codes
                             Intent data = result.getData();
-                            applicationViewModel.insert(new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL),data.getStringExtra(AddBudgetItemActivity.EXTRA_SAVED),data.getStringExtra(AddBudgetItemActivity.EXTRA_TOTAL),data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE)));
+                            applicationViewModel.insert(new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL),data.getIntExtra(AddBudgetItemActivity.EXTRA_SAVED,0),data.getIntExtra(AddBudgetItemActivity.EXTRA_TOTAL,0),data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE)));
                             Log.d("test","Budget inserted");
                         }
                     }

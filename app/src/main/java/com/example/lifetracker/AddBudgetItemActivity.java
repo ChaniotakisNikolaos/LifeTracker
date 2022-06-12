@@ -48,7 +48,7 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
         }
 
         if(isEmpty) {
-            BudgetItem budgetItem = new BudgetItem(budgetNameEditText.getText().toString(),savingsNowEditText.getText().toString(),totalSavingsEditText.getText().toString(),dueDateTextView1.getText().toString());
+            BudgetItem budgetItem = new BudgetItem(budgetNameEditText.getText().toString(),Integer.parseInt(savingsNowEditText.getText().toString()),Integer.parseInt(totalSavingsEditText.getText().toString()),dueDateTextView1.getText().toString());
             Toast.makeText(this, "Budget item added", Toast.LENGTH_SHORT).show();
             Intent replyIntent = new Intent();
             boolean checks = false;

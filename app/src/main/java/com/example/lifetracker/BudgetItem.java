@@ -11,11 +11,11 @@ public class BudgetItem {
     @NonNull
     private String label;
     @NonNull
-    private String saved;
-    private String total;
+    private int saved;
+    private int total;
     private String dueDate;
 
-    public BudgetItem(@NonNull String label, @NonNull String saved, String total, String dueDate) {
+    public BudgetItem(@NonNull String label, @NonNull int saved, int total, String dueDate) {
         this.label = label;
         this.saved = saved;
         this.total = total;
@@ -37,11 +37,11 @@ public class BudgetItem {
     }
 
     @NonNull
-    public String getSaved() {
+    public int getSaved() {
         return saved;
     }
 
-    public String getTotal() {
+    public int getTotal() {
         return total;
     }
 
@@ -58,11 +58,11 @@ public class BudgetItem {
         this.label = label;
     }
 
-    public void setSaved(@NonNull String saved) {
+    public void setSaved(@NonNull int saved) {
         this.saved = saved;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 

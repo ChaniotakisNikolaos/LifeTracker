@@ -69,6 +69,7 @@ public class BudgetFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         ApplicationViewModel applicationViewModel = new ViewModelProvider(this.requireActivity()).get(ApplicationViewModel.class);
         applicationViewModel.getBudgetItemList().observe(getViewLifecycleOwner(), budgetItems -> {
+            Log.d("budget items","Change observed");
             budgetRecyclerViewAdapter.submitList(budgetItems);
         });
         budgetRecyclerViewAdapter.setOnClickListener(new BudgetRecyclerViewAdapter.OnClickListener(){
@@ -79,7 +80,10 @@ public class BudgetFragment extends Fragment {
 
             @Override
             public void onAddClick(BudgetItem budgetItem) {
-                applicationViewModel.update(budgetItem);
+                BudgetItem i2 = new BudgetItem(budgetItem.getLabel(),budgetItem.getSaved(),budgetItem.getTotal(),budgetItem.getDueDate());
+                i2.setId(budgetItem.getId());
+                applicationViewModel.update(i2);
+                //applicationViewModel.update(budgetItem);
             }
         });
         return view;
