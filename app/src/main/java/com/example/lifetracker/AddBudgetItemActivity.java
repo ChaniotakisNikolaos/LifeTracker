@@ -54,6 +54,17 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
     public void addBudgetItem(View v) {
         boolean isEmpty = true;
 
+        EditText budgetNameEditText = findViewById(R.id.budgetNameEditText);
+        EditText savingsNowEditText = findViewById(R.id.savingsNowEditText);
+        EditText totalSavingsEditText = findViewById(R.id.totalSavingsEditText);
+        TextView dueDateTextView1 = findViewById(R.id.dueDateSelectTextView1);
+        Button clearDueDateBudgetButton = findViewById(R.id.clearDueDateBudgetBtn);
+        clearDueDateBudgetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dueDateTextView1.setText("");
+            }
+        });
+
         if(budgetNameEditText.getText().toString().trim().length() == 0){
             Toast.makeText(this,"You must put a Name",Toast.LENGTH_SHORT).show();
             isEmpty = false;
