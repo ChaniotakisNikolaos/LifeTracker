@@ -157,6 +157,11 @@ public class ToDoFragment extends Fragment {
                   intent.putExtra(AddToDoItemActivity.EXTRA_ID,toDoItem.getId());
                   editToDoItemActivityResultLauncher.launch(intent);
               }
+
+              @Override
+              public void onUpdate(ToDoItem toDoItem) {
+                  applicationViewModel.update(toDoItem);
+              }
           });
         return view;
     }
