@@ -1,11 +1,17 @@
 package com.example.lifetracker;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -72,6 +78,20 @@ public class BudgetFragment extends Fragment {
             Log.d("budget items","Change observed");
             budgetRecyclerViewAdapter.submitList(budgetItems);
         });
+
+        ActivityResultLauncher<Intent> editBudgetItemActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        BudgetItem budgetItem = new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL),data.getIntExtra(AddBudgetItemActivity.EXTRA_SAVED,0),data.getIntExtra(AddBudgetItemActivity.EXTRA_TOTAL,0),data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE));
+                        budgetItem.setId(data.getIntExtra(AddBudgetItemActivity.EXTRA_ID,-1));
+                        Log.d("budget edit",String.valueOf(budgetItem.getId())+" "+budgetItem.getLabel());
+                        applicationViewModel.update(budgetItem);
+                    }
+                });
+
         budgetRecyclerViewAdapter.setOnClickListener(new BudgetRecyclerViewAdapter.OnClickListener(){
             @Override
             public void onDeleteClick(BudgetItem budgetItem) {
@@ -81,6 +101,17 @@ public class BudgetFragment extends Fragment {
             @Override
             public void onAddClick(BudgetItem budgetItem) {
                 applicationViewModel.update(budgetItem);
+            }
+
+            @Override
+            public void onEditClick(BudgetItem item) {
+                Intent intent = new Intent(BudgetFragment.this.getActivity(),AddBudgetItemActivity.class);
+                intent.putExtra(AddBudgetItemActivity.EXTRA_ID,item.getId());
+                intent.putExtra(AddBudgetItemActivity.EXTRA_LABEL,item.getLabel());
+                intent.putExtra(AddBudgetItemActivity.EXTRA_SAVED,item.getSaved());
+                intent.putExtra(AddBudgetItemActivity.EXTRA_TOTAL,item.getTotal());
+                intent.putExtra(AddBudgetItemActivity.EXTRA_DUE_DATE,item.getDueDate());
+                editBudgetItemActivityResultLauncher.launch(intent);
             }
         });
         return view;

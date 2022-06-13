@@ -119,6 +119,12 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
             });
         });
 
+        holder.editButton.setOnClickListener(view -> {
+            int adapterPosition=holder.getAdapterPosition();//get the current position of the budget item
+            if(adapterPosition == RecyclerView.NO_POSITION) return;
+            listener.onEditClick(getItem(adapterPosition));
+        });
+
         holder.deleteButton.setOnClickListener(view -> {
             int adapterPosition=holder.getAdapterPosition();//get the current position of the budget item
             if(adapterPosition == RecyclerView.NO_POSITION) return;
@@ -183,10 +189,6 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
                     addButton.setVisibility(View.VISIBLE);
                     minusButton.setVisibility(View.VISIBLE);
                     editButton.setVisibility(View.VISIBLE);
-                    editButton.setOnClickListener(v1 -> {
-                        Intent intent = new Intent(v1.getContext(), EditBudgetItemActivity.class);
-                        v1.getContext().startActivity(intent);
-                    });
                     deleteButton.setVisibility(View.VISIBLE);
                     showButtons=true;
                 }else{
@@ -209,6 +211,7 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
     public interface OnClickListener{
         void onDeleteClick(BudgetItem budgetItem);
         void onAddClick(BudgetItem budgetItem);
+        void onEditClick(BudgetItem item);
     }
 
     public void setOnClickListener(OnClickListener listener){
