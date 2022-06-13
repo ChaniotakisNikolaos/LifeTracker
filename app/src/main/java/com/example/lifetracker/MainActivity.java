@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,11 +34,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -45,7 +45,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
-import java.util.Objects;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements MyDrawerControllerInterface {
 
@@ -62,11 +67,16 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public NavigationView navView;
     public Menu m;
+    CircularImageView imageViewProfPic;
+
     Boolean toShowAll = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        imageViewProfPic = findViewById(R.id.imageView);
+
+
         setContentView(R.layout.activity_main);
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
@@ -310,15 +320,40 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                 public void onActivityResult(ActivityResult result) {
                     if(result.getResultCode() == RESULT_OK){
                         Intent data = result.getData();
-                        CircularImageView imageViewProfPic = findViewById(R.id.imageView);
                         if (data != null) {
                             Bundle bundle = data.getExtras();
                             Bitmap bitmapImage = (Bitmap) bundle.get("data");
                             imageViewProfPic.setImageBitmap(bitmapImage);
+                            //savePhotoToGallery();
                         }
                     }
                 }
             });
+    private void savePhotoToGallery(){
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) imageViewProfPic.getDrawable();
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+
+        FileOutputStream fileOutputStream = null;
+        File file = Environment.getExternalStorageDirectory();
+        File directory = new File(file.getAbsolutePath() + "/NiSo");
+        directory.mkdirs();
+
+        String fileName = String.format("%d.png", System.currentTimeMillis());
+        File outputFile = new File(directory, fileName);
+        try{
+            fileOutputStream = new FileOutputStream(outputFile);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+        try{
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
     ActivityResultLauncher<Intent> startActivityIntentGallery = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -388,8 +423,20 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     private boolean checkAndRequestPermission(){
         if(Build.VERSION.SDK_INT>=23){
             int cameraPermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
+            int writePermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int readPermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            List<String> listPermissions = new ArrayList<>();
             if(cameraPermission == PackageManager.PERMISSION_DENIED){
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 20);
+                listPermissions.add(Manifest.permission.CAMERA);
+            }
+            if(writePermission == PackageManager.PERMISSION_DENIED){
+                //listPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if(readPermission == PackageManager.PERMISSION_DENIED){
+                listPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            if (!listPermissions.isEmpty()) {
+                ActivityCompat.requestPermissions(MainActivity.this, listPermissions.toArray(new String[listPermissions.size()]), 20);
                 return false;
             }
         }
@@ -399,11 +446,23 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == 20 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            takePictureFromCamera();
-            Toast.makeText(MainActivity.this, "Permission granted", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
+        Log.d("lllllllll", String.valueOf(requestCode));
+        Map<String, Integer> allowPermissions = new HashMap<>();
+        // Initialize the map with both permissions
+        //allowPermissions.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+        allowPermissions.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+        allowPermissions.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+        // Fill with actual results from user
+        if (grantResults.length > 0) {
+            for (int i = 0; i < permissions.length; i++) {
+                allowPermissions.put(permissions[i], grantResults[i]);
+            }
+            if (requestCode == 20 && allowPermissions.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && allowPermissions.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                takePictureFromCamera();
+                Toast.makeText(MainActivity.this, "Permission granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
