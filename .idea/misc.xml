@@ -6,7 +6,7 @@
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/drawable/ic_baseline_arrow_drop_down_24.xml" value="0.1" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/drawable/to_do.xml" value="0.1" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/activity_add_budget_item.xml" value="0.4" />
-        <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/activity_add_to_do_item.xml" value="0.4" />
+        <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/activity_add_to_do_item.xml" value="0.1" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/activity_edit_budget_item.xml" value="0.1" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/LifeTracker/app/src/main/res/layout/dialog_edit_budget_item.xml" value="0.1" />
@@ -34,6 +34,7 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/fragment_me.xml" value="0.42083333333333334" />
         <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/fragment_to_do.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/recycler_view_budget_item.xml" value="0.5546875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/recycler_view_calendar.xml" value="0.40370370370370373" />
         <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/layout/recycler_view_item.xml" value="0.37817028985507245" />
         <entry key="..\:/Users/user/AndroidStudioProjects/LifeTracker/app/src/main/res/menu/popup_to_do_item.xml" value="0.36302083333333335" />
       </map>

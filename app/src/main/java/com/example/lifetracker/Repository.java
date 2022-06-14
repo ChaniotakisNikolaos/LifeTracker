@@ -22,7 +22,6 @@ import java.util.concurrent.Executors;
 public class Repository {
     private Dao dao;
     private LiveData<List<ToDoItem>> toDoList;
-    private LiveData<List<ToDoItem>> toDoLabelList;
     private LiveData<List<BudgetItem>> budgetList;
     private final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
@@ -88,8 +87,11 @@ public class Repository {
     }
 
     public LiveData<List<ToDoItem>> getAllToDoItemsWithLabel(String label){
-        toDoList = dao.getAllToDoItemsWithLabel(label);
-        return toDoList;
+        return dao.getAllToDoItemsWithLabel(label);
+    }
+
+    public LiveData<List<ToDoItem>> getAllToDoItemsWithDueDate(String dueDate){
+        return dao.getToDoItems(dueDate);
     }
 
     //BUDGET
@@ -123,5 +125,9 @@ public class Repository {
 
     public LiveData<List<BudgetItem>> getAllBudgetItems(){
         return budgetList;
+    }
+
+    public LiveData<List<BudgetItem>> getBudgetItemsWithDueDate(String dueDate){
+        return dao.getBudgetItems(dueDate);
     }
 }

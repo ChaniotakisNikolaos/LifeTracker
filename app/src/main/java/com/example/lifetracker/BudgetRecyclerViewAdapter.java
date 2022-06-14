@@ -57,7 +57,7 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         cs.applyTo(cl);
 
         holder.addButton.setOnClickListener(view -> {
-            int adapterPosition=holder.getAdapterPosition();//get the current position of the budget item
+            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
             if(adapterPosition == RecyclerView.NO_POSITION) return;
             AlertDialog.Builder dialogBuilder;
             AlertDialog dialog;
@@ -89,7 +89,7 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         });
 
         holder.minusButton.setOnClickListener(view -> {
-            int adapterPosition=holder.getAdapterPosition();//get the current position of the budget item
+            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
             if(adapterPosition == RecyclerView.NO_POSITION) return;
             AlertDialog.Builder dialogBuilder;
             AlertDialog dialog;
@@ -120,13 +120,13 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         });
 
         holder.editButton.setOnClickListener(view -> {
-            int adapterPosition=holder.getAdapterPosition();//get the current position of the budget item
+            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
             if(adapterPosition == RecyclerView.NO_POSITION) return;
             listener.onEditClick(getItem(adapterPosition));
         });
 
         holder.deleteButton.setOnClickListener(view -> {
-            int adapterPosition=holder.getAdapterPosition();//get the current position of the budget item
+            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
             if(adapterPosition == RecyclerView.NO_POSITION) return;
             AlertDialog.Builder dialogBuilder;
             AlertDialog dialog;
