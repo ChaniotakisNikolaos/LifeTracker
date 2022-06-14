@@ -379,20 +379,8 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     private boolean checkAndRequestPermission(){
         if(Build.VERSION.SDK_INT>=23){
             int cameraPermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
-            int writePermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            int readPermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
-            List<String> listPermissions = new ArrayList<>();
             if(cameraPermission == PackageManager.PERMISSION_DENIED){
-                listPermissions.add(Manifest.permission.CAMERA);
-            }
-            if(writePermission == PackageManager.PERMISSION_DENIED){
-                listPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            }
-            if(readPermission == PackageManager.PERMISSION_DENIED){
-                listPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            }
-            if (!listPermissions.isEmpty()) {
-                ActivityCompat.requestPermissions(MainActivity.this, listPermissions.toArray(new String[listPermissions.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 20);
                 return false;
             }
         }
@@ -402,21 +390,10 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d("lllllllll", String.valueOf(requestCode));
-        if (requestCode == REQUEST_ID_MULTIPLE_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getApplicationContext(),"LifeTracker Requires Access to Camara.", Toast.LENGTH_SHORT).show();
-                //finish();
-            } /*else if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Toast.makeText(getApplicationContext(),"LifeTracker Requires Access to write Your Storage.",Toast.LENGTH_SHORT).show();
-                //finish();
-            } */else if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getApplicationContext(),"LifeTracker Requires Access to read Your Storage.",Toast.LENGTH_SHORT).show();
-                //finish();
-            }  else {
-                takePictureFromCamera();
-                Toast.makeText(MainActivity.this, "Permission granted", Toast.LENGTH_SHORT).show();
-            }
+        if(requestCode == 20 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            takePictureFromCamera();
+        }else{
+            Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
         }
     }
 
