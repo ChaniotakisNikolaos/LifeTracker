@@ -13,10 +13,13 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class CalendarFragment extends Fragment {
 
     ApplicationViewModel applicationViewModel;
-
+    String chosenDate;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -87,27 +90,32 @@ public class CalendarFragment extends Fragment {
             budgetRecyclerViewAdapter.submitList(budgetItems);
         });*/
 
+
         calendarRecyclerViewAdapter.setOnDateChangedListener(date -> {
-            applicationViewModel.getAllToDoItemsWithDueDate(date).observe(getViewLifecycleOwner(),toDoItems -> {
-                toDoRecyclerViewAdapter.submitList(toDoItems);
+            chosenDate = date;
+            applicationViewModel.getAllToDoItemsWithDueDate(date).observe(CalendarFragment.this.getViewLifecycleOwner(), toDoItems -> {
+                if(chosenDate.equals(date)) {
+                    Log.d("Calendar todos", "change observed for date" + date);
+                    toDoRecyclerViewAdapter.submitList(toDoItems);
+                }
             });
-            applicationViewModel.getAllBudgetItemsWithDueDate(date).observe(getViewLifecycleOwner(), budgetItems -> {
-                budgetRecyclerViewAdapter.submitList(budgetItems);
+            applicationViewModel.getAllBudgetItemsWithDueDate(date).observe(CalendarFragment.this.getViewLifecycleOwner(), budgetItems -> {
+                if(chosenDate.equals(date))  {
+                    budgetRecyclerViewAdapter.submitList(budgetItems);
+                }
             });
         });
 
+        toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
         ActivityResultLauncher<Intent> editToDoItemActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                            ToDoItem toDoItem = new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER), false);
-                            toDoItem.setId(data.getIntExtra(AddToDoItemActivity.EXTRA_ID,-1));
-                            applicationViewModel.update(toDoItem);
-                        }
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        ToDoItem toDoItem = new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER), false);
+                        toDoItem.setId(data.getIntExtra(AddToDoItemActivity.EXTRA_ID,-1));
+                        applicationViewModel.update(toDoItem);
                     }
                 });
         toDoRecyclerViewAdapter.setMenuItemClickListener(new ToDoRecyclerViewAdapter.MenuItemClickListener() {

@@ -50,7 +50,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
         holder.dueDateTextView.setVisibility(toDoItem.getDueDate().isEmpty() ? View.INVISIBLE : View.VISIBLE);
         holder.checkBox.setText(toDoItem.getDescription());
         holder.checkBox.setChecked(toDoItem.isSelected());
-        if(getItem(holder.getAdapterPosition()).isSelected()) {
+        if(getItem(holder.getBindingAdapterPosition()).isSelected()) {
             holder.checkBox.setPaintFlags(holder.checkBox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.cardView.setCardBackgroundColor(0xADF0E7F3);
         }else{
@@ -61,7 +61,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int adapterPosition=holder.getAdapterPosition();//get the current position of the to do item
+                int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the to do item
                 if(adapterPosition==RecyclerView.NO_POSITION) return;
                 boolean checked = ((CheckBox) v).isChecked();
                 ToDoItem newToDoItem = new ToDoItem(getItem(adapterPosition));
@@ -81,7 +81,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        int adapterPosition=holder.getAdapterPosition();//get the current position of the to do item
+                        int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the to do item
                         if (adapterPosition==RecyclerView.NO_POSITION) //check if the position is valid
                             return false; //Position is not valid, ignore click
                         if(menuItem.getTitle().charAt(0)=='E'){ //Find out which menuItem was pressed (true for Edit, false for Delete)

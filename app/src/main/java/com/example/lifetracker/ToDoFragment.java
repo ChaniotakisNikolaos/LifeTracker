@@ -168,7 +168,7 @@ public class ToDoFragment extends Fragment {
     public void showAllToDos(ToDoRecyclerViewAdapter toDoRecyclerViewAdapter){
         applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(), toDoItems -> {
             if(m.getItem(0).isChecked()) {
-                Log.d("nnnnnntest", "change observed");
+                Log.d("showAllToDos", "change observed");
                 toDoRecyclerViewAdapter.submitList(toDoItems);
             }
             checkIfExistsInMenu(toDoItems);
