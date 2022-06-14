@@ -35,6 +35,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -67,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public NavigationView navView;
     public Menu m;
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 20;
+
+    SharedPreferences sharedPref;
     CircularImageView imageViewProfPic;
 
     Boolean toShowAll = true;
@@ -74,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imageViewProfPic = findViewById(R.id.imageView);
 
 
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
@@ -245,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     public void changeStatus(String s){
         TextView nameTextView = findViewById(R.id.userNameTextView);
         nameTextView.setText("Hello, "+s);
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.saved_username_text_key), s);
         editor.apply();
@@ -321,36 +324,52 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                     if(result.getResultCode() == RESULT_OK){
                         Intent data = result.getData();
                         if (data != null) {
+                            imageViewProfPic = findViewById(R.id.imageView);
                             Bundle bundle = data.getExtras();
                             Bitmap bitmapImage = (Bitmap) bundle.get("data");
                             imageViewProfPic.setImageBitmap(bitmapImage);
-                            //savePhotoToGallery();
+                            savePhotoToGallery();
                         }
                     }
                 }
             });
+
     private void savePhotoToGallery(){
         BitmapDrawable bitmapDrawable = (BitmapDrawable) imageViewProfPic.getDrawable();
         Bitmap bitmap = bitmapDrawable.getBitmap();
-
+        Uri uri;
+        //create image file
         FileOutputStream fileOutputStream = null;
-        File file = Environment.getExternalStorageDirectory();
-        File directory = new File(file.getAbsolutePath() + "/NiSo");
-        directory.mkdirs();
+        try{
+            File directory = new File(this.getExternalFilesDir(null) + File.separator +"NISO");
+            if (!directory.exists()) {
+                if (directory.mkdirs()) {
+                    Log.d("directory", "Directory has been created");
+                }else{
+                    Log.d("directory", "Directory not created");
 
-        String fileName = String.format("%d.png", System.currentTimeMillis());
-        File outputFile = new File(directory, fileName);
-        try{
-            fileOutputStream = new FileOutputStream(outputFile);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-        try{
+                }
+            }
+            else
+                Log.d("directory", "Directory exists");
+            //Toast.makeText(MainActivity.this, "Directory exists", Toast.LENGTH_SHORT).show();
+            //final String filePath=directory+ File.separator + ""+ System.currentTimeMillis() + ".png";
+            final String filePath=directory+ File.separator + "profPic.png";
+            File image = new File(filePath);
+            fileOutputStream = new FileOutputStream(image);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+
+            //get absolute path
+            uri = Uri.fromFile(image);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("imagepathURI", String.valueOf(uri));
+
+            editor.apply();
             fileOutputStream.flush();
             fileOutputStream.close();
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
 
     }
@@ -373,7 +392,9 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                             }
                             imageViewProfPic.setImageBitmap(bitmapImage);*/
                             Picasso.with(getApplicationContext()).load(selectedImageUri).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageViewProfPic);
-                            //Picasso.with(getApplicationContext()).load(selectedImageUri).fit().placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).into(imageViewProfPic);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("imagepathURI", String.valueOf(selectedImageUri));
+                            editor.apply();
                         }
                     }
                 }
@@ -430,13 +451,13 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                 listPermissions.add(Manifest.permission.CAMERA);
             }
             if(writePermission == PackageManager.PERMISSION_DENIED){
-                //listPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                listPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
             if(readPermission == PackageManager.PERMISSION_DENIED){
                 listPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
             }
             if (!listPermissions.isEmpty()) {
-                ActivityCompat.requestPermissions(MainActivity.this, listPermissions.toArray(new String[listPermissions.size()]), 20);
+                ActivityCompat.requestPermissions(MainActivity.this, listPermissions.toArray(new String[listPermissions.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
                 return false;
             }
         }
@@ -447,21 +468,19 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.d("lllllllll", String.valueOf(requestCode));
-        Map<String, Integer> allowPermissions = new HashMap<>();
-        // Initialize the map with both permissions
-        //allowPermissions.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-        allowPermissions.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
-        allowPermissions.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-        // Fill with actual results from user
-        if (grantResults.length > 0) {
-            for (int i = 0; i < permissions.length; i++) {
-                allowPermissions.put(permissions[i], grantResults[i]);
-            }
-            if (requestCode == 20 && allowPermissions.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && allowPermissions.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_ID_MULTIPLE_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getApplicationContext(),"LifeTracker Requires Access to Camara.", Toast.LENGTH_SHORT).show();
+                //finish();
+            } /*else if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Toast.makeText(getApplicationContext(),"LifeTracker Requires Access to write Your Storage.",Toast.LENGTH_SHORT).show();
+                //finish();
+            } */else if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getApplicationContext(),"LifeTracker Requires Access to read Your Storage.",Toast.LENGTH_SHORT).show();
+                //finish();
+            }  else {
                 takePictureFromCamera();
                 Toast.makeText(MainActivity.this, "Permission granted", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
             }
         }
     }

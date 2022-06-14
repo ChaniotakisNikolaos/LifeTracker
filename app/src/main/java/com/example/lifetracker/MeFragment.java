@@ -2,13 +2,23 @@ package com.example.lifetracker;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,11 +71,28 @@ public class MeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View inflatedView = inflater.inflate(R.layout.fragment_me, container, false);
+
         SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
         String defaultText = getResources().getString(R.string.default_username_text);
         String username = sharedPref.getString(getString(R.string.saved_username_text_key), defaultText);
         TextView textView = inflatedView.findViewById(R.id.userNameTextView);
         textView.setText("Hello, " + username);
+
+
+        CircularImageView imageView = inflatedView.findViewById(R.id.imageView);
+        /*if (sharedPref.contains("imagepath")) {
+            String mFilePath = sharedPref.getString("imagepath",null);
+            File imgFile = new  File(mFilePath);
+            Log.d("iiiiiiiii", mFilePath);
+            if(imgFile.exists()){
+                Picasso.with(getContext()).load(Uri.parse(mFilePath)).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageView);
+            }
+        }*/
+        if (sharedPref.contains("imagepathURI")) {
+            String mFilePath = sharedPref.getString("imagepathURI",null);
+            Log.d("iiiiiiiiijjjjjjj", mFilePath);
+            Picasso.with(getContext()).load(Uri.parse(mFilePath)).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageView);
+        }
         // Inflate the layout for this fragment
         return inflatedView;
     }
