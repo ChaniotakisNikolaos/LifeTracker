@@ -2,9 +2,6 @@ package com.example.lifetracker;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,8 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
-
-import java.io.File;
 
 /**
  * A simple {@link Fragment} subclass.
