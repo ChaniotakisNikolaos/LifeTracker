@@ -57,18 +57,16 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         cs.applyTo(cl);
 
         holder.addButton.setOnClickListener(view -> {
-            int adapterPosition=holder.getAdapterPosition();//get the current position of the budget item
+            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
             if(adapterPosition == RecyclerView.NO_POSITION) return;
             AlertDialog.Builder dialogBuilder;
             AlertDialog dialog;
             EditText addMoneyEditText;
-            TextView addMoneyTextView;
             Button addMoneyCancelButton, addMoneySaveButton;
             dialogBuilder = new AlertDialog.Builder(view.getContext());
             LayoutInflater inflater = (LayoutInflater)view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View addMoneyView = inflater.inflate(R.layout.dialog_add_money, null);
             addMoneyEditText = (EditText) addMoneyView.findViewById(R.id.editTextAddAmountToBudget);
-            addMoneyTextView = (TextView) addMoneyView.findViewById(R.id.textViewAddMoney);
             addMoneyCancelButton = (Button) addMoneyView.findViewById(R.id.buttonCancelAddMoney);
             addMoneySaveButton = (Button) addMoneyView.findViewById(R.id.buttonSaveAddMoney);
 
@@ -90,8 +88,45 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
             });
         });
 
+        holder.minusButton.setOnClickListener(view -> {
+            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
+            if(adapterPosition == RecyclerView.NO_POSITION) return;
+            AlertDialog.Builder dialogBuilder;
+            AlertDialog dialog;
+            EditText subtractMoneyEditText;
+            Button subtractMoneyCancelButton, subtractMoneySaveButton;
+            dialogBuilder = new AlertDialog.Builder(view.getContext());
+            LayoutInflater inflater = (LayoutInflater)view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View subtractMoneyView = inflater.inflate(R.layout.dialog_subtract_money, null);
+            subtractMoneyEditText = (EditText) subtractMoneyView.findViewById(R.id.editTextSubtractAmountToBudget);
+            subtractMoneyCancelButton = (Button) subtractMoneyView.findViewById(R.id.buttonCancelSubtractMoney);
+            subtractMoneySaveButton = (Button) subtractMoneyView.findViewById(R.id.buttonSaveSubtractMoney);
+
+            dialogBuilder.setView(subtractMoneyView);
+            dialog = dialogBuilder.create();
+            dialog.show();
+
+            subtractMoneyCancelButton.setOnClickListener(v -> {
+                dialog.dismiss();//close dialog
+            });
+
+            subtractMoneySaveButton.setOnClickListener(v -> {
+                BudgetItem oldBudgetItem1 = getItem(adapterPosition);
+                BudgetItem newBudgetItem = new BudgetItem(oldBudgetItem1);
+                newBudgetItem.addSaved(-Integer.parseInt(subtractMoneyEditText.getText().toString()));
+                listener.onAddClick(newBudgetItem);
+                dialog.dismiss();
+            });
+        });
+
+        holder.editButton.setOnClickListener(view -> {
+            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
+            if(adapterPosition == RecyclerView.NO_POSITION) return;
+            listener.onEditClick(getItem(adapterPosition));
+        });
+
         holder.deleteButton.setOnClickListener(view -> {
-            int adapterPosition=holder.getAdapterPosition();//get the current position of the budget item
+            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
             if(adapterPosition == RecyclerView.NO_POSITION) return;
             AlertDialog.Builder dialogBuilder;
             AlertDialog dialog;
@@ -107,8 +142,7 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
             dialog.show();
 
             deleteBudgetItemCancelButton.setOnClickListener(v -> {
-                //close dialog
-                dialog.dismiss();
+                dialog.dismiss();//close dialog
             });
 
             deleteBudgetItemButton.setOnClickListener(v -> {
@@ -155,10 +189,6 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
                     addButton.setVisibility(View.VISIBLE);
                     minusButton.setVisibility(View.VISIBLE);
                     editButton.setVisibility(View.VISIBLE);
-                    editButton.setOnClickListener(v1 -> {
-                        Intent intent = new Intent(v1.getContext(), EditBudgetItemActivity.class);
-                        v1.getContext().startActivity(intent);
-                    });
                     deleteButton.setVisibility(View.VISIBLE);
                     showButtons=true;
                 }else{
@@ -181,6 +211,7 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
     public interface OnClickListener{
         void onDeleteClick(BudgetItem budgetItem);
         void onAddClick(BudgetItem budgetItem);
+        void onEditClick(BudgetItem item);
     }
 
     public void setOnClickListener(OnClickListener listener){

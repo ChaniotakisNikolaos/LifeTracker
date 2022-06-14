@@ -46,19 +46,11 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ToDoRecyclerViewAdapter.MyViewHolder holder, int position) {
         ToDoItem toDoItem = getItem(position);
-        if(toDoItem.getReminder().isEmpty()){
-            holder.reminderTextView.setVisibility(View.INVISIBLE);
-        }else{
-            holder.reminderTextView.setVisibility(View.VISIBLE);
-        }
-        if(toDoItem.getDueDate().isEmpty()){
-            holder.dueDateTextView.setVisibility(View.INVISIBLE);
-        }else{
-            holder.dueDateTextView.setVisibility(View.VISIBLE);
-        }
+        holder.reminderTextView.setVisibility(toDoItem.getReminder().isEmpty() ? View.INVISIBLE : View.VISIBLE);
+        holder.dueDateTextView.setVisibility(toDoItem.getDueDate().isEmpty() ? View.INVISIBLE : View.VISIBLE);
         holder.checkBox.setText(toDoItem.getDescription());
         holder.checkBox.setChecked(toDoItem.isSelected());
-        if(getItem(holder.getAdapterPosition()).isSelected()) {
+        if(getItem(holder.getBindingAdapterPosition()).isSelected()) {
             holder.checkBox.setPaintFlags(holder.checkBox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.cardView.setCardBackgroundColor(0xADF0E7F3);
         }else{
@@ -69,24 +61,12 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the to do item
+                if(adapterPosition==RecyclerView.NO_POSITION) return;
                 boolean checked = ((CheckBox) v).isChecked();
-                int adapterPosition=holder.getAdapterPosition();//get the current position of the to do item
-                // Check which checkbox was clicked
-                if (checked){
-                    Log.d("cccccccccc","checkd");
-                    holder.checkBox.setChecked(getItem(adapterPosition).setSelected(true));
-                    if(getItem(adapterPosition).isSelected()) {
-                        holder.checkBox.setPaintFlags(holder.checkBox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                        holder.cardView.setCardBackgroundColor(0xADF0E7F3);
-                    }
-                }else{
-                    Log.d("cccccccccc","NO");
-                    holder.checkBox.setChecked(getItem(adapterPosition).setSelected(false));
-                    if(!getItem(adapterPosition).isSelected()) {
-                        holder.checkBox.setPaintFlags(holder.checkBox.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-                        holder.cardView.setCardBackgroundColor(0xFFF0E7F3);
-                    }
-                }
+                ToDoItem newToDoItem = new ToDoItem(getItem(adapterPosition));
+                newToDoItem.setSelected(checked);
+                listener.onUpdate(newToDoItem);
             }
         });
         holder.labelTextView.setText(toDoItem.getLabel());
@@ -101,7 +81,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        int adapterPosition=holder.getAdapterPosition();//get the current position of the to do item
+                        int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the to do item
                         if (adapterPosition==RecyclerView.NO_POSITION) //check if the position is valid
                             return false; //Position is not valid, ignore click
                         if(menuItem.getTitle().charAt(0)=='E'){ //Find out which menuItem was pressed (true for Edit, false for Delete)
@@ -133,7 +113,11 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
 
         @Override
         public boolean areContentsTheSame(@NonNull ToDoItem oldItem, @NonNull ToDoItem newItem) {
-            return oldItem.getDescription().equals(newItem.getDescription()) && oldItem.getDueDate().equals(newItem.getDueDate()) && oldItem.getLabel().equals(newItem.getLabel()) && oldItem.getReminder().equals(newItem.getReminder());
+            return oldItem.getDescription().equals(newItem.getDescription()) &&
+                    oldItem.getDueDate().equals(newItem.getDueDate()) &&
+                    oldItem.getLabel().equals(newItem.getLabel()) &&
+                    oldItem.getReminder().equals(newItem.getReminder()) &&
+                    oldItem.isSelected() == newItem.isSelected();
         }
     }
 
@@ -167,6 +151,7 @@ public class ToDoRecyclerViewAdapter extends ListAdapter<ToDoItem,ToDoRecyclerVi
 
     public interface MenuItemClickListener{
         void onEditClick(ToDoItem toDoItem);
+        void onUpdate(ToDoItem toDoItem);
     }
 
     public void setMenuItemClickListener(MenuItemClickListener listener){

@@ -157,13 +157,18 @@ public class ToDoFragment extends Fragment {
                   intent.putExtra(AddToDoItemActivity.EXTRA_ID,toDoItem.getId());
                   editToDoItemActivityResultLauncher.launch(intent);
               }
+
+              @Override
+              public void onUpdate(ToDoItem toDoItem) {
+                  applicationViewModel.update(toDoItem);
+              }
           });
         return view;
     }
     public void showAllToDos(ToDoRecyclerViewAdapter toDoRecyclerViewAdapter){
         applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(), toDoItems -> {
             if(m.getItem(0).isChecked()) {
-                Log.d("nnnnnntest", "change observed");
+                Log.d("showAllToDos", "change observed");
                 toDoRecyclerViewAdapter.submitList(toDoItems);
             }
             checkIfExistsInMenu(toDoItems);

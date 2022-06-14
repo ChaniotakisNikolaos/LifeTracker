@@ -98,10 +98,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
 
         applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
 
-        /*NavigationView navigationView = findViewById(R.id.menu_navigation);
-        Menu m = navigationView.getMenu();
-        m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
-         navigationView.setNavigationItemSelectedListener(menuItem -> {
+         /*navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if(id != 0){
                 Log.d("ccccc", String.valueOf(id));
@@ -252,68 +249,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.saved_username_text_key), s);
         editor.apply();
-    }
-    public void addMoneyDialog(View view) {
-        AlertDialog.Builder dialogBuilder;
-        AlertDialog dialog;
-        EditText addMoneyEditText;
-        TextView addMoneyTextView;
-        Button addMoneyCancelButton, addMoneySaveButton;
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View addMoneyView = getLayoutInflater().inflate(R.layout.dialog_add_money, null);
-        addMoneyEditText = (EditText) addMoneyView.findViewById(R.id.editTextAddAmountToBudget);
-        addMoneyTextView = (TextView) addMoneyView.findViewById(R.id.textViewAddMoney);
-        addMoneyCancelButton = (Button) addMoneyView.findViewById(R.id.buttonCancelAddMoney);
-        addMoneySaveButton = (Button) addMoneyView.findViewById(R.id.buttonSaveAddMoney);
-
-        dialogBuilder.setView(addMoneyView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-
-        addMoneyCancelButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //close dialog
-                dialog.dismiss();
-            }
-        });
-
-        addMoneySaveButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-            }
-        });
-    }
-
-    public void subtractMoneyDialog(View view) {
-        AlertDialog.Builder dialogBuilder;
-        AlertDialog dialog;
-        EditText subtractMoneyEditText;
-        TextView subtractMoneyTextView;
-        Button subtractMoneyCancelButton, subtractMoneySaveButton;
-        dialogBuilder = new AlertDialog.Builder(this);
-        //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View subtractMoneyView = getLayoutInflater().inflate(R.layout.dialog_subtract_money, null);
-        subtractMoneyEditText = (EditText) subtractMoneyView.findViewById(R.id.editTextSubtractAmountToBudget);
-        subtractMoneyTextView = (TextView) subtractMoneyView.findViewById(R.id.textViewSubtractMoney);
-        subtractMoneyCancelButton = (Button) subtractMoneyView.findViewById(R.id.buttonCancelSubtractMoney);
-        subtractMoneySaveButton = (Button) subtractMoneyView.findViewById(R.id.buttonSaveSubtractMoney);
-
-        dialogBuilder.setView(subtractMoneyView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-
-        subtractMoneyCancelButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //close dialog
-                dialog.dismiss();
-            }
-        });
-
-        subtractMoneySaveButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     ActivityResultLauncher<Intent> startActivityIntentCamera = registerForActivityResult(
@@ -497,12 +432,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
 
     }
 
-    public void showPopup(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.popup_to_do_item, popup.getMenu());
-        popup.show();
-    }
     @Override
     public void setDrawerLocked() {
         //code to lock drawer

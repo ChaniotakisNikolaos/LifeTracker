@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,9 +19,6 @@ import androidx.fragment.app.DialogFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
@@ -37,6 +33,7 @@ public class AddToDoItemActivity extends AppCompatActivity {
     private EditText label;
     private TextView reminderTextView;
     private TextView dueDateTextView;
+    private Button clearReminderButton, clearDueDateToDoButton;
     private int toDoId;
 
     @Override
@@ -50,6 +47,19 @@ public class AddToDoItemActivity extends AppCompatActivity {
         label = findViewById(R.id.labelEditText);
         reminderTextView = findViewById(R.id.reminderSelectTextView);
         dueDateTextView = findViewById(R.id.dueDateSelectTextView);
+
+        clearReminderButton = findViewById(R.id.clearReminderBtn);
+        clearReminderButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                reminderTextView.setText("");
+            }
+        });
+        clearDueDateToDoButton = findViewById(R.id.clearDueDateToDoBtn);
+        clearDueDateToDoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dueDateTextView.setText("");
+            }
+        });
         Intent intent = getIntent();
         if(intent.getBooleanExtra("EDIT_MODE",false)){
             addToDoButton.setText("Edit");
