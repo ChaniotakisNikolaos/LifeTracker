@@ -15,7 +15,7 @@ public interface Dao {
     List<ToDoItem> getToDoItems();
 
     @Query("SELECT * FROM ToDoItem WHERE dueDate=:dueDate")
-    List<ToDoItem> getToDoItems(String dueDate);
+    LiveData<List<ToDoItem>> getToDoItems(String dueDate);
 
     @Query("SELECT * FROM ToDoItem")
     LiveData<List<ToDoItem>> getAllToDoItems();
@@ -38,7 +38,7 @@ public interface Dao {
     List<BudgetItem> getBudgetItems();
 
     @Query("SELECT * FROM BudgetItem WHERE dueDate=:dueDate")
-    List<BudgetItem> getBudgetItems(String dueDate);
+    LiveData<List<BudgetItem>> getBudgetItems(String dueDate);
 
     @Query("SELECT * FROM BudgetItem")
     LiveData<List<BudgetItem>> getAllBudgetItems();

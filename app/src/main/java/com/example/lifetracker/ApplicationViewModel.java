@@ -13,7 +13,9 @@ public class ApplicationViewModel extends AndroidViewModel {
     private Repository repository;
     private LiveData<List<ToDoItem>> toDoItemList;
     private LiveData<List<ToDoItem>> toDoItemLabelList;
+    private LiveData<List<ToDoItem>> toDoDListDueDate;
     private final LiveData<List<BudgetItem>> budgetItemList;
+    private LiveData<List<BudgetItem>> budgetListDueDate;
 
     public ApplicationViewModel(@NonNull Application application) {
         super(application);
@@ -44,6 +46,11 @@ public class ApplicationViewModel extends AndroidViewModel {
         return toDoItemLabelList;
     }
 
+    public LiveData<List<ToDoItem>> getAllToDoItemsWithDueDate(String dueDate){
+        toDoDListDueDate = repository.getAllToDoItemsWithDueDate(dueDate);
+        return toDoDListDueDate;
+    }
+
     //BUDGET
     public void insert(BudgetItem budgetItem){
         repository.insert(budgetItem);
@@ -59,5 +66,10 @@ public class ApplicationViewModel extends AndroidViewModel {
 
     public LiveData<List<BudgetItem>> getBudgetItemList() {
         return budgetItemList;
+    }
+
+    public LiveData<List<BudgetItem>> getAllBudgetItemsWithDueDate(String dueDate){
+        budgetListDueDate = repository.getBudgetItemsWithDueDate(dueDate);
+        return budgetListDueDate;
     }
 }
