@@ -97,7 +97,6 @@ public class ToDoFragment extends Fragment {
 
         navView = (requireActivity()).findViewById(R.id.menu_navigation);
         m = navView.getMenu();
-        //m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
         navView.setNavigationItemSelectedListener(menuItem -> {
             currentId = menuItem.getItemId();
             if(!menuItem.isChecked()) {

@@ -46,7 +46,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/taskOverviewTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/finishedTasksTextView"
         android:layout_width="0dp"
         android:layout_height="124dp"
         android:layout_marginTop="16dp"
@@ -72,13 +72,13 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/textView5"
+        app:layout_constraintEnd_toStartOf="@+id/pendingTasksTextView"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="@+id/taskOverviewTextView"
+        app:layout_constraintTop_toBottomOf="@+id/taskOverviewTextView" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/pendingTasksTextView"
         android:layout_width="0dp"
         android:layout_height="124dp"
         android:layout_marginStart="8dp"
@@ -89,8 +89,8 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintEnd_toEndOf="@+id/taskOverviewTextView"
+        app:layout_constraintStart_toEndOf="@+id/finishedTasksTextView"
+        app:layout_constraintTop_toBottomOf="@+id/taskOverviewTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
