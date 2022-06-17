@@ -2,6 +2,7 @@ package com.example.lifetracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -79,7 +80,16 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
         if(isEmpty) {
             BudgetItem budgetItem = new BudgetItem(budgetNameEditText.getText().toString(),Integer.parseInt(savingsNowEditText.getText().toString()),Integer.parseInt(totalSavingsEditText.getText().toString()),dueDateTextView1.getText().toString());
             Toast.makeText(this, "Budget item added", Toast.LENGTH_SHORT).show();
+
             Intent replyIntent = new Intent();
+            if(Integer.parseInt(savingsNowEditText.getText().toString())>=Integer.parseInt(totalSavingsEditText.getText().toString())) {
+                Toast toast= Toast.makeText(this, "Congratulations!\nYou hit your goal for: "+budgetNameEditText.getText().toString()+"!",Toast.LENGTH_SHORT);
+                TextView toastV = toast.getView().findViewById(android.R.id.message);
+                toastV.setGravity(Gravity.CENTER);
+                toast.setGravity(Gravity.TOP, 0, 0);
+                toast.show();
+            }
+
             boolean checks = false;
             if (checks) {
                 setResult(RESULT_CANCELED, replyIntent);

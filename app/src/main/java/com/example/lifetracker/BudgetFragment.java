@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -14,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,6 +104,13 @@ public class BudgetFragment extends Fragment {
             @Override
             public void onAddClick(BudgetItem budgetItem) {
                 applicationViewModel.update(budgetItem);
+                if(budgetItem.getSaved()>= budgetItem.getTotal()) {
+                    Toast toast = Toast.makeText(BudgetFragment.this.getContext(), "Congratulations!\nYou hit your goal for: " + budgetItem.getLabel() + "!", Toast.LENGTH_SHORT);
+                    TextView toastV = toast.getView().findViewById(android.R.id.message);
+                    toastV.setGravity(Gravity.CENTER);
+                    toast.setGravity(Gravity.TOP, 0, 0);
+                    toast.show();
+                }
             }
 
             @Override

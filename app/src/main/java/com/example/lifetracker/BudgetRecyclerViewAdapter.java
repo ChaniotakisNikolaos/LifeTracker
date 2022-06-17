@@ -3,7 +3,9 @@ package com.example.lifetracker;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,7 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         if(percentage > 100){
             percentage = 100;
         }
+
         holder.progressBar.setProgress((int)percentage);
         holder.percentageLabel.setText(MessageFormat.format("{0}%", String.valueOf((int) percentage)));
 
@@ -61,6 +64,13 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         cs.setHorizontalBias(R.id.percentageLabel, (float) percentage/100);
         cs.applyTo(cl);
 
+        /*if(percentage == 100){
+            Toast toast= Toast.makeText(cl.getContext(), "Congratulations!\nYou hit your goal for: "+holder.budgetLabel.getText()+"!",Toast.LENGTH_SHORT);
+            TextView v = toast.getView().findViewById(android.R.id.message);
+            v.setGravity(Gravity.CENTER);
+            toast.setGravity(Gravity.TOP, 0, 0);
+            toast.show();
+        }*/
         holder.addButton.setOnClickListener(view -> {
             int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
             if(adapterPosition == RecyclerView.NO_POSITION) return;
