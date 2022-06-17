@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.MessageFormat;
 
@@ -45,7 +47,11 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         holder.budgetLabel.setText(budgetItem.getLabel());
         holder.savingsLabel.setText(MessageFormat.format("{0}€/{1}€", budgetItem.getSaved(), budgetItem.getTotal()));
         holder.dueDateBudgetTV.setText(budgetItem.getDueDate());
+
         float percentage = (float)budgetItem.getSaved()/budgetItem.getTotal()*100;
+        if(percentage > 100){
+            percentage = 100;
+        }
         holder.progressBar.setProgress((int)percentage);
         holder.percentageLabel.setText(MessageFormat.format("{0}%", String.valueOf((int) percentage)));
 
@@ -81,9 +87,13 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
                 BudgetItem oldBudgetItem1 = getItem(adapterPosition);
                 BudgetItem newBudgetItem = new BudgetItem(oldBudgetItem1);
                 Log.d("add",addMoneyEditText.getText().toString());
-                newBudgetItem.addSaved(Integer.parseInt(addMoneyEditText.getText().toString()));
-                listener.onAddClick(newBudgetItem);
-                dialog.dismiss();
+                if(addMoneyEditText.getText().toString().isEmpty()) {
+                    Toast.makeText(cl.getContext(), "You have to insert an amount.",Toast.LENGTH_SHORT).show();
+                }else {
+                    newBudgetItem.addSaved(Integer.parseInt(addMoneyEditText.getText().toString()));
+                    listener.onAddClick(newBudgetItem);
+                    dialog.dismiss();
+                }
             });
         });
 
@@ -112,9 +122,17 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
             subtractMoneySaveButton.setOnClickListener(v -> {
                 BudgetItem oldBudgetItem1 = getItem(adapterPosition);
                 BudgetItem newBudgetItem = new BudgetItem(oldBudgetItem1);
-                newBudgetItem.addSaved(-Integer.parseInt(subtractMoneyEditText.getText().toString()));
-                listener.onAddClick(newBudgetItem);
-                dialog.dismiss();
+                if(subtractMoneyEditText.getText().toString().isEmpty()){
+                    Toast.makeText(cl.getContext(), "You have to insert an amount.",Toast.LENGTH_SHORT).show();
+                }else {
+                    if ((oldBudgetItem1.getSaved() - Integer.parseInt(subtractMoneyEditText.getText().toString())) < 0) {
+                        Toast.makeText(cl.getContext(), "You cannot subtract that amount of money.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        newBudgetItem.addSaved(-Integer.parseInt(subtractMoneyEditText.getText().toString()));
+                        listener.onAddClick(newBudgetItem);
+                        dialog.dismiss();
+                    }
+                }
             });
         });
 
