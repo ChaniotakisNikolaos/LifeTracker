@@ -8,11 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 //This activity is used to add or edit a BudgetItem
-public class AddBudgetItemActivity  extends AppCompatActivity {
+public class AddBudgetItemActivity extends AppCompatActivity {
     //The names of the extra data to put in the intent and get from the intent(get is used only in edit mode)
     public static final String EXTRA_ID = "com.example.lifetracker.BUDGET_ID";
     public static final String EXTRA_LABEL = "com.example.lifetracker.BUDGET_LABEL";
@@ -36,20 +37,22 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
         totalSavingsEditText = findViewById(R.id.totalSavingsEditText);
         dueDateTextView1 = findViewById(R.id.dueDateSelectTextView1);
         Button confirmButton = findViewById(R.id.button2);
+        Button clearDueDateBudgetButton = findViewById(R.id.clearDueDateBudgetBtn);
+        clearDueDateBudgetButton.setOnClickListener(v1 -> dueDateTextView1.setText(""));//Resets the due date
 
         Intent intent = getIntent();// Get intent to check if in add or edit mode
-        budgetId= intent.getIntExtra(EXTRA_ID,-1); //The id of the BudgetItem to be edited if in edit mode otherwise it defaults to -1(Add mode)
-        if (budgetId!=-1){ //Edit BudgetItem mode
+        budgetId = intent.getIntExtra(EXTRA_ID, -1); //The id of the BudgetItem to be edited if in edit mode otherwise it defaults to -1(Add mode)
+        if (budgetId != -1) { //true:Edit mode false:Add mode
             //Field text initialization based on the edited BudgetItem
             budgetNameEditText.setText(intent.getStringExtra(EXTRA_LABEL));
-            savingsNowEditText.setText(String.valueOf(intent.getIntExtra(EXTRA_SAVED,0)));
-            totalSavingsEditText.setText(String.valueOf(intent.getIntExtra(EXTRA_TOTAL,0)));
+            savingsNowEditText.setText(String.valueOf(intent.getIntExtra(EXTRA_SAVED, 0)));
+            totalSavingsEditText.setText(String.valueOf(intent.getIntExtra(EXTRA_TOTAL, 0)));
             dueDateTextView1.setText(intent.getStringExtra(EXTRA_DUE_DATE));
             confirmButton.setText(R.string.editString);//Change button text from Add to Edit
         }
     }
 
-    //Shows a DatePickerDialog for the user to pick a due date after he clicks on the due date TextView
+    //Shows a DatePickerDialog for the user to pick a due date after he clicks on the dueDateTextView
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = DatePickerFragment.newInstance(v.getId());
         newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -59,30 +62,27 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
     public void addBudgetItem(View v) {
         boolean isNotEmpty = true;//Required fields are the total amount and the name, becomes false if either is empty
 
-        Button clearDueDateBudgetButton = findViewById(R.id.clearDueDateBudgetBtn);
-        clearDueDateBudgetButton.setOnClickListener(v1 -> dueDateTextView1.setText(""));//Resets due date
-
-        if(budgetNameEditText.getText().toString().trim().length() == 0){//is the name empty
-            Toast.makeText(this,"You must put a Name",Toast.LENGTH_SHORT).show();
+        if (budgetNameEditText.getText().toString().trim().length() == 0) {//is the name empty
+            Toast.makeText(this, "You must put a Name", Toast.LENGTH_SHORT).show();
             isNotEmpty = false;
         }
-        if(savingsNowEditText.getText().toString().trim().length() == 0){//is savings are empty they default to 0
+        if (savingsNowEditText.getText().toString().trim().length() == 0) {//is savings are empty they default to 0
             savingsNowEditText.setText("0");
         }
-        if(totalSavingsEditText.getText().toString().trim().length() == 0){//is the total amount empty
-            Toast.makeText(this,"You must put the total amount",Toast.LENGTH_SHORT).show();
+        if (totalSavingsEditText.getText().toString().trim().length() == 0) {//is the total amount empty
+            Toast.makeText(this, "You must put the total amount", Toast.LENGTH_SHORT).show();
             isNotEmpty = false;
         }
 
-        if(isNotEmpty) {
+        if (isNotEmpty) {
             //Create BudgetItem based on the users input
-            BudgetItem budgetItem = new BudgetItem(budgetNameEditText.getText().toString(),Integer.parseInt(savingsNowEditText.getText().toString()),Integer.parseInt(totalSavingsEditText.getText().toString()),dueDateTextView1.getText().toString());
-            Toast.makeText(this, "Budget item "+(budgetId==-1?"added":"edited"), Toast.LENGTH_SHORT).show();//Show proper toast message depended on whether the item is added or edited
+            BudgetItem budgetItem = new BudgetItem(budgetNameEditText.getText().toString(), Integer.parseInt(savingsNowEditText.getText().toString()), Integer.parseInt(totalSavingsEditText.getText().toString()), dueDateTextView1.getText().toString());
+            Toast.makeText(this, "Budget item " + (budgetId == -1 ? "added" : "edited"), Toast.LENGTH_SHORT).show();//Show proper toast message depended on whether the item is added or edited
 
             Intent replyIntent = new Intent();
             //Check if savings up to now are equal to the total savings in order to congratulate the user with a toast message
-            if(Integer.parseInt(savingsNowEditText.getText().toString())>=Integer.parseInt(totalSavingsEditText.getText().toString())) {
-                Toast toast= Toast.makeText(this, "Congratulations!\nYou hit your goal for: "+budgetNameEditText.getText().toString()+"!",Toast.LENGTH_SHORT);
+            if (Integer.parseInt(savingsNowEditText.getText().toString()) >= Integer.parseInt(totalSavingsEditText.getText().toString())) {
+                Toast toast = Toast.makeText(this, "Congratulations!\nYou hit your goal for: " + budgetNameEditText.getText().toString() + "!", Toast.LENGTH_SHORT);
                 TextView toastV = toast.getView().findViewById(android.R.id.message);
                 toastV.setGravity(Gravity.CENTER); //Center toast's message text
                 toast.setGravity(Gravity.TOP, 0, 0); //Put toast at the top of the screen
