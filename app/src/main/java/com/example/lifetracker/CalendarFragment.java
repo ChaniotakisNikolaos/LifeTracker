@@ -3,7 +3,6 @@ package com.example.lifetracker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,53 +15,18 @@ import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CalendarFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CalendarFragment extends Fragment {
 
     ApplicationViewModel applicationViewModel;
     String chosenDate;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public CalendarFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CalendarFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CalendarFragment newInstance(String param1, String param2) {
-        CalendarFragment fragment = new CalendarFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -70,27 +34,24 @@ public class CalendarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.CalendarRecyclerView);
+
+        //recycler view adapter for calendar, to do and budget
         CalendarRecyclerViewAdapter calendarRecyclerViewAdapter = new CalendarRecyclerViewAdapter();
         ToDoRecyclerViewAdapter toDoRecyclerViewAdapter = new ToDoRecyclerViewAdapter(new ToDoRecyclerViewAdapter.ToDoDiff());
         BudgetRecyclerViewAdapter budgetRecyclerViewAdapter = new BudgetRecyclerViewAdapter(new BudgetRecyclerViewAdapter.BudgetDiff());
+
+        //concatenate the 3 adapters
         ConcatAdapter concatAdapter = new ConcatAdapter(calendarRecyclerViewAdapter,toDoRecyclerViewAdapter,budgetRecyclerViewAdapter);
         recyclerView.setAdapter(concatAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         applicationViewModel = new ViewModelProvider(this.requireActivity()).get(ApplicationViewModel.class);
-/*        applicationViewModel.getToDoItemList().observe(getViewLifecycleOwner(),toDoItems -> {
-            toDoRecyclerViewAdapter.submitList(toDoItems);
-        });
-        applicationViewModel.getBudgetItemList().observe(getViewLifecycleOwner(), budgetItems -> {
-            budgetRecyclerViewAdapter.submitList(budgetItems);
-        });*/
 
-
+        //when user clicks on a date show all the todos and budget with that specific due date
         calendarRecyclerViewAdapter.setOnDateChangedListener(date -> {
             chosenDate = date;
             applicationViewModel.getAllToDoItemsWithDueDate(date).observe(CalendarFragment.this.getViewLifecycleOwner(), toDoItems -> {
                 if(chosenDate.equals(date)) {
-                    Log.d("Calendar todos", "change observed for date" + date);
                     toDoRecyclerViewAdapter.submitList(toDoItems);
                 }
             });
@@ -102,17 +63,25 @@ public class CalendarFragment extends Fragment {
         });
 
         toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
+
+        //Handles the reply of the AddToDoItemActivity after edit
         ActivityResultLauncher<Intent> editToDoItemActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
+                new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
                         Intent data = result.getData();
-                        ToDoItem toDoItem = new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER), false);
-                        toDoItem.setId(data.getIntExtra(AddToDoItemActivity.EXTRA_ID,-1));
-                        applicationViewModel.update(toDoItem);
+                        ToDoItem toDoItem;
+                        if (data != null) {
+                            toDoItem = new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),
+                                    data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),
+                                    data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),
+                                    data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER), false);
+                            toDoItem.setId(data.getIntExtra(AddToDoItemActivity.EXTRA_ID, -1));
+                            applicationViewModel.update(toDoItem);
+                        }
                     }
                 });
+
+        //when user clicks any menu item (edit or delete)
         toDoRecyclerViewAdapter.setMenuItemClickListener(new ToDoRecyclerViewAdapter.MenuItemClickListener() {
             @Override
             public void onEditClick(ToDoItem toDoItem) {
@@ -132,32 +101,33 @@ public class CalendarFragment extends Fragment {
             }
         });
 
+        //Handles the reply of the AddBudgetItemActivity after edit
         ActivityResultLauncher<Intent> editBudgetItemActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
+                new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
                         Intent data = result.getData();
-                        BudgetItem budgetItem = new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL),data.getIntExtra(AddBudgetItemActivity.EXTRA_SAVED,0),data.getIntExtra(AddBudgetItemActivity.EXTRA_TOTAL,0),data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE));
-                        budgetItem.setId(data.getIntExtra(AddBudgetItemActivity.EXTRA_ID,-1));
-                        Log.d("budget edit",String.valueOf(budgetItem.getId())+" "+budgetItem.getLabel());
-                        applicationViewModel.update(budgetItem);
+                        BudgetItem budgetItem;
+                        if (data != null) {
+                            budgetItem = new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL), data.getIntExtra(AddBudgetItemActivity.EXTRA_SAVED, 0), data.getIntExtra(AddBudgetItemActivity.EXTRA_TOTAL, 0), data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE));
+                            budgetItem.setId(data.getIntExtra(AddBudgetItemActivity.EXTRA_ID, -1));
+                            applicationViewModel.update(budgetItem);
+                        }
                     }
                 });
 
         budgetRecyclerViewAdapter.setOnClickListener(new BudgetRecyclerViewAdapter.OnClickListener(){
             @Override
-            public void onDeleteClick(BudgetItem budgetItem) {
+            public void onDeleteClick(BudgetItem budgetItem) {//Called when the user clicks the delete button for a BudgetItem
                 applicationViewModel.delete(budgetItem);
             }
 
             @Override
-            public void onAddClick(BudgetItem budgetItem) {
+            public void onAddClick(BudgetItem budgetItem) {//Called when the user clicks the Add or Subtract money button for a BudgetItem
                 applicationViewModel.update(budgetItem);
             }
 
             @Override
-            public void onEditClick(BudgetItem item) {
+            public void onEditClick(BudgetItem item) {//Called when the user clicks the edit button for a BudgetItem
                 Intent intent = new Intent(CalendarFragment.this.getActivity(),AddBudgetItemActivity.class);
                 intent.putExtra(AddBudgetItemActivity.EXTRA_ID,item.getId());
                 intent.putExtra(AddBudgetItemActivity.EXTRA_LABEL,item.getLabel());
