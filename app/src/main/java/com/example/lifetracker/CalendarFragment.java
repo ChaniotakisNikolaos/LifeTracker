@@ -41,7 +41,7 @@ public class CalendarFragment extends Fragment {
         BudgetRecyclerViewAdapter budgetRecyclerViewAdapter = new BudgetRecyclerViewAdapter(new BudgetRecyclerViewAdapter.BudgetDiff());
 
         //concatenate the 3 adapters
-        ConcatAdapter concatAdapter = new ConcatAdapter(calendarRecyclerViewAdapter,toDoRecyclerViewAdapter,budgetRecyclerViewAdapter);
+        ConcatAdapter concatAdapter = new ConcatAdapter(calendarRecyclerViewAdapter, toDoRecyclerViewAdapter, budgetRecyclerViewAdapter);
         recyclerView.setAdapter(concatAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
@@ -51,12 +51,12 @@ public class CalendarFragment extends Fragment {
         calendarRecyclerViewAdapter.setOnDateChangedListener(date -> {
             chosenDate = date;
             applicationViewModel.getAllToDoItemsWithDueDate(date).observe(CalendarFragment.this.getViewLifecycleOwner(), toDoItems -> {
-                if(chosenDate.equals(date)) {
+                if (chosenDate.equals(date)) {
                     toDoRecyclerViewAdapter.submitList(toDoItems);
                 }
             });
             applicationViewModel.getAllBudgetItemsWithDueDate(date).observe(CalendarFragment.this.getViewLifecycleOwner(), budgetItems -> {
-                if(chosenDate.equals(date))  {
+                if (chosenDate.equals(date)) {
                     budgetRecyclerViewAdapter.submitList(budgetItems);
                 }
             });
@@ -86,12 +86,12 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onEditClick(ToDoItem toDoItem) {
                 Intent intent = new Intent(CalendarFragment.this.getActivity(), AddToDoItemActivity.class);
-                intent.putExtra("EDIT_MODE",true);
-                intent.putExtra(AddToDoItemActivity.EXTRA_DESCRIPTION,toDoItem.getDescription());
-                intent.putExtra(AddToDoItemActivity.EXTRA_LABEL,toDoItem.getLabel());
-                intent.putExtra(AddToDoItemActivity.EXTRA_REMINDER,toDoItem.getReminder());
-                intent.putExtra(AddToDoItemActivity.EXTRA_DUE_DATE,toDoItem.getDueDate());
-                intent.putExtra(AddToDoItemActivity.EXTRA_ID,toDoItem.getId());
+                intent.putExtra("EDIT_MODE", true);
+                intent.putExtra(AddToDoItemActivity.EXTRA_DESCRIPTION, toDoItem.getDescription());
+                intent.putExtra(AddToDoItemActivity.EXTRA_LABEL, toDoItem.getLabel());
+                intent.putExtra(AddToDoItemActivity.EXTRA_REMINDER, toDoItem.getReminder());
+                intent.putExtra(AddToDoItemActivity.EXTRA_DUE_DATE, toDoItem.getDueDate());
+                intent.putExtra(AddToDoItemActivity.EXTRA_ID, toDoItem.getId());
                 editToDoItemActivityResultLauncher.launch(intent);
             }
 
@@ -115,7 +115,7 @@ public class CalendarFragment extends Fragment {
                     }
                 });
 
-        budgetRecyclerViewAdapter.setOnClickListener(new BudgetRecyclerViewAdapter.OnClickListener(){
+        budgetRecyclerViewAdapter.setOnClickListener(new BudgetRecyclerViewAdapter.OnClickListener() {
             @Override
             public void onDeleteClick(BudgetItem budgetItem) {//Called when the user clicks the delete button for a BudgetItem
                 applicationViewModel.delete(budgetItem);
@@ -128,12 +128,12 @@ public class CalendarFragment extends Fragment {
 
             @Override
             public void onEditClick(BudgetItem item) {//Called when the user clicks the edit button for a BudgetItem
-                Intent intent = new Intent(CalendarFragment.this.getActivity(),AddBudgetItemActivity.class);
-                intent.putExtra(AddBudgetItemActivity.EXTRA_ID,item.getId());
-                intent.putExtra(AddBudgetItemActivity.EXTRA_LABEL,item.getLabel());
-                intent.putExtra(AddBudgetItemActivity.EXTRA_SAVED,item.getSaved());
-                intent.putExtra(AddBudgetItemActivity.EXTRA_TOTAL,item.getTotal());
-                intent.putExtra(AddBudgetItemActivity.EXTRA_DUE_DATE,item.getDueDate());
+                Intent intent = new Intent(CalendarFragment.this.getActivity(), AddBudgetItemActivity.class);
+                intent.putExtra(AddBudgetItemActivity.EXTRA_ID, item.getId());
+                intent.putExtra(AddBudgetItemActivity.EXTRA_LABEL, item.getLabel());
+                intent.putExtra(AddBudgetItemActivity.EXTRA_SAVED, item.getSaved());
+                intent.putExtra(AddBudgetItemActivity.EXTRA_TOTAL, item.getTotal());
+                intent.putExtra(AddBudgetItemActivity.EXTRA_DUE_DATE, item.getDueDate());
                 editBudgetItemActivityResultLauncher.launch(intent);
             }
         });
