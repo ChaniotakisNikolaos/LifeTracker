@@ -76,8 +76,13 @@ public class AddBudgetItemActivity extends AppCompatActivity {
 
         if (isNotEmpty) {
             //Create BudgetItem based on the users input
-            BudgetItem budgetItem = new BudgetItem(budgetNameEditText.getText().toString(), Integer.parseInt(savingsNowEditText.getText().toString()), Integer.parseInt(totalSavingsEditText.getText().toString()), dueDateTextView1.getText().toString());
-            Toast.makeText(this, "Budget item " + (budgetId == -1 ? "added" : "edited"), Toast.LENGTH_SHORT).show();//Show proper toast message depended on whether the item is added or edited
+            BudgetItem budgetItem = new BudgetItem(budgetNameEditText.getText().toString(),
+                    Integer.parseInt(savingsNowEditText.getText().toString()),
+                    Integer.parseInt(totalSavingsEditText.getText().toString()),
+                    dueDateTextView1.getText().toString());
+
+            //Show proper toast message depended on whether the item is added or edited
+            Toast.makeText(this, "Budget item " + (budgetId == -1 ? "added" : "edited"), Toast.LENGTH_SHORT).show();
 
             Intent replyIntent = new Intent();
             //Check if savings up to now are equal to the total savings in order to congratulate the user with a toast message
