@@ -9,6 +9,8 @@ import android.widget.CalendarView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Calendar;
+
 public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRecyclerViewAdapter.CalendarViewHolder>{
     OnDateChangedListener listener;
 
@@ -41,7 +43,11 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
                     listener.onDateChange(date);
                 }
             });
-
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            listener.onDateChange(day+"/"+(month+1)+"/"+year);
         }
 
     }
