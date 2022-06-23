@@ -22,7 +22,6 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
     private EditText savingsNowEditText;
     private EditText totalSavingsEditText;
     private TextView dueDateTextView1;
-    private Button confirmButton;
     int budgetId;
 
     @Override
@@ -34,7 +33,7 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
         savingsNowEditText = findViewById(R.id.savingsNowEditText);
         totalSavingsEditText = findViewById(R.id.totalSavingsEditText);
         dueDateTextView1 = findViewById(R.id.dueDateSelectTextView1);
-        confirmButton = findViewById(R.id.button2);
+        Button confirmButton = findViewById(R.id.button2);
 
         Intent intent = getIntent();
         budgetId= intent.getIntExtra(EXTRA_ID,-1);
@@ -43,7 +42,7 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
             savingsNowEditText.setText(String.valueOf(intent.getIntExtra(EXTRA_SAVED,0)));
             totalSavingsEditText.setText(String.valueOf(intent.getIntExtra(EXTRA_TOTAL,0)));
             dueDateTextView1.setText(intent.getStringExtra(EXTRA_DUE_DATE));
-            confirmButton.setText("Edit");
+            confirmButton.setText(R.string.editString);
         }
     }
 
@@ -53,17 +52,8 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
     }
     public void addBudgetItem(View v) {
         boolean isEmpty = true;
-
-        EditText budgetNameEditText = findViewById(R.id.budgetNameEditText);
-        EditText savingsNowEditText = findViewById(R.id.savingsNowEditText);
-        EditText totalSavingsEditText = findViewById(R.id.totalSavingsEditText);
-        TextView dueDateTextView1 = findViewById(R.id.dueDateSelectTextView1);
         Button clearDueDateBudgetButton = findViewById(R.id.clearDueDateBudgetBtn);
-        clearDueDateBudgetButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                dueDateTextView1.setText("");
-            }
-        });
+        clearDueDateBudgetButton.setOnClickListener(v1 -> dueDateTextView1.setText(""));
 
         if(budgetNameEditText.getText().toString().trim().length() == 0){
             Toast.makeText(this,"You must put a Name",Toast.LENGTH_SHORT).show();
@@ -90,17 +80,12 @@ public class AddBudgetItemActivity  extends AppCompatActivity {
                 toast.show();
             }
 
-            boolean checks = false;
-            if (checks) {
-                setResult(RESULT_CANCELED, replyIntent);
-            } else {
-                replyIntent.putExtra(EXTRA_ID, budgetId);
-                replyIntent.putExtra(EXTRA_LABEL, budgetItem.getLabel());
-                replyIntent.putExtra(EXTRA_SAVED, budgetItem.getSaved());
-                replyIntent.putExtra(EXTRA_TOTAL, budgetItem.getTotal());
-                replyIntent.putExtra(EXTRA_DUE_DATE, budgetItem.getDueDate());
-                setResult(RESULT_OK, replyIntent);
-            }
+            replyIntent.putExtra(EXTRA_ID, budgetId);
+            replyIntent.putExtra(EXTRA_LABEL, budgetItem.getLabel());
+            replyIntent.putExtra(EXTRA_SAVED, budgetItem.getSaved());
+            replyIntent.putExtra(EXTRA_TOTAL, budgetItem.getTotal());
+            replyIntent.putExtra(EXTRA_DUE_DATE, budgetItem.getDueDate());
+            setResult(RESULT_OK, replyIntent);
             finish();
         }
     }
