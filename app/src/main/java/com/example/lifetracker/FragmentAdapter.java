@@ -14,9 +14,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        //Fragment[] fragments = new Fragment[]{new ToDoFragment(),new CalendarFragment(), new BudgetFragment(), new MeFragment()};
-        //return fragments[position-1];
-        //System.out.println("position="+position);
+        //return the corresponding fragment based on the position
         switch (position) {
             case 0:
                 return new ToDoFragment();
@@ -32,5 +30,5 @@ public class FragmentAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return 4;
-    }
+    }//we have 4 fragments
 }
