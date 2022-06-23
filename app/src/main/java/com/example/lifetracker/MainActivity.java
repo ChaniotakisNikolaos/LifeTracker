@@ -44,15 +44,12 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.MessageFormat;
 
 public class MainActivity extends AppCompatActivity implements MyDrawerControllerInterface {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
-    private FragmentAdapter fragmentAdapter;
-    //private ArrayList<ToDoItem> toDoItemArrayList;
-    //private ApplicationViewModel applicationViewModel;
-    public static final int ADD_TOOO_ITEM_ACTIVITY_REQUEST_CODE = 1;
     private ActivityResultLauncher<Intent> addToDoItemActivityResultLauncher;
     private ActivityResultLauncher<Intent> addBudgetItemActivityResultLauncher;
     private ApplicationViewModel applicationViewModel;
@@ -60,12 +57,9 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public NavigationView navView;
     public Menu m;
-    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 20;
 
     SharedPreferences sharedPref;
     CircularImageView imageViewProfPic;
-
-    Boolean toShowAll = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,27 +84,10 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
 
         applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
 
-         /*navigationView.setNavigationItemSelectedListener(menuItem -> {
-            int id = menuItem.getItemId();
-            if(id != 0){
-                Log.d("ccccc", String.valueOf(id));
-                toShowAll = false;
-                /*ToDoRecyclerViewAdapter toDoRecyclerViewAdapter = new ToDoRecyclerViewAdapter(new ToDoRecyclerViewAdapter.ToDoDiff());
-                applicationViewModel.getAllToDoItemsWithLabel(menuItem.getTitle().toString()).observe(this, toDoItems -> {
-                    applicationViewModel.getAllToDoItemsWithLabel(menuItem.getTitle().toString());
-                    Log.d("cccccctest","changeeeeeee observed");
-
-                });
-                toDoRecyclerViewAdapter.setApplicationViewModel(applicationViewModel);
-            }
-            return true;
-        });*/
-
-
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPager2);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentAdapter = new FragmentAdapter(fragmentManager, getLifecycle());
+        FragmentAdapter fragmentAdapter = new FragmentAdapter(fragmentManager, getLifecycle());
         viewPager2.setAdapter(fragmentAdapter);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -138,29 +115,25 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         });
 
         addToDoItemActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
+                new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        if (data != null) {
                             applicationViewModel.insert(new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER), false), MainActivity.this);
                         }
                     }
                 });
 
         addBudgetItemActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
+                new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        if (data != null) {
                             applicationViewModel.insert(new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL),data.getIntExtra(AddBudgetItemActivity.EXTRA_SAVED,0),data.getIntExtra(AddBudgetItemActivity.EXTRA_TOTAL,0),data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE)));
-                            Log.d("test","Budget inserted");
                         }
+                        Log.d("test","Budget inserted");
                     }
                 });
     }
@@ -185,13 +158,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         addToDoItemActivityResultLauncher.launch(intent);
     }
 
-    public void checkLabels(View view) {
-        NavigationView navView = (NavigationView) MainActivity.this.findViewById(R.id.menu_navigation);
-        Menu m = navView.getMenu();
-        MenuItem foo_menu_item=m.add("foo");
-        Log.d("ccccc", String.valueOf(navView.getMenu()));
-    }
-
     /**
      * Called when the user taps the plus button
      */
@@ -211,33 +177,29 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         dialogBuilder = new AlertDialog.Builder(this);
         //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View editUserNameView = getLayoutInflater().inflate(R.layout.dialog_edit_user_name, null);
-        userNameEditText = (EditText) editUserNameView.findViewById(R.id.userNameEditText);
-        cancelChangeNameBtn = (Button) editUserNameView.findViewById(R.id.cancelChangeNameBtn);
-        saveChangeNameBtn = (Button) editUserNameView.findViewById(R.id.saveChangeNameBtn);
+        userNameEditText = editUserNameView.findViewById(R.id.userNameEditText);
+        cancelChangeNameBtn = editUserNameView.findViewById(R.id.cancelChangeNameBtn);
+        saveChangeNameBtn = editUserNameView.findViewById(R.id.saveChangeNameBtn);
 
         dialogBuilder.setView(editUserNameView);
         dialog = dialogBuilder.create();
         dialog.show();
 
-        cancelChangeNameBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //close dialog
-                dialog.dismiss();
-            }
+        cancelChangeNameBtn.setOnClickListener(v -> {
+            //close dialog
+            dialog.dismiss();
         });
 
-        saveChangeNameBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                String newName = userNameEditText.getText().toString();
-                Log.d("nnn",newName);
-                changeStatus(newName);
-                dialog.dismiss();
-            }
+        saveChangeNameBtn.setOnClickListener(v -> {
+            String newName = userNameEditText.getText().toString();
+            Log.d("nnn",newName);
+            changeStatus(newName);
+            dialog.dismiss();
         });
     }
     public void changeStatus(String s){
         TextView nameTextView = findViewById(R.id.userNameTextView);
-        nameTextView.setText("Hello, "+s);
+        nameTextView.setText(MessageFormat.format("Hello, {0}", s));
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.saved_username_text_key), s);
         editor.apply();
@@ -266,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         Bitmap bitmap = bitmapDrawable.getBitmap();
         Uri uri;
         //create image file
-        FileOutputStream fileOutputStream = null;
+        FileOutputStream fileOutputStream;
         try{
             File directory = new File(this.getExternalFilesDir(null) + File.separator +"NISO");
             if (!directory.exists()) {
@@ -279,8 +241,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
             }
             else
                 Log.d("directory", "Directory exists");
-            //Toast.makeText(MainActivity.this, "Directory exists", Toast.LENGTH_SHORT).show();
-            //final String filePath=directory+ File.separator + ""+ System.currentTimeMillis() + ".png";
             final String filePath=directory+ File.separator + "profPic.png";
             File image = new File(filePath);
             fileOutputStream = new FileOutputStream(image);
@@ -330,11 +290,8 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     public void choosePicture(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        TextView profPicTextView, galleryPicTextView;
         Button photoButton, galleryButton;
         final View dialogView = inflater.inflate(R.layout.dialog_picture, null);
-        profPicTextView = dialogView.findViewById(R.id.textViewTakePhoto);
-        galleryPicTextView = dialogView.findViewById(R.id.textViewGalleryPhoto);
         photoButton = dialogView.findViewById(R.id.buttonTakePhoto);
         galleryButton = dialogView.findViewById(R.id.buttonGalleryPhoto);
 
@@ -343,20 +300,16 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         AlertDialog alertDialogProfPic = builder.create();
         alertDialogProfPic.show();
 
-        photoButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                alertDialogProfPic.dismiss();
-                if(checkAndRequestPermission()) {
-                    takePictureFromCamera();
-                }
+        photoButton.setOnClickListener(v -> {
+            alertDialogProfPic.dismiss();
+            if(checkAndRequestPermission()) {
+                takePictureFromCamera();
             }
         });
 
-        galleryButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                alertDialogProfPic.dismiss();
-                takePictureFromGallery();
-            }
+        galleryButton.setOnClickListener(v -> {
+            alertDialogProfPic.dismiss();
+            takePictureFromGallery();
         });
 
     }
