@@ -16,7 +16,7 @@
     <string name="spinner_name">Press to edit</string>
     <string name="button_appear">Button Makes Edit Possible</string>
     <string name="add_savings">Add Savings</string>
-    <string name="substract_button">Subtract Savings</string>
+    <string name="subtract_button">Subtract Savings</string>
     <string name="edit_button">Edit Savings</string>
     <string name="delete_button">Delete Savings</string>
     <string name="budget_label">Label</string>
