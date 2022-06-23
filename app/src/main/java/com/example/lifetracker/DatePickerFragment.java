@@ -9,14 +9,17 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import java.text.MessageFormat;
 import java.util.Calendar;
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+//shows a date picker dialog
+public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private static final String ARG_VIEW_ID = "id";
-    private int viewId;
+    private int viewId;//viewId is used for determining whether it was called by the reminder textview(in order to also show the time picker fragment)
 
     public DatePickerFragment() {
         // Required empty public constructor
@@ -39,12 +42,12 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_date_picker, container, false);
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
@@ -58,12 +61,12 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        TextView textView = getActivity().findViewById(viewId);
-        month++;
-        textView.setText(day+"/"+month+"/"+year);
-        if(viewId == R.id.reminderSelectTextView) {
+        TextView textView = requireActivity().findViewById(viewId);
+        textView.setText(MessageFormat.format("{0}/{1}/{2}", day, month+1, year));//month+1 because otherwise months start from 0
+        //if it was called by reminder text view then show timePickerFragment
+        if (viewId == R.id.reminderSelectTextView) {
             DialogFragment newFragment = new TimePickerFragment();
-            newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+            newFragment.show(requireActivity().getSupportFragmentManager(), "timePicker");
         }
     }
 }
