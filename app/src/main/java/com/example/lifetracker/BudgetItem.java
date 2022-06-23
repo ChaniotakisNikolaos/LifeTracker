@@ -11,29 +11,30 @@ public class BudgetItem {
     private int id;
     @NonNull
     private String label;
-    @NonNull
-    private int saved;
-    private int total;
-    private String dueDate;
+    private int saved;      //saved amount
+    private final int total;//goal amount
+    private final String dueDate;
 
-    public BudgetItem(@NonNull String label, @NonNull int saved, int total, String dueDate) {
+    public BudgetItem(@NonNull String label, int saved, int total, String dueDate) {
         this.label = label;
         this.saved = saved;
         this.total = total;
         this.dueDate = dueDate;
     }
 
-    public void addSaved(int amount){
-        saved+=amount;
+    public void addSaved(int amount) {
+        saved += amount;
     }
+
     @Ignore
-    public BudgetItem(BudgetItem budgetItem){
+    public BudgetItem(BudgetItem budgetItem) {
         this.id = budgetItem.id;
         this.label = budgetItem.label;
         this.saved = budgetItem.saved;
         this.total = budgetItem.total;
         this.dueDate = budgetItem.dueDate;
     }
+
     //getters
     public int getId() {
         return id;
@@ -44,7 +45,6 @@ public class BudgetItem {
         return label;
     }
 
-    @NonNull
     public int getSaved() {
         return saved;
     }
@@ -64,18 +64,6 @@ public class BudgetItem {
 
     public void setLabel(@NonNull String label) {
         this.label = label;
-    }
-
-    public void setSaved(@NonNull int saved) {
-        this.saved = saved;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
     }
 
 }
