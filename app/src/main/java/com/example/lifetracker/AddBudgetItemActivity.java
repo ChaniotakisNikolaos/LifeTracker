@@ -20,12 +20,11 @@ public class AddBudgetItemActivity extends AppCompatActivity {
     public static final String EXTRA_SAVED = "com.example.lifetracker.SAVED";
     public static final String EXTRA_TOTAL = "com.example.lifetracker.TOTAL ";
     public static final String EXTRA_DUE_DATE = "com.example.lifetracker.BUDGET_DUE_DATE";
-
+    int budgetId;
     private EditText budgetNameEditText; //The field in which the user specifies the budget name/label
     private EditText savingsNowEditText; //The field in which the user specifies the saved amount
     private EditText totalSavingsEditText; //The field in which the user specifies the total amount he needs to save
     private TextView dueDateTextView1; ////The field in which the user specifies the due date
-    int budgetId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

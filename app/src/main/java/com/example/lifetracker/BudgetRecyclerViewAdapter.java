@@ -3,9 +3,6 @@ package com.example.lifetracker;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +20,10 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.text.MessageFormat;
 
-public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecyclerViewAdapter.MyViewHolder> {
+public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem, BudgetRecyclerViewAdapter.MyViewHolder> {
     OnClickListener listener;
 
     public BudgetRecyclerViewAdapter(@NonNull DiffUtil.ItemCallback<BudgetItem> diffCallback) {
@@ -43,43 +39,36 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
     @Override
     public void onBindViewHolder(@NonNull BudgetRecyclerViewAdapter.MyViewHolder holder, int position) {
         BudgetItem budgetItem = getItem(position);
-        if(budgetItem.getDueDate().isEmpty()){
+        if (budgetItem.getDueDate().isEmpty()) {
             holder.dueDateBudgetTV.setVisibility(View.INVISIBLE);
         }
         holder.budgetLabel.setText(budgetItem.getLabel());
         holder.savingsLabel.setText(MessageFormat.format("{0}€/{1}€", budgetItem.getSaved(), budgetItem.getTotal()));
         holder.dueDateBudgetTV.setText(budgetItem.getDueDate());
 
-        float percentage = (float)budgetItem.getSaved()/budgetItem.getTotal()*100;
-        if(percentage > 100){
+        float percentage = (float) budgetItem.getSaved() / budgetItem.getTotal() * 100;
+        if (percentage > 100) {
             percentage = 100;
         }
 
-        holder.progressBar.setProgress((int)percentage);
+        holder.progressBar.setProgress((int) percentage);
         holder.percentageLabel.setText(MessageFormat.format("{0}%", String.valueOf((int) percentage)));
 
         ConstraintLayout cl = holder.constraintActivity;
         ConstraintSet cs = new ConstraintSet();
         cs.clone(cl);
-        cs.setHorizontalBias(R.id.percentageLabel, (float) percentage/100);
+        cs.setHorizontalBias(R.id.percentageLabel, (float) percentage / 100);
         cs.applyTo(cl);
 
-        /*if(percentage == 100){
-            Toast toast= Toast.makeText(cl.getContext(), "Congratulations!\nYou hit your goal for: "+holder.budgetLabel.getText()+"!",Toast.LENGTH_SHORT);
-            TextView v = toast.getView().findViewById(android.R.id.message);
-            v.setGravity(Gravity.CENTER);
-            toast.setGravity(Gravity.TOP, 0, 0);
-            toast.show();
-        }*/
         holder.addButton.setOnClickListener(view -> {
-            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
-            if(adapterPosition == RecyclerView.NO_POSITION) return;
+            int adapterPosition = holder.getBindingAdapterPosition();//get the current position of the budget item
+            if (adapterPosition == RecyclerView.NO_POSITION) return;
             AlertDialog.Builder dialogBuilder;
             AlertDialog dialog;
             EditText addMoneyEditText;
             Button addMoneyCancelButton, addMoneySaveButton;
             dialogBuilder = new AlertDialog.Builder(view.getContext());
-            LayoutInflater inflater = (LayoutInflater)view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View addMoneyView = inflater.inflate(R.layout.dialog_add_money, null);
             addMoneyEditText = (EditText) addMoneyView.findViewById(R.id.editTextAddAmountToBudget);
             addMoneyCancelButton = (Button) addMoneyView.findViewById(R.id.buttonCancelAddMoney);
@@ -96,10 +85,9 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
             addMoneySaveButton.setOnClickListener(v -> {
                 BudgetItem oldBudgetItem1 = getItem(adapterPosition);
                 BudgetItem newBudgetItem = new BudgetItem(oldBudgetItem1);
-                Log.d("add",addMoneyEditText.getText().toString());
-                if(addMoneyEditText.getText().toString().isEmpty()) {
-                    Toast.makeText(cl.getContext(), "You have to insert an amount.",Toast.LENGTH_SHORT).show();
-                }else {
+                if (addMoneyEditText.getText().toString().isEmpty()) {
+                    Toast.makeText(cl.getContext(), "You have to insert an amount.", Toast.LENGTH_SHORT).show();
+                } else {
                     newBudgetItem.addSaved(Integer.parseInt(addMoneyEditText.getText().toString()));
                     listener.onAddClick(newBudgetItem);
                     dialog.dismiss();
@@ -108,14 +96,14 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         });
 
         holder.minusButton.setOnClickListener(view -> {
-            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
-            if(adapterPosition == RecyclerView.NO_POSITION) return;
+            int adapterPosition = holder.getBindingAdapterPosition();//get the current position of the budget item
+            if (adapterPosition == RecyclerView.NO_POSITION) return;
             AlertDialog.Builder dialogBuilder;
             AlertDialog dialog;
             EditText subtractMoneyEditText;
             Button subtractMoneyCancelButton, subtractMoneySaveButton;
             dialogBuilder = new AlertDialog.Builder(view.getContext());
-            LayoutInflater inflater = (LayoutInflater)view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View subtractMoneyView = inflater.inflate(R.layout.dialog_subtract_money, null);
             subtractMoneyEditText = (EditText) subtractMoneyView.findViewById(R.id.editTextSubtractAmountToBudget);
             subtractMoneyCancelButton = (Button) subtractMoneyView.findViewById(R.id.buttonCancelSubtractMoney);
@@ -132,9 +120,9 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
             subtractMoneySaveButton.setOnClickListener(v -> {
                 BudgetItem oldBudgetItem1 = getItem(adapterPosition);
                 BudgetItem newBudgetItem = new BudgetItem(oldBudgetItem1);
-                if(subtractMoneyEditText.getText().toString().isEmpty()){
-                    Toast.makeText(cl.getContext(), "You have to insert an amount.",Toast.LENGTH_SHORT).show();
-                }else {
+                if (subtractMoneyEditText.getText().toString().isEmpty()) {
+                    Toast.makeText(cl.getContext(), "You have to insert an amount.", Toast.LENGTH_SHORT).show();
+                } else {
                     if ((oldBudgetItem1.getSaved() - Integer.parseInt(subtractMoneyEditText.getText().toString())) < 0) {
                         Toast.makeText(cl.getContext(), "You cannot subtract that amount of money.", Toast.LENGTH_SHORT).show();
                     } else {
@@ -147,19 +135,19 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         });
 
         holder.editButton.setOnClickListener(view -> {
-            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
-            if(adapterPosition == RecyclerView.NO_POSITION) return;
+            int adapterPosition = holder.getBindingAdapterPosition();//get the current position of the budget item
+            if (adapterPosition == RecyclerView.NO_POSITION) return;
             listener.onEditClick(getItem(adapterPosition));
         });
 
         holder.deleteButton.setOnClickListener(view -> {
-            int adapterPosition=holder.getBindingAdapterPosition();//get the current position of the budget item
-            if(adapterPosition == RecyclerView.NO_POSITION) return;
+            int adapterPosition = holder.getBindingAdapterPosition();//get the current position of the budget item
+            if (adapterPosition == RecyclerView.NO_POSITION) return;
             AlertDialog.Builder dialogBuilder;
             AlertDialog dialog;
             Button deleteBudgetItemCancelButton, deleteBudgetItemButton;
             dialogBuilder = new AlertDialog.Builder(view.getContext());
-            LayoutInflater inflater = (LayoutInflater)view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View deleteBudgetItemView = inflater.inflate(R.layout.dialog_delete_budget_item, null);
             deleteBudgetItemCancelButton = (Button) deleteBudgetItemView.findViewById(R.id.buttonCancelDeleteBudgetItem);
             deleteBudgetItemButton = (Button) deleteBudgetItemView.findViewById(R.id.buttonDeleteBudgetItem);
@@ -179,6 +167,18 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
         });
     }
 
+    public void setOnClickListener(OnClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnClickListener {
+        void onDeleteClick(BudgetItem budgetItem);
+
+        void onAddClick(BudgetItem budgetItem);
+
+        void onEditClick(BudgetItem item);
+    }
+
     static class BudgetDiff extends DiffUtil.ItemCallback<BudgetItem> {
         @Override
         public boolean areItemsTheSame(@NonNull BudgetItem oldItem, @NonNull BudgetItem newItem) {
@@ -187,16 +187,18 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
 
         @Override
         public boolean areContentsTheSame(@NonNull BudgetItem oldItem, @NonNull BudgetItem newItem) {
-            return oldItem.getLabel().equals(newItem.getLabel()) && oldItem.getSaved()==newItem.getSaved() && oldItem.getTotal()==newItem.getTotal() && oldItem.getDueDate().equals(newItem.getDueDate());
+            return oldItem.getLabel().equals(newItem.getLabel()) && oldItem.getSaved() == newItem.getSaved() && oldItem.getTotal() == newItem.getTotal() && oldItem.getDueDate().equals(newItem.getDueDate());
         }
     }
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView budgetLabel, savingsLabel, percentageLabel, dueDateBudgetTV;
         ConstraintLayout constraintActivity;
         ProgressBar progressBar;
         Button button;
         FloatingActionButton addButton, minusButton, editButton, deleteButton;
-        boolean showButtons=false;
+        boolean showButtons = false;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             constraintActivity = itemView.findViewById(R.id.activity_constraint);
@@ -211,20 +213,20 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
             deleteButton = itemView.findViewById(R.id.deleteButton);
             button = itemView.findViewById(R.id.buttonClick);
             button.setOnClickListener(v -> {
-                if(!showButtons) {
+                if (!showButtons) {
                     button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_baseline_arrow_drop_up_24);
                     addButton.setVisibility(View.VISIBLE);
                     minusButton.setVisibility(View.VISIBLE);
                     editButton.setVisibility(View.VISIBLE);
                     deleteButton.setVisibility(View.VISIBLE);
-                    showButtons=true;
-                }else{
+                    showButtons = true;
+                } else {
                     button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_baseline_arrow_drop_down_24);
                     addButton.setVisibility(View.GONE);
                     minusButton.setVisibility(View.GONE);
                     editButton.setVisibility(View.GONE);
                     deleteButton.setVisibility(View.GONE);
-                    showButtons=false;
+                    showButtons = false;
                 }
             });
         }
@@ -233,15 +235,5 @@ public class BudgetRecyclerViewAdapter extends ListAdapter<BudgetItem,BudgetRecy
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_budget_item, parent, false);
             return new BudgetRecyclerViewAdapter.MyViewHolder(view);
         }
-    }
-
-    public interface OnClickListener{
-        void onDeleteClick(BudgetItem budgetItem);
-        void onAddClick(BudgetItem budgetItem);
-        void onEditClick(BudgetItem item);
-    }
-
-    public void setOnClickListener(OnClickListener listener){
-        this.listener=listener;
     }
 }
