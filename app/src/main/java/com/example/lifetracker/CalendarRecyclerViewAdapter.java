@@ -1,6 +1,5 @@
 package com.example.lifetracker;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Calendar;
 
-public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRecyclerViewAdapter.CalendarViewHolder>{
+public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRecyclerViewAdapter.CalendarViewHolder> {
     OnDateChangedListener listener;
 
     @NonNull
@@ -30,33 +29,31 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
         return 1;
     }
 
-    public class CalendarViewHolder extends RecyclerView.ViewHolder{
+    public void setOnDateChangedListener(OnDateChangedListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnDateChangedListener {
+        void onDateChange(String date);
+    }
+
+    public class CalendarViewHolder extends RecyclerView.ViewHolder {
 
         public CalendarViewHolder(@NonNull View itemView) {
             super(itemView);
             CalendarView calendarView = itemView.findViewById(R.id.calendarView);
-            calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                @Override
-                public void onSelectedDayChange(@NonNull CalendarView calendarView1, int year, int month, int day) {
-                    String date= day+"/"+(month+1)+"/"+year;
-                    Log.d("seleted date",date);
-                    listener.onDateChange(date);
-                }
+            //when the date is changed in the calendar
+            calendarView.setOnDateChangeListener((calendarView1, year, month, day) -> {
+                String date = day + "/" + (month + 1) + "/" + year;//month+1 because otherwise months start from 0
+                listener.onDateChange(date);
             });
+            //when calendar is created and shows the current date the listener needs to be called(otherwise the todos and budget of that day will not appear)
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-            listener.onDateChange(day+"/"+(month+1)+"/"+year);
+            listener.onDateChange(day + "/" + (month + 1) + "/" + year);//month+1 because otherwise months start from 0
         }
 
-    }
-
-    public interface OnDateChangedListener{
-        void onDateChange(String date);
-    }
-
-    public void setOnDateChangedListener(OnDateChangedListener listener) {
-        this.listener = listener;
     }
 }
