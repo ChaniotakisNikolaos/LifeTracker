@@ -10,12 +10,9 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class ApplicationViewModel extends AndroidViewModel {
-    private Repository repository;
-    private LiveData<List<ToDoItem>> toDoItemList;
-    private LiveData<List<ToDoItem>> toDoItemLabelList;
-    private LiveData<List<ToDoItem>> toDoDListDueDate;
+    private final Repository repository;
+    private final LiveData<List<ToDoItem>> toDoItemList;
     private final LiveData<List<BudgetItem>> budgetItemList;
-    private LiveData<List<BudgetItem>> budgetListDueDate;
 
     public ApplicationViewModel(@NonNull Application application) {
         super(application);
@@ -25,15 +22,15 @@ public class ApplicationViewModel extends AndroidViewModel {
     }
 
     //TO DO
-    public void insert(ToDoItem toDoItem, Context context){
+    public void insert(ToDoItem toDoItem, Context context) {
         repository.insert(toDoItem, context);
     }
 
-    public void update(ToDoItem toDoItem){
+    public void update(ToDoItem toDoItem) {
         repository.update(toDoItem);
     }
 
-    public void delete(ToDoItem toDoItem){
+    public void delete(ToDoItem toDoItem) {
         repository.delete(toDoItem);
     }
 
@@ -42,25 +39,23 @@ public class ApplicationViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<ToDoItem>> getAllToDoItemsWithLabel(String label) {
-        toDoItemLabelList = repository.getAllToDoItemsWithLabel(label);
-        return toDoItemLabelList;
+        return repository.getAllToDoItemsWithLabel(label);
     }
 
-    public LiveData<List<ToDoItem>> getAllToDoItemsWithDueDate(String dueDate){
-        toDoDListDueDate = repository.getAllToDoItemsWithDueDate(dueDate);
-        return toDoDListDueDate;
+    public LiveData<List<ToDoItem>> getAllToDoItemsWithDueDate(String dueDate) {
+        return repository.getAllToDoItemsWithDueDate(dueDate);
     }
 
     //BUDGET
-    public void insert(BudgetItem budgetItem){
+    public void insert(BudgetItem budgetItem) {
         repository.insert(budgetItem);
     }
 
-    public void update(BudgetItem budgetItem){
+    public void update(BudgetItem budgetItem) {
         repository.update(budgetItem);
     }
 
-    public void delete(BudgetItem budgetItem){
+    public void delete(BudgetItem budgetItem) {
         repository.delete(budgetItem);
     }
 
@@ -68,8 +63,7 @@ public class ApplicationViewModel extends AndroidViewModel {
         return budgetItemList;
     }
 
-    public LiveData<List<BudgetItem>> getAllBudgetItemsWithDueDate(String dueDate){
-        budgetListDueDate = repository.getBudgetItemsWithDueDate(dueDate);
-        return budgetListDueDate;
+    public LiveData<List<BudgetItem>> getAllBudgetItemsWithDueDate(String dueDate) {
+        return repository.getBudgetItemsWithDueDate(dueDate);
     }
 }
