@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -45,6 +44,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.MessageFormat;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements MyDrawerControllerInterface {
 
@@ -271,13 +271,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                         Uri selectedImageUri;
                         if (data != null && data.getData() != null) {
                             selectedImageUri = data.getData();
-                            /*Bitmap bitmapImage = null;
-                            try {
-                                bitmapImage = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImageUri);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            imageViewProfPic.setImageBitmap(bitmapImage);*/
                             Picasso.with(getApplicationContext()).load(selectedImageUri).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageViewProfPic);
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString("imagepathURI", String.valueOf(selectedImageUri));
@@ -322,12 +315,10 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     }
 
     private boolean checkAndRequestPermission(){
-        if(Build.VERSION.SDK_INT>=23){
-            int cameraPermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
-            if(cameraPermission == PackageManager.PERMISSION_DENIED){
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 20);
-                return false;
-            }
+        int cameraPermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
+        if(cameraPermission == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 20);
+            return false;
         }
         return true;
     }
@@ -357,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     @Override
     public void setDrawerLocked() {
         //code to lock drawer
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         //toolbar.setNavigationIcon(null);
@@ -366,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     @Override
     public void setDrawerUnlocked() {
         //code to unlock drawer
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 }

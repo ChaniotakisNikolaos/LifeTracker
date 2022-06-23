@@ -62,7 +62,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         TextView textView = requireActivity().findViewById(viewId);
-        textView.setText(MessageFormat.format("{0}/{1}/{2}", day, month+1, year));//month+1 because otherwise months start from 0
+        textView.setText(MessageFormat.format("{0}/{1}/{2}", day, month + 1, String.valueOf(year)));//month+1 because otherwise months start from 0
         //if it was called by reminder text view then show timePickerFragment
         if (viewId == R.id.reminderSelectTextView) {
             DialogFragment newFragment = new TimePickerFragment();
