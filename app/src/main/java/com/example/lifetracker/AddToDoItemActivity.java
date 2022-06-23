@@ -73,41 +73,44 @@ public class AddToDoItemActivity extends AppCompatActivity {
     }
 
     public void addToDoItem(View v) {
-        boolean isNotEmpty = true;
+        boolean isNotEmpty = true;//Required field is the description(and also if the reminder time is set after the current time), becomes false if either is empty
 
         //check if reminder is before the current time
         String myDate = reminderTextView.getText().toString();
         long timeInMillis = 0;
-        if (myDate.trim().length() != 0) {
+        if (myDate.trim().length() != 0) {//if the user has set a reminder
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
             try {
-                cal.setTime(Objects.requireNonNull(sdf.parse(myDate)));
+                cal.setTime(Objects.requireNonNull(sdf.parse(myDate)));//change the date that the user gave to type Date
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            timeInMillis = cal.getTimeInMillis();
-            if (timeInMillis <= System.currentTimeMillis()) {
+            timeInMillis = cal.getTimeInMillis();//get time in millis from the user's reminder
+            if (timeInMillis <= System.currentTimeMillis()) {//if the reminder is set before or on the current time, then the timer cannot be set
                 Toast.makeText(this, "You cannot put a reminder for a past time", Toast.LENGTH_SHORT).show();
                 isNotEmpty = false;
             }
         }
-        if (toDoEditText.getText().toString().trim().length() == 0) {
+
+        if (toDoEditText.getText().toString().trim().length() == 0) {//is the description empty
             Toast.makeText(this, "You must put a Description", Toast.LENGTH_SHORT).show();
             isNotEmpty = false;
         }
+
         if (isNotEmpty) {
+            //Create ToDoItem based on the users input
             ToDoItem toDoItem = new ToDoItem(toDoEditText.getText().toString().trim(), label.getText().toString().trim(), dueDateTextView.getText().toString(), reminderTextView.getText().toString(), false);
 
             Intent intent = getIntent();
+            //if in edit mode and either the description of the task or the reminder changed, the reminder must be cancelled and a new one with the new characteristics must be made
             if (intent.getBooleanExtra("EDIT_MODE", false) && (!toDoEditText.getText().toString().equals(intent.getStringExtra(EXTRA_DESCRIPTION)) || !reminderTextView.getText().toString().equals(intent.getStringExtra(EXTRA_REMINDER)))) {
-                //delete notification either because the values changed or because it was deleted
                 Intent alarmIntent = new Intent(this, ReminderReceiver.class);
                 AlarmManager alarmManager = (AlarmManager) this.getSystemService(MainActivity.ALARM_SERVICE);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(this, toDoItem.getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-                alarmManager.cancel(pendingIntent);
+                alarmManager.cancel(pendingIntent);//delete notification either because the values changed or because it was deleted
 
-                if (!reminderTextView.getText().toString().isEmpty()) {
+                if (!reminderTextView.getText().toString().isEmpty()) {//if there is a new reminder
                     //create new notification
                     alarmIntent.putExtra("name", toDoEditText.getText().toString().trim());
                     alarmIntent.putExtra("id", toDoId);
@@ -116,7 +119,7 @@ public class AddToDoItemActivity extends AppCompatActivity {
                     alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntentNew);//RTC_WAKEUP will wake up the device to fire the pending intent at the specified time
                 }
             }
-            Toast.makeText(this, "TODO item added", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "TODO item " + (toDoId == -1 ? "added" : "edited"), Toast.LENGTH_SHORT).show();//Show proper toast message depended on whether the item is added or edited
 
             Intent replyIntent = new Intent();
             replyIntent.putExtra(EXTRA_DESCRIPTION, toDoItem.getDescription());
@@ -130,16 +133,21 @@ public class AddToDoItemActivity extends AppCompatActivity {
         }
     }
 
+    //create notification channel for our reminders if the Android is higher than 8.0
     private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "NiSoReminderChannel";
             String desc = "Channel for NiSo Reminder";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            //Construct a NotificationChannel object with a unique channel ID, a user-visible name, and an importance level.
             NotificationChannel channel = new NotificationChannel("notifyNiso", name, importance);
-            channel.setDescription(desc);
+            channel.setDescription(desc);//specify the description that the user sees in the system settings
+            // Register the channel with the system
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            notificationManager.createNotificationChannel(channel);//Register the notification channel
         }
     }
 }
