@@ -11,16 +11,16 @@ import java.util.List;
 
 @androidx.room.Dao
 public interface Dao {
-    @Query("SELECT * FROM ToDoItem")
-    List<ToDoItem> getToDoItems();
 
+    //get all the to do items when there is a specific due date
     @Query("SELECT * FROM ToDoItem WHERE dueDate=:dueDate")
     LiveData<List<ToDoItem>> getToDoItems(String dueDate);
 
+    //get all to do items
     @Query("SELECT * FROM ToDoItem")
     LiveData<List<ToDoItem>> getAllToDoItems();
 
-
+    //get all to do items where there is a specific label
     @Query("SELECT * FROM ToDoItem WHERE label=:label")
     LiveData<List<ToDoItem>> getAllToDoItemsWithLabel(String label);
 
@@ -34,12 +34,11 @@ public interface Dao {
     @Delete
     void deleteToDoItem(ToDoItem toDoItem);
 
-    @Query("SELECT * FROM BudgetItem")
-    List<BudgetItem> getBudgetItems();
-
+    //get all budget items where there is a specific due date
     @Query("SELECT * FROM BudgetItem WHERE dueDate=:dueDate")
     LiveData<List<BudgetItem>> getBudgetItems(String dueDate);
 
+    //get all budget items
     @Query("SELECT * FROM BudgetItem")
     LiveData<List<BudgetItem>> getAllBudgetItems();
 
