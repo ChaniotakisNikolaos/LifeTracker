@@ -4,7 +4,6 @@
     <string name="calendar_string">Calendar</string>
     <string name="budget_string">Budget</string>
     <string name="me_string">me</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="user_photo_description">user photo</string>
     <string name="tasks_overview">Tasks Overview</string>
@@ -50,9 +49,6 @@
     <string name="add_a_photo_from_gallery">Add a photo from Gallery</string>
     <string name="you_are_subtracting">You are subtracting:</string>
     <string name="plus_button">plus button</string>
-    <string name="_20000_9000000">20000€/9000000€</string>
-    <string name="_60">60%</string>
-    <string name="_24_5_21">24/5/21</string>
     <string name="todo_list_item_description_name">todo list item description/name</string>
     <string name="show_edit_and_delete">show Edit and delete</string>
 </resources>
