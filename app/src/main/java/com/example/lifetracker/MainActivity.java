@@ -65,31 +65,35 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
-        // drawer layout instance to toggle the menu icon to open
-        // drawer and back button to close drawer
+
+        //FOR THE NAVIGATION DRAWER
+        //drawer layout instance to toggle the menu icon to open, drawer and back button to close drawer
         drawerLayout = findViewById(R.id.my_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
 
-        // pass the Open and Close toggle for the drawer layout listener
-        // to toggle the button
+        //pass the Open and Close toggle for the drawer layout listener to toggle the button
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+
         navView = findViewById(R.id.menu_navigation);
+
         m = navView.getMenu();
+        //add the All To Do, make it checked, it will always exist in the menu items
         m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
 
-
+        //get the application view model
         applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
 
+        //for the tabs at the bottom of the screen
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPager2);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentAdapter fragmentAdapter = new FragmentAdapter(fragmentManager, getLifecycle());
         viewPager2.setAdapter(fragmentAdapter);
 
+        //execute when a tab is chosen
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
             }
         });
 
+        //executes when whenever the page changes
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -114,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
             }
         });
 
+        //Handles the reply of the AddToDoItemActivity after add
         addToDoItemActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
@@ -125,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                     }
                 });
 
+        //Handles the reply of the AddBudgetItemActivity after add
         addBudgetItemActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
@@ -133,15 +140,11 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                         if (data != null) {
                             applicationViewModel.insert(new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL),data.getIntExtra(AddBudgetItemActivity.EXTRA_SAVED,0),data.getIntExtra(AddBudgetItemActivity.EXTRA_TOTAL,0),data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE)));
                         }
-                        Log.d("test","Budget inserted");
                     }
                 });
     }
-    // override the onOptionsItemSelected()
-    // function to implement
-    // the item click listener callback
-    // to open and close the navigation
-    // drawer when the icon is clicked
+    // override the onOptionsItemSelected() function to implement the item click listener callback
+    // to open and close the navigation drawer when the icon is clicked
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     }
 
     /**
-     * Called when the user taps the plus button
+     * Called when the user taps the plus button in to do tab
      */
     public void addToDoItem(View view) {
         Intent intent = new Intent(this, AddToDoItemActivity.class);
@@ -159,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     }
 
     /**
-     * Called when the user taps the plus button
+     * Called when the user taps the plus button in budget tab
      */
     public void addBudgetItem(View view) {
         Intent intent = new Intent(this, AddBudgetItemActivity.class);
@@ -170,33 +173,32 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
      * Called when the user taps the hello user text view in me fragment
      */
     public void changeUserName(View view) {
-        AlertDialog.Builder dialogBuilder;
-        AlertDialog dialog;
         EditText userNameEditText;
         Button cancelChangeNameBtn, saveChangeNameBtn;
-        dialogBuilder = new AlertDialog.Builder(this);
-        //LayoutInflater inflater = (LayoutInflater)getLayoutInflater.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //build an alert dialog for the user, where the user can put their name
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View editUserNameView = getLayoutInflater().inflate(R.layout.dialog_edit_user_name, null);
         userNameEditText = editUserNameView.findViewById(R.id.userNameEditText);
-        cancelChangeNameBtn = editUserNameView.findViewById(R.id.cancelChangeNameBtn);
-        saveChangeNameBtn = editUserNameView.findViewById(R.id.saveChangeNameBtn);
+        cancelChangeNameBtn = editUserNameView.findViewById(R.id.cancelChangeNameBtn);//button to cancel the dialog
+        saveChangeNameBtn = editUserNameView.findViewById(R.id.saveChangeNameBtn);//button to save the name
 
         dialogBuilder.setView(editUserNameView);
-        dialog = dialogBuilder.create();
+        AlertDialog dialog = dialogBuilder.create();
         dialog.show();
 
         cancelChangeNameBtn.setOnClickListener(v -> {
-            //close dialog
-            dialog.dismiss();
+            dialog.dismiss();//close dialog
         });
 
+        //when the user saves the name, changeStatus is called to save the name in SharedPreferences
         saveChangeNameBtn.setOnClickListener(v -> {
-            String newName = userNameEditText.getText().toString();
-            Log.d("nnn",newName);
+            String newName = userNameEditText.getText().toString();//change text
             changeStatus(newName);
-            dialog.dismiss();
+            dialog.dismiss();//close dialog
         });
     }
+
+    /**save username in sharedPreferences concatenated with "Hello,"*/
     public void changeStatus(String s){
         TextView nameTextView = findViewById(R.id.userNameTextView);
         nameTextView.setText(MessageFormat.format("Hello, {0}", s));
@@ -205,42 +207,49 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         editor.apply();
     }
 
+    /**Launch Camera*/
     ActivityResultLauncher<Intent> startActivityIntentCamera = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if(result.getResultCode() == RESULT_OK){
-                        Intent data = result.getData();
+                        Intent data = result.getData();//get the intent data
                         if (data != null) {
                             imageViewProfPic = findViewById(R.id.imageView);
                             Bundle bundle = data.getExtras();
                             Bitmap bitmapImage = (Bitmap) bundle.get("data");
-                            imageViewProfPic.setImageBitmap(bitmapImage);
-                            savePhotoToGallery();
+                            imageViewProfPic.setImageBitmap(bitmapImage);//set new image to circularImageView
+                            savePhotoToGallery();//save image locally
                         }
                     }
                 }
             });
 
+    /**Save image to Local Gallery(data->com.example.lifetracker)*/
     private void savePhotoToGallery(){
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) imageViewProfPic.getDrawable();
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) imageViewProfPic.getDrawable();//get image drawable
         Bitmap bitmap = bitmapDrawable.getBitmap();
         Uri uri;
         //create image file
         FileOutputStream fileOutputStream;
         try{
-            File directory = new File(this.getExternalFilesDir(null) + File.separator +"NISO");
+            File directory = new File(this.getExternalFilesDir(null) + File.separator +"NISO");//get the directory that the photo will be saved
+            //the directory will be named NISO
+            //if does not exist, create a new one
             if (!directory.exists()) {
                 if (directory.mkdirs()) {
                     Log.d("directory", "Directory has been created");
                 }else{
-                    Log.d("directory", "Directory not created");
+                    Log.d("directory", "Directory not created");//in case it could not be created
 
                 }
             }
             else
-                Log.d("directory", "Directory exists");
+                Log.d("directory", "Directory exists");//if directory already exists
+
+            //create the filepath of the photo, where it will be named profPic with the current time in millis
+            //in order to not have a problem with the cached memory(otherwise the old cached photo will appear instead of the new one)
             final String filePath=directory+ File.separator + "profPic"+ System.currentTimeMillis() +".png";
             File image = new File(filePath);
             fileOutputStream = new FileOutputStream(image);
@@ -249,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
             //get absolute path
             uri = Uri.fromFile(image);
 
+            //put photo in shared preferences as a uri
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("imagepathURI", String.valueOf(uri));
 
@@ -258,8 +268,8 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         }catch (Exception ex){
             ex.printStackTrace();
         }
-
     }
+    /**Put photo from gallery*/
     ActivityResultLauncher<Intent> startActivityIntentGallery = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -269,9 +279,14 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                         Intent data = result.getData();
                         CircularImageView imageViewProfPic = findViewById(R.id.imageView);
                         Uri selectedImageUri;
+
                         if (data != null && data.getData() != null) {
+                            //save photo in circular image view with picasso
                             selectedImageUri = data.getData();
+                            //have a place holder(which will look like loading and in case of error put the starting image
                             Picasso.with(getApplicationContext()).load(selectedImageUri).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageViewProfPic);
+
+                            //save image as a uri in shared preferences
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString("imagepathURI", String.valueOf(selectedImageUri));
                             editor.apply();
@@ -280,10 +295,12 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                 }
             });
 
+    /**Dialog to choose from where does he user want to load a photo(camera or gallery)*/
     public void choosePicture(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         Button photoButton, galleryButton;
+
         final View dialogView = inflater.inflate(R.layout.dialog_picture, null);
         photoButton = dialogView.findViewById(R.id.buttonTakePhoto);
         galleryButton = dialogView.findViewById(R.id.buttonGalleryPhoto);
@@ -293,6 +310,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         AlertDialog alertDialogProfPic = builder.create();
         alertDialogProfPic.show();
 
+        //if user clicks on the photo button, then check permissions and take photo
         photoButton.setOnClickListener(v -> {
             alertDialogProfPic.dismiss();
             if(checkAndRequestPermission()) {
@@ -300,6 +318,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
             }
         });
 
+        //if user chooses gallery button -> open galley
         galleryButton.setOnClickListener(v -> {
             alertDialogProfPic.dismiss();
             takePictureFromGallery();
@@ -307,13 +326,16 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
 
     }
 
+    /**Launch Intent to take photo with camera*/
     private void takePictureFromCamera() {
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
         if(takePicture.resolveActivity(getPackageManager()) != null){
             this.startActivityIntentCamera.launch(takePicture);
         }
     }
 
+    /**Request permissions from user for the camera*/
     private boolean checkAndRequestPermission(){
         int cameraPermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
         if(cameraPermission == PackageManager.PERMISSION_DENIED){
@@ -327,12 +349,14 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == 20 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            takePictureFromCamera();
+            Log.d("CAMERA","IN PERMISSIONS");
+            takePictureFromCamera();// in case there were no permissions beforehand, call take picture from camera
         }else{
-            Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();//inform user he did not give permissions
         }
     }
 
+    /**Launch Intent to choose picture from gallery*/
     private void takePictureFromGallery(){
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         this.startActivityIntentGallery.launch(pickPhoto);
@@ -342,16 +366,13 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override
     public void setDrawerLocked() {
         //code to lock drawer
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        //toolbar.setNavigationIcon(null);
     }
 
     @Override
