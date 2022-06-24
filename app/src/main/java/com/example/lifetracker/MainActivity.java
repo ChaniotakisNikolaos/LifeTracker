@@ -349,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == 20 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            Log.d("CAMERA","IN PERMISSIONS");
             takePictureFromCamera();// in case there were no permissions beforehand, call take picture from camera
         }else{
             Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();//inform user he did not give permissions
