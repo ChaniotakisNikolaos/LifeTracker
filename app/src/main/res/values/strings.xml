@@ -31,5 +31,11 @@
     <!--to toggle the open close button of the navigation drawer-->
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
-    <string name="editString">Edit</string>
+    <string name="edit_string">Edit</string>
+    <string name="what_are_you_saving_up_for">What are you saving up for?</string>
+    <string name="your_savings_up_to_now">Your savings up to now</string>
+    <string name="your_end_goal">Your end goal</string>
+    <string name="due_date">Due date</string>
+    <string name="add">Add</string>
+    <string name="clear_due_date_field">clear due date field</string>
 </resources>

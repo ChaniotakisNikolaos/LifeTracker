@@ -47,7 +47,7 @@ public class AddBudgetItemActivity extends AppCompatActivity {
             savingsNowEditText.setText(String.valueOf(intent.getIntExtra(EXTRA_SAVED, 0)));
             totalSavingsEditText.setText(String.valueOf(intent.getIntExtra(EXTRA_TOTAL, 0)));
             dueDateTextView1.setText(intent.getStringExtra(EXTRA_DUE_DATE));
-            confirmButton.setText(R.string.editString);//Change button text from Add to Edit
+            confirmButton.setText(R.string.edit_string);//Change button text from Add to Edit
         }
     }
 

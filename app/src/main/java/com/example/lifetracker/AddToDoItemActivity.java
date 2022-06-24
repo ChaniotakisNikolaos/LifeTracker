@@ -57,7 +57,7 @@ public class AddToDoItemActivity extends AppCompatActivity {
         Intent intent = getIntent();// Get intent to check if in add or edit mode
         if (intent.getBooleanExtra("EDIT_MODE", false)) {//true:Edit mode false:Add mode
             //Field text initialization based on the edited ToDoItem
-            addToDoButton.setText(R.string.editString);//Change button text from Add to Edit
+            addToDoButton.setText(R.string.edit_string);//Change button text from Add to Edit
             toDoEditText.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
             label.setText(intent.getStringExtra(EXTRA_LABEL));
             reminderTextView.setText(intent.getStringExtra(EXTRA_REMINDER));
