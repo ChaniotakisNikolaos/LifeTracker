@@ -11,13 +11,13 @@ public class ToDoItem {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @NonNull
-    private String description;
+    private final String description;
     private String label;
-    private String dueDate;
+    private final String dueDate;
     private String reminder;
     private boolean isSelected;
 
-    public ToDoItem(String description, String label, String dueDate, String reminder, boolean isSelected) {
+    public ToDoItem(@NonNull String description, String label, String dueDate, String reminder, boolean isSelected) {
         this.description = description;
         this.label = label;
         this.dueDate = dueDate;
@@ -43,6 +43,7 @@ public class ToDoItem {
         return isSelected;
     }
 
+    @NonNull
     public String getDescription() {
         return description;
     }
@@ -63,24 +64,15 @@ public class ToDoItem {
         this.id = id;
     }
 
-    public void setDescription(@NonNull String description) {
-        this.description = description;
-    }
-
     public void setLabel(String label) {
         this.label = label;
-    }
-
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
     }
 
     public void setReminder(String reminder) {
         this.reminder = reminder;
     }
 
-    public boolean setSelected(boolean selected) {
+    public void setSelected(boolean selected) {
         this.isSelected = selected;
-        return selected;
     }
 }
