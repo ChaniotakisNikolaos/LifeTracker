@@ -19,7 +19,8 @@
         android:id="@+id/budgetNameEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
+        android:autofillHints=""
         android:drawableStart="@drawable/ic_baseline_label_24"
         android:ems="10"
         android:hint="@string/budget_label"
@@ -54,7 +55,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/savingsNowTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/savingsNowTextView"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/totalSavingsTextView"
@@ -81,7 +83,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalSavingsTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/totalSavingsTextView"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/dueDateTextView"

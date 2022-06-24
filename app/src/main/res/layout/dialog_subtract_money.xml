@@ -41,7 +41,8 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSubtractMoney" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubtractMoney"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/buttonCancelSubtractMoney"

@@ -67,5 +67,6 @@
         android:textColorLink="#786574"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAddMoney" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddMoney"
+        android:autofillHints="" />
 </androidx.constraintlayout.widget.ConstraintLayout>
