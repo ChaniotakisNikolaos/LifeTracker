@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
             }
             else
                 Log.d("directory", "Directory exists");
-            final String filePath=directory+ File.separator + "profPic.png";
+            final String filePath=directory+ File.separator + "profPic"+ System.currentTimeMillis() +".png";
             File image = new File(filePath);
             fileOutputStream = new FileOutputStream(image);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
