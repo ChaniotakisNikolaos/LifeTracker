@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
 
         m = navView.getMenu();
         //add the All To Do, make it checked, it will always exist in the menu items
-        m.add(Menu.NONE, 0,Menu.NONE,"All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
+        m.add(Menu.NONE, 0, Menu.NONE, "All To Do").setIcon(R.drawable.ic_baseline_current_label_24).setChecked(true);
 
         //get the application view model
         applicationViewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                         // There are no request codes
                         Intent data = result.getData();
                         if (data != null) {
-                            applicationViewModel.insert(new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION),data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL),data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE),data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER), false), MainActivity.this);
+                            applicationViewModel.insert(new ToDoItem(data.getStringExtra(AddToDoItemActivity.EXTRA_DESCRIPTION), data.getStringExtra(AddToDoItemActivity.EXTRA_LABEL), data.getStringExtra(AddToDoItemActivity.EXTRA_DUE_DATE), data.getStringExtra(AddToDoItemActivity.EXTRA_REMINDER), false), MainActivity.this);
                         }
                     }
                 });
@@ -138,11 +138,12 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                         // There are no request codes
                         Intent data = result.getData();
                         if (data != null) {
-                            applicationViewModel.insert(new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL),data.getIntExtra(AddBudgetItemActivity.EXTRA_SAVED,0),data.getIntExtra(AddBudgetItemActivity.EXTRA_TOTAL,0),data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE)));
+                            applicationViewModel.insert(new BudgetItem(data.getStringExtra(AddBudgetItemActivity.EXTRA_LABEL), data.getIntExtra(AddBudgetItemActivity.EXTRA_SAVED, 0), data.getIntExtra(AddBudgetItemActivity.EXTRA_TOTAL, 0), data.getStringExtra(AddBudgetItemActivity.EXTRA_DUE_DATE)));
                         }
                     }
                 });
     }
+
     // override the onOptionsItemSelected() function to implement the item click listener callback
     // to open and close the navigation drawer when the icon is clicked
     @Override
@@ -198,8 +199,10 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         });
     }
 
-    /**save username in sharedPreferences concatenated with "Hello,"*/
-    public void changeStatus(String s){
+    /**
+     * save username in sharedPreferences concatenated with "Hello,"
+     */
+    public void changeStatus(String s) {
         TextView nameTextView = findViewById(R.id.userNameTextView);
         nameTextView.setText(MessageFormat.format("Hello, {0}", s));
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -207,13 +210,15 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         editor.apply();
     }
 
-    /**Launch Camera*/
+    /**
+     * Launch Camera
+     */
     ActivityResultLauncher<Intent> startActivityIntentCamera = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == RESULT_OK){
+                    if (result.getResultCode() == RESULT_OK) {
                         Intent data = result.getData();//get the intent data
                         if (data != null) {
                             imageViewProfPic = findViewById(R.id.imageView);
@@ -226,31 +231,32 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                 }
             });
 
-    /**Save image to Local Gallery(data->com.example.lifetracker)*/
-    private void savePhotoToGallery(){
+    /**
+     * Save image to Local Gallery(data->com.example.lifetracker)
+     */
+    private void savePhotoToGallery() {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) imageViewProfPic.getDrawable();//get image drawable
         Bitmap bitmap = bitmapDrawable.getBitmap();
         Uri uri;
         //create image file
         FileOutputStream fileOutputStream;
-        try{
-            File directory = new File(this.getExternalFilesDir(null) + File.separator +"NISO");//get the directory that the photo will be saved
+        try {
+            File directory = new File(this.getExternalFilesDir(null) + File.separator + "NISO");//get the directory that the photo will be saved
             //the directory will be named NISO
             //if does not exist, create a new one
             if (!directory.exists()) {
                 if (directory.mkdirs()) {
                     Log.d("directory", "Directory has been created");
-                }else{
+                } else {
                     Log.d("directory", "Directory not created");//in case it could not be created
 
                 }
-            }
-            else
+            } else
                 Log.d("directory", "Directory exists");//if directory already exists
 
             //create the filepath of the photo, where it will be named profPic with the current time in millis
             //in order to not have a problem with the cached memory(otherwise the old cached photo will appear instead of the new one)
-            final String filePath=directory+ File.separator + "profPic"+ System.currentTimeMillis() +".png";
+            final String filePath = directory + File.separator + "profPic" + System.currentTimeMillis() + ".png";
             File image = new File(filePath);
             fileOutputStream = new FileOutputStream(image);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
@@ -265,17 +271,20 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
             editor.apply();
             fileOutputStream.flush();
             fileOutputStream.close();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    /**Put photo from gallery*/
+
+    /**
+     * Put photo from gallery
+     */
     ActivityResultLauncher<Intent> startActivityIntentGallery = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == RESULT_OK){
+                    if (result.getResultCode() == RESULT_OK) {
                         Intent data = result.getData();
                         CircularImageView imageViewProfPic = findViewById(R.id.imageView);
                         Uri selectedImageUri;
@@ -295,7 +304,9 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                 }
             });
 
-    /**Dialog to choose from where does he user want to load a photo(camera or gallery)*/
+    /**
+     * Dialog to choose from where does he user want to load a photo(camera or gallery)
+     */
     public void choosePicture(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -313,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
         //if user clicks on the photo button, then check permissions and take photo
         photoButton.setOnClickListener(v -> {
             alertDialogProfPic.dismiss();
-            if(checkAndRequestPermission()) {
+            if (checkAndRequestPermission()) {
                 takePictureFromCamera();
             }
         });
@@ -326,19 +337,23 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
 
     }
 
-    /**Launch Intent to take photo with camera*/
+    /**
+     * Launch Intent to take photo with camera
+     */
     private void takePictureFromCamera() {
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-        if(takePicture.resolveActivity(getPackageManager()) != null){
+        if (takePicture.resolveActivity(getPackageManager()) != null) {
             this.startActivityIntentCamera.launch(takePicture);
         }
     }
 
-    /**Request permissions from user for the camera*/
-    private boolean checkAndRequestPermission(){
+    /**
+     * Request permissions from user for the camera
+     */
+    private boolean checkAndRequestPermission() {
         int cameraPermission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
-        if(cameraPermission == PackageManager.PERMISSION_DENIED){
+        if (cameraPermission == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 20);
             return false;
         }
@@ -348,15 +363,17 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == 20 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 20 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             takePictureFromCamera();// in case there were no permissions beforehand, call take picture from camera
-        }else{
+        } else {
             Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();//inform user he did not give permissions
         }
     }
 
-    /**Launch Intent to choose picture from gallery*/
-    private void takePictureFromGallery(){
+    /**
+     * Launch Intent to choose picture from gallery
+     */
+    private void takePictureFromGallery() {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         this.startActivityIntentGallery.launch(pickPhoto);
 
