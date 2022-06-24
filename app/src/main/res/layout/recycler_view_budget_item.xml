@@ -26,7 +26,6 @@
                 android:id="@+id/budgetLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/budget_string"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +36,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="20000€/9000000€"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +65,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#F0E7F3"
-                android:text="60%"
                 android:textColor="#000000"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar"
@@ -81,14 +78,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:drawableStart="@drawable/ic_baseline_calendar_today_20"
-                android:text="24/5/21"
                 android:textColor="#000000"
                 app:layout_constraintBottom_toBottomOf="@+id/savingsLabel"
                 app:layout_constraintEnd_toEndOf="@+id/progressBar"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/savingsLabel"
-                app:layout_constraintTop_toTopOf="@+id/savingsLabel" />
+                app:layout_constraintTop_toTopOf="@+id/savingsLabel"
+                app:drawableStartCompat="@drawable/ic_baseline_calendar_today_20" />
 
             <Button
                 android:id="@+id/buttonClick"
@@ -107,7 +103,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="@+id/progressBar"
                 app:layout_constraintStart_toStartOf="@+id/progressBar"
-                app:layout_constraintTop_toTopOf="@+id/budgetLabel" />
+                app:layout_constraintTop_toTopOf="@+id/budgetLabel"
+                android:focusable="true" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/addButton"
@@ -124,7 +121,8 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="@+id/progressBar"
                 app:layout_constraintTop_toBottomOf="@+id/buttonClick"
-                app:srcCompat="@drawable/ic_baseline_add_24" />
+                app:srcCompat="@drawable/ic_baseline_add_24"
+                android:focusable="true" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/minusButton"
@@ -139,7 +137,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/editButton"
                 app:layout_constraintStart_toEndOf="@+id/addButton"
                 app:layout_constraintTop_toTopOf="@+id/addButton"
-                app:srcCompat="@drawable/ic_baseline_remove_24" />
+                app:srcCompat="@drawable/ic_baseline_remove_24"
+                android:focusable="true" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/editButton"
@@ -154,7 +153,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/deleteButton"
                 app:layout_constraintStart_toEndOf="@+id/minusButton"
                 app:layout_constraintTop_toTopOf="@+id/minusButton"
-                app:srcCompat="@drawable/ic_baseline_edit_24" />
+                app:srcCompat="@drawable/ic_baseline_edit_24"
+                android:focusable="true" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/deleteButton"
@@ -168,7 +168,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/buttonClick"
                 app:layout_constraintStart_toEndOf="@+id/editButton"
                 app:layout_constraintTop_toTopOf="@+id/editButton"
-                app:srcCompat="@drawable/ic_baseline_delete_24" />
+                app:srcCompat="@drawable/ic_baseline_delete_24"
+                android:focusable="true" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

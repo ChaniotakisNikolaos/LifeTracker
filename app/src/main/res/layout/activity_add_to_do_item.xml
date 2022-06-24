@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/ic_baseline_edit_24"
-        android:hint="To Do description"
+        android:drawableStart="@drawable/ic_baseline_edit_24"
+        android:hint="@string/to_do_description"
         android:importantForAutofill="no"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,8 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/ic_baseline_label_24"
-        android:hint="Label"
+        android:drawableStart="@drawable/ic_baseline_label_24"
+        android:hint="@string/label"
         android:importantForAutofill="no"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,9 +40,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/ic_baseline_notifications_24"
         android:focusable="false"
-        android:hint="Reminder"
+        android:hint="@string/reminder"
         android:importantForAutofill="no"
         android:minHeight="48dp"
         android:onClick="showDatePickerDialog"
@@ -50,7 +49,8 @@
         app:layout_constraintEnd_toStartOf="@+id/clearReminderBtn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/labelEditText"
+        app:drawableLeftCompat="@drawable/ic_baseline_notifications_24" />
 
     <TextView
         android:id="@+id/dueDateSelectTextView"
@@ -58,9 +58,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/calendar"
         android:focusable="false"
-        android:hint="Due Date"
+        android:hint="@string/due_date"
         android:importantForAutofill="no"
         android:minHeight="48dp"
         android:onClick="showDatePickerDialog"
@@ -68,12 +67,14 @@
         app:layout_constraintEnd_toStartOf="@+id/clearDueDateToDoBtn"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reminderSelectTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/reminderSelectTextView"
+        app:drawableLeftCompat="@drawable/calendar" />
 
     <Button
         android:id="@+id/clearDueDateToDoBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/clear_due_date_field"
         app:icon="@drawable/ic_baseline_close_24"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
@@ -86,6 +87,7 @@
         android:id="@+id/clearReminderBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/clear_reminder_field"
         android:includeFontPadding="false"
         app:icon="@drawable/ic_baseline_close_24"
         app:iconGravity="textStart"
@@ -103,7 +105,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         android:onClick="addToDoItem"
-        android:text="Add"
+        android:text="@string/add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
