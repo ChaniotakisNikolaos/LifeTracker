@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                             Bundle bundle = data.getExtras();
                             Bitmap bitmapImage = (Bitmap) bundle.get("data");
                             imageViewProfPic.setImageBitmap(bitmapImage);//set new image to circularImageView
-                            savePhotoToGallery();//save image locally
+                            savePhotoToGallery(null);//save image locally
                         }
                     }
                 }
@@ -235,13 +235,17 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     /**
      * Save image to Local Gallery(data->com.example.lifetracker)
      */
-    private void savePhotoToGallery() {
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) imageViewProfPic.getDrawable();//get image drawable
-        Bitmap bitmap = bitmapDrawable.getBitmap();
-        Uri uri;
-        //create image file
-        FileOutputStream fileOutputStream;
+    private void savePhotoToGallery(Uri uri) {
+        Bitmap bitmap;
         try {
+            if(uri!=null){
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            }else{
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) imageViewProfPic.getDrawable();//get image drawable
+                bitmap = bitmapDrawable.getBitmap();
+            }
+            //create image file
+            FileOutputStream fileOutputStream;
             File directory = new File(this.getExternalFilesDir(null) + File.separator + "NISO");//get the directory that the photo will be saved
             //the directory will be named NISO
             //if does not exist, create a new one
@@ -272,8 +276,8 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
             editor.apply();
             fileOutputStream.flush();
             fileOutputStream.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -292,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                         selectedImageUri = data.getData();
                         //have a place holder(which will look like loading and in case of error put the starting image
                         Picasso.with(getApplicationContext()).load(selectedImageUri).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageViewProfPic);
-                        savePhotoFromGallery(selectedImageUri);
+                        savePhotoToGallery(selectedImageUri);
                     }
                 }
             });
