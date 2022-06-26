@@ -26,6 +26,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/todo_list_item_description_name"
+                android:textColor="#000000"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageButton"
@@ -38,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label"
+                android:textColor="#000000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/checkBox" />
@@ -47,21 +49,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="1dp"
+                android:textColor="#000000"
+                app:drawableStartCompat="@drawable/calendar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/checkBox"
-                tools:text="21/5/2022"
-                app:drawableStartCompat="@drawable/calendar" />
+                tools:text="21/5/2022" />
 
             <TextView
                 android:id="@+id/reminderTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#000000"
+                app:drawableStartCompat="@drawable/ic_baseline_notifications_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/dueDateTextView"
                 app:layout_constraintStart_toEndOf="@+id/textViewLabel"
-                app:layout_constraintTop_toBottomOf="@+id/checkBox"
-                app:drawableStartCompat="@drawable/ic_baseline_notifications_24" />
+                app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
             <ImageButton
                 android:id="@+id/imageButton"
