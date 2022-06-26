@@ -1,6 +1,7 @@
 package com.example.lifetracker;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -87,8 +88,10 @@ public class AddBudgetItemActivity extends AppCompatActivity {
             //Check if savings up to now are equal to the total savings in order to congratulate the user with a toast message
             if (Integer.parseInt(savingsNowEditText.getText().toString()) >= Integer.parseInt(totalSavingsEditText.getText().toString())) {
                 Toast toast = Toast.makeText(this, "Congratulations!\nYou hit your goal for: " + budgetNameEditText.getText().toString() + "!", Toast.LENGTH_SHORT);
-                TextView toastV = toast.getView().findViewById(android.R.id.message);
-                toastV.setGravity(Gravity.CENTER); //Center toast's message text
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {//apk 30+ does not allow toast customization
+                    TextView toastV = toast.getView().findViewById(android.R.id.message);
+                    toastV.setGravity(Gravity.CENTER); //Center toast's message text
+                }
                 toast.setGravity(Gravity.TOP, 0, 0); //Put toast at the top of the screen
                 toast.show();
             }

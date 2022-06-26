@@ -2,6 +2,7 @@ package com.example.lifetracker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -68,8 +69,10 @@ public class BudgetFragment extends Fragment {
                 applicationViewModel.update(budgetItem);
                 if (budgetItem.getSaved() >= budgetItem.getTotal()) {
                     Toast toast = Toast.makeText(BudgetFragment.this.getContext(), "Congratulations!\nYou hit your goal for: " + budgetItem.getLabel() + "!", Toast.LENGTH_SHORT);
-                    TextView toastV = toast.getView().findViewById(android.R.id.message);
-                    toastV.setGravity(Gravity.CENTER);//Center toast's message text
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {//apk 30+ does not allow toast customization
+                        TextView toastV = toast.getView().findViewById(android.R.id.message);
+                        toastV.setGravity(Gravity.CENTER);//Center toast's message text
+                    }
                     toast.setGravity(Gravity.TOP, 0, 0);//Put toast at the top of the screen
                     toast.show();
                 }
