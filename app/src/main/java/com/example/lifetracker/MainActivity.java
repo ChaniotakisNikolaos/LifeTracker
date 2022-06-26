@@ -238,9 +238,9 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
     private void savePhotoToGallery(Uri uri) {
         Bitmap bitmap;
         try {
-            if(uri!=null){
+            if(uri!=null){//if image is from gallery
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-            }else{
+            }else{//if image is from camera
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) imageViewProfPic.getDrawable();//get image drawable
                 bitmap = bitmapDrawable.getBitmap();
             }
@@ -300,53 +300,6 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                     }
                 }
             });
-    /**
-     * Save image to Local Gallery(data->com.example.lifetracker)
-     */
-    private void savePhotoFromGallery(Uri uri) {
-        Bitmap bitmap;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-            //create image file
-            FileOutputStream fileOutputStream;
-            try {
-                File directory = new File(this.getExternalFilesDir(null) + File.separator + "NISO");//get the directory that the photo will be saved
-                //the directory will be named NISO
-                //if does not exist, create a new one
-                if (!directory.exists()) {
-                    if (directory.mkdirs()) {
-                        Log.d("directory", "Directory has been created");
-                    } else {
-                        Log.d("directory", "Directory not created");//in case it could not be created
-
-                    }
-                } else
-                    Log.d("directory", "Directory exists");//if directory already exists
-
-                //create the filepath of the photo, where it will be named profPic with the current time in millis
-                //in order to not have a problem with the cached memory(otherwise the old cached photo will appear instead of the new one)
-                final String filePath = directory + File.separator + "profPic" + System.currentTimeMillis() + ".png";
-                File image = new File(filePath);
-                fileOutputStream = new FileOutputStream(image);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-
-                //get absolute path
-                uri = Uri.fromFile(image);
-
-                //put photo in shared preferences as a uri
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("imagepathURI", String.valueOf(uri));
-
-                editor.apply();
-                fileOutputStream.flush();
-                fileOutputStream.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     /**
      * Dialog to choose from where does he user want to load a photo(camera or gallery)
      */
