@@ -35,6 +35,7 @@ public class AddToDoItemActivity extends AppCompatActivity {
     private TextView reminderTextView; //The field in which the user specifies the time and date of the reminder
     private TextView dueDateTextView; //The field in which the user specifies the due date
     private int toDoId;
+    private boolean editMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class AddToDoItemActivity extends AppCompatActivity {
 
         Intent intent = getIntent();// Get intent to check if in add or edit mode
         if (intent.getBooleanExtra("EDIT_MODE", false)) {//true:Edit mode false:Add mode
+            editMode=true;
             //Field text initialization based on the edited ToDoItem
             addToDoButton.setText(R.string.edit_string);//Change button text from Add to Edit
             toDoEditText.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
@@ -104,7 +106,7 @@ public class AddToDoItemActivity extends AppCompatActivity {
 
             Intent intent = getIntent();
             //if in edit mode and either the description of the task or the reminder changed, the reminder must be cancelled and a new one with the new characteristics must be made
-            if (intent.getBooleanExtra("EDIT_MODE", false) && (!toDoEditText.getText().toString().equals(intent.getStringExtra(EXTRA_DESCRIPTION)) || !reminderTextView.getText().toString().equals(intent.getStringExtra(EXTRA_REMINDER)))) {
+            if (editMode && (!toDoEditText.getText().toString().equals(intent.getStringExtra(EXTRA_DESCRIPTION)) || !reminderTextView.getText().toString().equals(intent.getStringExtra(EXTRA_REMINDER)))) {
                 Intent alarmIntent = new Intent(this, ReminderReceiver.class);
                 AlarmManager alarmManager = (AlarmManager) this.getSystemService(MainActivity.ALARM_SERVICE);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(this, toDoItem.getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -119,7 +121,7 @@ public class AddToDoItemActivity extends AppCompatActivity {
                     alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntentNew);//RTC_WAKEUP will wake up the device to fire the pending intent at the specified time
                 }
             }
-            Toast.makeText(this, "TODO item " + (toDoId == -1 ? "added" : "edited"), Toast.LENGTH_SHORT).show();//Show proper toast message depended on whether the item is added or edited
+            Toast.makeText(this, "TODO item " + (editMode? "edited" : "added"), Toast.LENGTH_SHORT).show();//Show proper toast message depended on whether the item is added or edited
 
             Intent replyIntent = new Intent();
             replyIntent.putExtra(EXTRA_DESCRIPTION, toDoItem.getDescription());
