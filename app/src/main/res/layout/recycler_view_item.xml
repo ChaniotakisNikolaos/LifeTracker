@@ -38,6 +38,7 @@
                 android:id="@+id/textViewLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLength="10"
                 android:text="@string/label"
                 android:textColor="#000000"
                 app:layout_constraintBottom_toBottomOf="parent"
