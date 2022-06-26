@@ -88,7 +88,7 @@ public class AddBudgetItemActivity extends AppCompatActivity {
             //Check if savings up to now are equal to the total savings in order to congratulate the user with a toast message
             if (Integer.parseInt(savingsNowEditText.getText().toString()) >= Integer.parseInt(totalSavingsEditText.getText().toString())) {
                 Toast toast = Toast.makeText(this, "Congratulations!\nYou hit your goal for: " + budgetNameEditText.getText().toString() + "!", Toast.LENGTH_SHORT);
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {//apk 30+ does not allow toast customization
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {//api 30+ does not allow toast customization
                     TextView toastV = toast.getView().findViewById(android.R.id.message);
                     toastV.setGravity(Gravity.CENTER); //Center toast's message text
                 }

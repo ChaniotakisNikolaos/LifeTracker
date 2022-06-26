@@ -69,7 +69,7 @@ public class BudgetFragment extends Fragment {
                 applicationViewModel.update(budgetItem);
                 if (budgetItem.getSaved() >= budgetItem.getTotal()) {
                     Toast toast = Toast.makeText(BudgetFragment.this.getContext(), "Congratulations!\nYou hit your goal for: " + budgetItem.getLabel() + "!", Toast.LENGTH_SHORT);
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {//apk 30+ does not allow toast customization
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {//api 30+ does not allow toast customization
                         TextView toastV = toast.getView().findViewById(android.R.id.message);
                         toastV.setGravity(Gravity.CENTER);//Center toast's message text
                     }
