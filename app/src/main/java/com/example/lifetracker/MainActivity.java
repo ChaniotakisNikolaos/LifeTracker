@@ -281,22 +281,18 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
      * Put photo from gallery
      */
     ActivityResultLauncher<Intent> startActivityIntentGallery = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Intent data = result.getData();
-                        CircularImageView imageViewProfPic = findViewById(R.id.imageView);
-                        Uri selectedImageUri;
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent data = result.getData();
+                    CircularImageView imageViewProfPic = findViewById(R.id.imageView);
+                    Uri selectedImageUri;
 
-                        if (data != null && data.getData() != null) {
-                            //save photo in circular image view with picasso
-                            selectedImageUri = data.getData();
-                            //have a place holder(which will look like loading and in case of error put the starting image
-                            Picasso.with(getApplicationContext()).load(selectedImageUri).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageViewProfPic);
-                            savePhotoFromGallery(selectedImageUri);
-                        }
+                    if (data != null && data.getData() != null) {
+                        //save photo in circular image view with picasso
+                        selectedImageUri = data.getData();
+                        //have a place holder(which will look like loading and in case of error put the starting image
+                        Picasso.with(getApplicationContext()).load(selectedImageUri).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageViewProfPic);
+                        savePhotoFromGallery(selectedImageUri);
                     }
                 }
             });
@@ -304,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
      * Save image to Local Gallery(data->com.example.lifetracker)
      */
     private void savePhotoFromGallery(Uri uri) {
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         try {
             bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
             //create image file
