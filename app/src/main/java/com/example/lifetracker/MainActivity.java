@@ -43,6 +43,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Objects;
 
@@ -294,16 +295,58 @@ public class MainActivity extends AppCompatActivity implements MyDrawerControlle
                             selectedImageUri = data.getData();
                             //have a place holder(which will look like loading and in case of error put the starting image
                             Picasso.with(getApplicationContext()).load(selectedImageUri).placeholder(R.drawable.ic_baseline_autorenew_24).error(R.drawable.cat_glasses).fit().centerInside().into(imageViewProfPic);
-
-                            //save image as a uri in shared preferences
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("imagepathURI", String.valueOf(selectedImageUri));
-                            editor.apply();
+                            savePhotoFromGallery(selectedImageUri);
                         }
                     }
                 }
             });
+    /**
+     * Save image to Local Gallery(data->com.example.lifetracker)
+     */
+    private void savePhotoFromGallery(Uri uri) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            //create image file
+            FileOutputStream fileOutputStream;
+            try {
+                File directory = new File(this.getExternalFilesDir(null) + File.separator + "NISO");//get the directory that the photo will be saved
+                //the directory will be named NISO
+                //if does not exist, create a new one
+                if (!directory.exists()) {
+                    if (directory.mkdirs()) {
+                        Log.d("directory", "Directory has been created");
+                    } else {
+                        Log.d("directory", "Directory not created");//in case it could not be created
 
+                    }
+                } else
+                    Log.d("directory", "Directory exists");//if directory already exists
+
+                //create the filepath of the photo, where it will be named profPic with the current time in millis
+                //in order to not have a problem with the cached memory(otherwise the old cached photo will appear instead of the new one)
+                final String filePath = directory + File.separator + "profPic" + System.currentTimeMillis() + ".png";
+                File image = new File(filePath);
+                fileOutputStream = new FileOutputStream(image);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+
+                //get absolute path
+                uri = Uri.fromFile(image);
+
+                //put photo in shared preferences as a uri
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("imagepathURI", String.valueOf(uri));
+
+                editor.apply();
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Dialog to choose from where does he user want to load a photo(camera or gallery)
      */
