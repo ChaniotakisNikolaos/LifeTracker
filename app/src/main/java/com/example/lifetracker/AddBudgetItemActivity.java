@@ -91,8 +91,8 @@ public class AddBudgetItemActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {//api 30+ does not allow toast customization
                     TextView toastV = toast.getView().findViewById(android.R.id.message);
                     toastV.setGravity(Gravity.CENTER); //Center toast's message text
+                    toast.setGravity(Gravity.TOP, 0, 0); //Put toast at the top of the screen
                 }
-                toast.setGravity(Gravity.TOP, 0, 0); //Put toast at the top of the screen
                 toast.show();
             }
 
